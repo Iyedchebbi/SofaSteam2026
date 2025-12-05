@@ -3,7 +3,8 @@ import {
   Menu, X, Moon, Sun, ShoppingBag, MapPin, Phone, 
   Send, Sparkles, Instagram, Mail, Search, Globe, User, LogIn, MessageCircle,
   Truck, Package, ClipboardList, LayoutDashboard, Settings, LogOut,
-  Trash2, Plus, Minus, ChevronRight, CheckCircle, Upload, Image
+  Trash2, Plus, Minus, ChevronRight, CheckCircle, Upload, Image,
+  Armchair, Clock, ShieldCheck, Star, ArrowRight, Quote
 } from 'lucide-react';
 
 export const Icons = {
@@ -33,7 +34,13 @@ export const Icons = {
   Plus,
   Minus,
   ChevronRight,
-  Check: CheckCircle,
+  CheckCircle,
   Upload,
-  Image
+  Image,
+  Armchair,
+  Clock,
+  ShieldCheck,
+  Star,
+  ArrowRight,
+  Quote
 };

@@ -29,29 +29,24 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
       }
       refreshCart();
     } catch (error) {
-      console.error('Error updating cart:', error);
+      console.error('Error updating booking list:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleCheckout = async () => {
-     // Mock checkout for now
-     alert(language === 'ro' ? 'Comanda a fost plasată! (Simulare)' : 'Order placed successfully! (Simulation)');
-     // Clear cart logic if needed, or create order in DB
      setLoading(true);
-     // Basic order creation
      const { data: { user } } = await supabase.auth.getUser();
      if (user) {
          const { data: order, error: orderError } = await supabase.from('orders').insert({
              user_id: user.id,
              total_amount: total,
              status: 'pending',
-             shipping_address: 'Default Address' // In real app, ask for address
+             shipping_address: 'Pending Consultation' 
          }).select().single();
          
          if (order && !orderError) {
-             // Move items to order_items
              const orderItems = cartItems.map(item => ({
                  order_id: order.id,
                  product_id: item.product_id,
@@ -59,9 +54,9 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                  price_at_purchase: item.product.price
              }));
              await supabase.from('order_items').insert(orderItems);
-             // Clear cart
              await supabase.from('cart_items').delete().eq('user_id', user.id);
              refreshCart();
+             alert(language === 'ro' ? 'Cererea a fost trimisă! Vă vom contacta.' : 'Request sent! We will contact you shortly.');
              onClose();
          }
      }
@@ -70,60 +65,60 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
 
   return (
     <>
-      {/* Backdrop */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity" 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity" 
           onClick={onClose}
         />
       )}
 
-      {/* Drawer */}
-      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-950 shadow-2xl z-50 transform transition-transform duration-500 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800">
-            <h2 className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
-              <Icons.ShoppingBag className="w-5 h-5 text-brand-600" />
-              {t.title[language]} <span className="text-sm font-normal text-gray-500">({cartItems.length} {t.items[language]})</span>
-            </h2>
-            <button onClick={onClose} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-500">
-              <Icons.X className="w-5 h-5" />
+          <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-white dark:bg-gray-950">
+            <div>
+                <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white font-sans">
+                {t.title[language]}
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{cartItems.length} {t.items[language]} selected</p>
+            </div>
+            <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-500">
+              <Icons.X className="w-6 h-6" />
             </button>
           </div>
 
-          {/* Items */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-4">
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50 dark:bg-gray-900/50">
             {cartItems.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-gray-400 space-y-4">
-                <Icons.ShoppingBag className="w-16 h-16 opacity-20" />
-                <p>{t.empty[language]}</p>
+                <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                    <Icons.ClipboardList className="w-10 h-10 opacity-30" />
+                </div>
+                <p className="font-medium">{t.empty[language]}</p>
               </div>
             ) : (
               cartItems.map((item) => (
-                <div key={item.id} className="flex gap-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-3 rounded-xl shadow-sm">
-                  <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                    <img src={item.product.image} alt="Product" className="w-full h-full object-cover" />
+                <div key={item.id} className="flex gap-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden shrink-0">
+                    <img src={item.product.image} alt="Service" className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="font-bold text-gray-900 dark:text-white text-sm line-clamp-1">
+                      <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-1">
                         {language === 'en' ? item.product.name_en : item.product.name_ro}
                       </h3>
-                      <p className="text-brand-600 font-bold text-sm">{item.product.price} RON</p>
+                      <p className="text-brand-600 font-bold text-sm mt-1">{item.product.price} RON <span className="text-gray-400 font-normal text-xs">/ unit (est)</span></p>
                     </div>
                     
-                    <div className="flex items-center justify-between mt-2">
-                       <div className="flex items-center gap-3 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                    <div className="flex items-center justify-between mt-3">
+                       <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
                           <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded shadow-sm transition-all disabled:opacity-50" disabled={loading}>
                             <Icons.Minus className="w-3 h-3" />
                           </button>
-                          <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
+                          <span className="text-xs font-bold w-6 text-center">{item.quantity}</span>
                           <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded shadow-sm transition-all disabled:opacity-50" disabled={loading}>
                             <Icons.Plus className="w-3 h-3" />
                           </button>
                        </div>
-                       <button onClick={() => updateQuantity(item.id, 0)} className="text-red-400 hover:text-red-600 p-1">
+                       <button onClick={() => updateQuantity(item.id, 0)} className="text-red-400 hover:text-red-600 p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
                          <Icons.Trash className="w-4 h-4" />
                        </button>
                     </div>
@@ -133,21 +128,23 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
             )}
           </div>
 
-          {/* Footer */}
           {cartItems.length > 0 && (
-            <div className="p-5 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
-               <div className="flex justify-between items-center mb-4">
-                 <span className="text-gray-500 dark:text-gray-400">{t.total[language]}</span>
-                 <span className="text-2xl font-bold text-gray-900 dark:text-white">{total.toFixed(2)} RON</span>
+            <div className="p-6 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
+               <div className="flex justify-between items-center mb-6">
+                 <span className="text-gray-500 dark:text-gray-400 font-medium">{t.total[language]}</span>
+                 <span className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{total.toFixed(2)} <span className="text-lg">RON</span></span>
                </div>
                <button 
                 onClick={handleCheckout}
                 disabled={loading}
-                className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-500/30 transition-all active:scale-95 flex items-center justify-center gap-2 text-lg"
                >
                  {loading ? "Processing..." : t.checkout[language]}
-                 <Icons.ChevronRight className="w-4 h-4" />
+                 <Icons.ArrowRight className="w-5 h-5" />
                </button>
+               <p className="text-xs text-center mt-3 text-gray-400">
+                  {language === 'ro' ? 'Prețul final poate varia în funcție de inspecție.' : 'Final price may vary upon inspection.'}
+               </p>
             </div>
           )}
         </div>

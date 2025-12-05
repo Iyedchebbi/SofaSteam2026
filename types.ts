@@ -1,6 +1,6 @@
 export type Language = 'en' | 'ro';
 
-export type ProductCategory = 'all' | 'solutions' | 'equipment' | 'accessories';
+export type ProductCategory = 'all' | 'upholstery' | 'carpet' | 'auto' | 'general';
 
 export interface Product {
   id: number;

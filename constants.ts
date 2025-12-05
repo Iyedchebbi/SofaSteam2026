@@ -1,7 +1,6 @@
 import { NavItem } from './types';
 
 export const APP_NAME = "SofaSteam";
-export const OWNER_NAME = "Med Amine Damdoum";
 export const ADDRESS = "Bulevardul Iuliu Maniu 71, Bucharest";
 export const PHONE = "+40745275324";
 export const CONTACT_EMAIL = "contact@sofasteam.com";
@@ -11,119 +10,124 @@ export const HERO_BG_URL = "https://drive.google.com/thumbnail?id=1xxtR5hULJbnG6
 
 export const NAV_ITEMS: NavItem[] = [
   { id: 'home', label: { en: 'Home', ro: 'Acasă' }, href: '#home' },
-  { id: 'about', label: { en: 'About', ro: 'Despre' }, href: '#about' },
-  { id: 'products', label: { en: 'Products', ro: 'Produse' }, href: '#products' },
+  { id: 'services', label: { en: 'Services', ro: 'Servicii' }, href: '#services' },
+  { id: 'about', label: { en: 'Why Us', ro: 'De Ce Noi' }, href: '#about' },
   { id: 'contact', label: { en: 'Contact', ro: 'Contact' }, href: '#contact' },
 ];
 
 export const CONTENT = {
   hero: {
-    title: { en: "Revitalize Your Home", ro: "Revitalizează-ți Casa" },
-    subtitle: { en: "Professional cleaning solutions right at your doorstep in Bucharest.", ro: "Soluții profesionale de curățenie chiar la ușa ta în București." },
-    cta: { en: "Shop Now", ro: "Cumpără Acum" }
+    title: { en: "Experience True Cleanliness", ro: "Experimentează Curățenia Adevărată" },
+    subtitle: { en: "Premium upholstery and cleaning services for a healthier, luxurious home in Bucharest.", ro: "Servicii premium de curățare a tapițeriei pentru o casă mai sănătoasă și luxoasă în București." },
+    cta: { en: "Book a Service", ro: "Rezervă un Serviciu" }
   },
   about: {
-    title: { en: "About Us", ro: "Despre Noi" },
+    title: { en: "Excellence in Every Detail", ro: "Excelență în Fiecare Detaliu" },
     text: { 
-      en: `Founded by ${OWNER_NAME} in the heart of Bucharest, SofaSteam is dedicated to bringing professional cleanliness to every Romanian home.`,
-      ro: `Fondată de ${OWNER_NAME} în inima Bucureștiului, SofaSteam este dedicată aducerii curățeniei profesionale în fiecare casă din România.`
+      en: `SofaSteam is Bucharest's premier cleaning service, dedicated to transforming living spaces through advanced technology and expert care.`,
+      ro: `SofaSteam este serviciul de curățenie premier din București, dedicat transformării spațiilor de locuit prin tehnologie avansată și îngrijire expertă.`
     },
     qualityText: {
-      en: "We provide premium cleaning solutions that rejuvenate fabrics and remove tough stains while preserving texture. Our eco-friendly, expert-approved products ensure a fresh, hygienic home environment for your family without compromising on safety or quality.",
-      ro: "Oferim soluții premium de curățare care revigorează țesăturile și elimină petele dificile, păstrând textura intactă. Produsele noastre ecologice, aprobate de experți, asigură un mediu curat și igienic pentru familia ta, fără a compromite siguranța sau calitatea."
+      en: "We don't just clean; we revitalize. Using industrial-grade steam technology and eco-friendly solutions, we eliminate 99.9% of bacteria and allergens while restoring the beauty of your fabrics. Your health and satisfaction are our absolute priorities.",
+      ro: "Nu doar curățăm; revitalizăm. Folosind tehnologie cu abur de grad industrial și soluții ecologice, eliminăm 99,9% din bacterii și alergeni, restabilind în același timp frumusețea țesăturilor tale. Sănătatea și satisfacția ta sunt prioritățile noastre absolute."
     },
     steps: [
       {
         icon: 'ClipboardList',
-        title: { en: "Order Online", ro: "Comandă Online" },
-        desc: { en: "Select your favorite products.", ro: "Alege produsele preferate." }
+        title: { en: "Select Service", ro: "Alege Serviciul" },
+        desc: { en: "Choose from our premium cleaning packages.", ro: "Alege din pachetele noastre premium." }
       },
       {
-        icon: 'Package',
-        title: { en: "Fast Processing", ro: "Procesare Rapidă" },
-        desc: { en: "We pack your order with care.", ro: "Împachetăm comanda cu grijă." }
+        icon: 'Clock',
+        title: { en: "Schedule", ro: "Programează" },
+        desc: { en: "Pick a time that works perfectly for you.", ro: "Alege o oră perfectă pentru tine." }
       },
       {
-        icon: 'Truck',
-        title: { en: "Quick Delivery", ro: "Livrare Rapidă" },
-        desc: { en: "Direct to your door in 24-48h.", ro: "La ușa ta în 24-48h." }
+        icon: 'Sparkles',
+        title: { en: "We Revitalize", ro: "Noi Revitalizăm" },
+        desc: { en: "Our experts restore your furniture to like-new condition.", ro: "Experții noștri îți restaurează mobilierul." }
       }
     ]
   },
   assistant: {
-    title: { en: "Ask Our Cleaning Expert", ro: "Întreabă Expertul Nostru" },
-    subtitle: { en: "Powered by AI & Google Search", ro: "Alimentat de AI și Google Search" },
-    placeholder: { en: "How do I remove wine stains?", ro: "Cum scot petele de vin?" },
-    disclaimer: { en: "AI can make mistakes. Please verify important information.", ro: "AI-ul poate face greșeli. Vă rugăm să verificați informațiile importante." }
+    title: { en: "AI Cleaning Consultant", ro: "Consultant AI Curățenie" },
+    subtitle: { en: "Ask about stains, fabrics, or our process", ro: "Întreabă despre pete, țesături sau procesul nostru" },
+    placeholder: { en: "Is steam cleaning safe for velvet?", ro: "Este curățarea cu abur sigură pentru catifea?" },
+    disclaimer: { en: "SofaSteam AI Assistant. Verify critical info.", ro: "Asistent AI SofaSteam. Verifică informațiile critice." }
   },
   contact: {
-    title: { en: "Contact Us", ro: "Contactează-ne" },
-    subtitle: { en: "Get in touch for appointments, orders, or inquiries.", ro: "Contactează-ne pentru programări, comenzi sau întrebări." },
+    title: { en: "Get in Touch", ro: "Contactează-ne" },
+    subtitle: { en: "Ready to transform your home? Contact us for a personalized quote or appointment.", ro: "Gata să îți transformi casa? Contactează-ne pentru o ofertă personalizată." },
     nameLabel: { en: "Your Name", ro: "Numele Tău" },
     emailLabel: { en: "Email Address", ro: "Adresa de Email" },
-    messageLabel: { en: "Message", ro: "Mesaj" },
-    sendButton: { en: "Send Message", ro: "Trimite Mesaj" },
-    successMessage: { en: "Message sent successfully!", ro: "Mesajul a fost trimis cu succes!" }
+    messageLabel: { en: "How can we help?", ro: "Cum te putem ajuta?" },
+    sendButton: { en: "Send Request", ro: "Trimite Cerere" },
+    successMessage: { en: "Request sent! We will contact you shortly.", ro: "Cerere trimisă! Te vom contacta în curând." }
   },
   footer: {
-    quickLinks: { en: "Quick Links", ro: "Link-uri Rapide" },
-    followUs: { en: "Follow Us", ro: "Urmărește-ne" },
-    contact: { en: "Contact", ro: "Contact" },
-    newsletter: { en: "Newsletter", ro: "Buletin Informativ" },
-    subscribe: { en: "Subscribe", ro: "Abonare" },
-    rights: { en: "© 2025 SofaSteam. All rights reserved.", ro: "© 2025 SofaSteam. Toate drepturile rezervate." }
+    quickLinks: { en: "Navigation", ro: "Navigare" },
+    followUs: { en: "Connect", ro: "Conectare" },
+    contact: { en: "Contact Info", ro: "Info Contact" },
+    newsletter: { en: "Stay Updated", ro: "Rămâi Informat" },
+    subscribe: { en: "Join", ro: "Alătură-te" },
+    rights: { en: "© 2025 SofaSteam. Premium Cleaning Services.", ro: "© 2025 SofaSteam. Servicii Premium de Curățenie." }
   },
   auth: {
-    signIn: { en: "Sign In", ro: "Conectare" },
-    signUp: { en: "Sign Up", ro: "Înregistrare" },
-    signOut: { en: "Sign Out", ro: "Deconectare" },
-    welcome: { en: "Welcome", ro: "Bun venit" },
-    email: { en: "Email Address", ro: "Adresă de Email" },
+    signIn: { en: "Client Access", ro: "Acces Client" },
+    signUp: { en: "New Client", ro: "Client Nou" },
+    signOut: { en: "Log Out", ro: "Deconectare" },
+    welcome: { en: "Hello", ro: "Salut" },
+    email: { en: "Email", ro: "Email" },
     password: { en: "Password", ro: "Parolă" },
     name: { en: "Full Name", ro: "Nume Complet" },
-    submit: { en: "Submit", ro: "Trimite" },
+    submit: { en: "Continue", ro: "Continuă" },
     cancel: { en: "Cancel", ro: "Anulează" },
     google: { en: "Continue with Google", ro: "Continuă cu Google" },
-    haveAccount: { en: "Already have an account?", ro: "Ai deja cont?" },
-    noAccount: { en: "Don't have an account?", ro: "Nu ai cont?" },
-    signInLink: { en: "Sign In", ro: "Conectează-te" },
-    signUpLink: { en: "Sign Up", ro: "Înregistrează-te" }
+    haveAccount: { en: "Already a client?", ro: "Ești deja client?" },
+    noAccount: { en: "New to SofaSteam?", ro: "Nou la SofaSteam?" },
+    signInLink: { en: "Login here", ro: "Intră în cont" },
+    signUpLink: { en: "Register now", ro: "Înregistrează-te" }
   },
   cart: {
-    title: { en: "Your Cart", ro: "Coșul Tău" },
-    empty: { en: "Your cart is empty", ro: "Coșul tău este gol" },
-    total: { en: "Total", ro: "Total" },
-    checkout: { en: "Checkout", ro: "Finalizează Comanda" },
-    addSuccess: { en: "added to cart!", ro: "adăugat în coș!" },
-    loginRequired: { en: "Please log in to add items to cart.", ro: "Vă rugăm să vă conectați pentru a adăuga produse în coș." },
-    items: { en: "items", ro: "produse" }
+    title: { en: "Your Booking List", ro: "Lista Ta de Rezervări" },
+    empty: { en: "No services selected yet", ro: "Niciun serviciu selectat" },
+    total: { en: "Estimated Total", ro: "Total Estimat" },
+    checkout: { en: "Request Quote / Book", ro: "Cere Ofertă / Rezervă" },
+    addSuccess: { en: "added to list!", ro: "adăugat la listă!" },
+    loginRequired: { en: "Please log in to manage your bookings.", ro: "Conectează-te pentru a gestiona rezervările." },
+    items: { en: "services", ro: "servicii" }
   },
   profile: {
-    title: { en: "My Profile", ro: "Profilul Meu" },
-    save: { en: "Save Changes", ro: "Salvează Modificări" },
+    title: { en: "Client Profile", ro: "Profil Client" },
+    save: { en: "Update Profile", ro: "Actualizare Profil" },
     phone: { en: "Phone Number", ro: "Număr de Telefon" },
-    avatar: { en: "Avatar", ro: "Poză Profil" },
+    avatar: { en: "Profile Photo", ro: "Poză Profil" },
     fullName: { en: "Full Name", ro: "Nume Complet" },
-    upload: { en: "Upload Photo", ro: "Încarcă Poză" },
+    upload: { en: "Change Photo", ro: "Schimbă Poza" },
     uploading: { en: "Uploading...", ro: "Se încarcă..." }
   },
   categories: {
-    all: { en: "All", ro: "Toate" },
-    solutions: { en: "Cleaning Solutions", ro: "Soluții Curățare" },
-    equipment: { en: "Machines & Equipment", ro: "Echipamente" },
+    all: { en: "All Services", ro: "Toate Serviciile" },
+    upholstery: { en: "Upholstery", ro: "Tapițerie" },
+    carpet: { en: "Carpets & Rugs", ro: "Covoare & Mochete" },
+    auto: { en: "Auto Detailing", ro: "Detailing Auto" },
+    general: { en: "Specialized Cleaning", ro: "Curățare Specializată" },
+    // Keeping old keys for backward compatibility if needed, but UI uses above
+    solutions: { en: "Solutions", ro: "Soluții" },
+    equipment: { en: "Equipment", ro: "Echipamente" },
     accessories: { en: "Accessories", ro: "Accesorii" }
   },
   admin: {
-    dashboard: { en: "Admin Dashboard", ro: "Panou Administrator" },
-    products: { en: "Products", ro: "Produse" },
-    orders: { en: "Orders", ro: "Comenzi" },
-    addProduct: { en: "Add Product", ro: "Adaugă Produs" },
-    editProduct: { en: "Edit Product", ro: "Editează Produs" },
-    deleteProduct: { en: "Delete", ro: "Șterge" },
-    confirmDelete: { en: "Are you sure you want to delete this product?", ro: "Sigur doriți să ștergeți acest produs?" },
-    save: { en: "Save Product", ro: "Salvează Produs" },
-    manage: { en: "Manage Products", ro: "Gestionează Produse" },
-    imageUpload: { en: "Product Image", ro: "Imagine Produs" },
-    selectImage: { en: "Select Image", ro: "Alege Imagine" }
+    dashboard: { en: "Service Management", ro: "Management Servicii" },
+    products: { en: "Services", ro: "Servicii" },
+    orders: { en: "Bookings", ro: "Rezervări" },
+    addProduct: { en: "Add New Service", ro: "Adaugă Serviciu Nou" },
+    editProduct: { en: "Edit Service", ro: "Editează Serviciu" },
+    deleteProduct: { en: "Remove", ro: "Șterge" },
+    confirmDelete: { en: "Delete this service offering?", ro: "Ștergeți acest serviciu?" },
+    save: { en: "Save Service", ro: "Salvează Serviciu" },
+    manage: { en: "Manage Services", ro: "Gestionează Servicii" },
+    imageUpload: { en: "Service Image", ro: "Imagine Serviciu" },
+    selectImage: { en: "Upload Image", ro: "Încarcă Imagine" }
   }
 };

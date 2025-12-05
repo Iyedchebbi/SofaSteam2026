@@ -9,17 +9,7 @@ ALWAYS use the 'googleSearch' tool to find the most up-to-date and accurate info
 When you use information from search, the grounding chunks will be automatically handled by the UI, so just incorporate the facts naturally.`;
 
 // Initialize Gemini client safely
-// Checks if process is defined to avoid "process is not defined" error in browser environments
-const getApiKey = () => {
-  // First check environment variable
-  if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-    return process.env.API_KEY;
-  }
-  // Fallback to provided key
-  return 'AIzaSyArl9Hwq6KQKGjYgv_zInD2Oyi_7apxp2E';
-};
-
-const ai = new GoogleGenAI({ apiKey: getApiKey() });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const generateCleaningAdvice = async (
   prompt: string,
