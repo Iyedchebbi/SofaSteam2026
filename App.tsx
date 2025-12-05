@@ -42,7 +42,7 @@ const App: React.FC = () => {
     }
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -163,9 +163,22 @@ const App: React.FC = () => {
     e.preventDefault();
     const element = document.getElementById(targetId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
     setIsMenuOpen(false);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (isAdmin) {
@@ -185,70 +198,73 @@ const App: React.FC = () => {
   const categories: ProductCategory[] = ['all', 'upholstery', 'carpet', 'auto', 'general'];
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-950 overflow-x-hidden">
+    <div className="min-h-screen flex flex-col font-sans text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-950 overflow-x-hidden selection:bg-brand-500 selection:text-white">
       
       {/* Navbar */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass-nav shadow-lg py-3' : 'bg-transparent py-6'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-nav shadow-lg py-3 border-b border-gray-200/50 dark:border-gray-800/50' : 'bg-transparent py-8'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           
           {/* Logo */}
           <a href="#home" onClick={(e) => handleNavClick(e, 'home')} className="flex items-center gap-3 group">
-            <div className="w-12 h-12 overflow-hidden rounded-xl shadow-2xl ring-2 ring-white/20 group-hover:ring-brand-500 transition-all duration-500">
-              <img src={LOGO_URL} alt={APP_NAME} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform" />
+            <div className="w-12 h-12 overflow-hidden rounded-xl shadow-2xl ring-2 ring-white/20 group-hover:ring-brand-500 transition-all duration-500 relative">
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+              <img src={LOGO_URL} alt={APP_NAME} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
             </div>
-            <span className={`text-2xl font-extrabold tracking-tight ${scrolled ? 'text-gray-900 dark:text-white' : 'text-white'}`}>
-              {APP_NAME}
-            </span>
+            <div className="flex flex-col">
+              <span className={`text-2xl font-extrabold tracking-tight leading-none ${scrolled ? 'text-gray-900 dark:text-white' : 'text-white'}`}>
+                {APP_NAME}
+              </span>
+              <span className={`text-[10px] tracking-[0.2em] uppercase font-bold ${scrolled ? 'text-brand-600' : 'text-brand-300'}`}>Premium Cleaning</span>
+            </div>
           </a>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8 bg-white/10 backdrop-blur-md px-8 py-3 rounded-full border border-white/10 shadow-xl">
+          <div className="hidden lg:flex items-center gap-1 bg-white/5 backdrop-blur-md px-2 py-1.5 rounded-full border border-white/10 shadow-2xl">
              {NAV_ITEMS.map(item => (
                 <a 
                   key={item.id} 
                   href={item.href} 
                   onClick={(e) => handleNavClick(e, item.id)}
-                  className={`text-sm font-semibold tracking-wide transition-colors relative group ${scrolled ? 'text-gray-700 dark:text-gray-300 hover:text-brand-500' : 'text-white/90 hover:text-white'}`}
+                  className={`px-5 py-2.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 relative group overflow-hidden ${scrolled ? 'text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-white hover:bg-white dark:hover:bg-gray-800' : 'text-white hover:bg-white/10'}`}
                 >
-                  {item.label[language]}
-                  <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-brand-500 group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
+                  <span className="relative z-10">{item.label[language]}</span>
                 </a>
              ))}
           </div>
 
           {/* Right Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <button onClick={toggleLanguage} className={`font-bold text-xs uppercase px-3 py-1.5 rounded-lg transition-all ${scrolled ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white' : 'bg-white/20 text-white hover:bg-white/30'}`}>
+            <button onClick={toggleLanguage} className={`font-bold text-xs uppercase px-3 py-1.5 rounded-lg transition-all border ${scrolled ? 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white' : 'bg-white/10 border-white/20 text-white hover:bg-white/20'}`}>
               {language}
             </button>
-            <button onClick={toggleTheme} className={`p-2 rounded-full transition-all ${scrolled ? 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' : 'text-white hover:bg-white/20'}`}>
-              {theme === 'light' ? <Icons.Moon size={20} /> : <Icons.Sun size={20} />}
+            <button onClick={toggleTheme} className={`p-2.5 rounded-full transition-all ${scrolled ? 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' : 'text-white hover:bg-white/20'}`}>
+              {theme === 'light' ? <Icons.Moon size={18} /> : <Icons.Sun size={18} />}
             </button>
             
             {user ? (
-              <div className="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700/50">
                   <button onClick={() => setIsCartOpen(true)} className="relative group">
-                     <div className={`p-2.5 rounded-full transition-all ${scrolled ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600' : 'bg-white text-brand-600'}`}>
+                     <div className={`p-2.5 rounded-full transition-all ${scrolled ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 border border-brand-100 dark:border-brand-900' : 'bg-white/90 text-brand-700'}`}>
                         <Icons.ClipboardList size={20} />
                      </div>
-                     {cartItems.length > 0 && <span className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full shadow-lg">{cartItems.reduce((acc, item) => acc + item.quantity, 0)}</span>}
+                     {cartItems.length > 0 && <span className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full shadow-lg ring-2 ring-white dark:ring-gray-900 transform group-hover:scale-110 transition-transform">{cartItems.reduce((acc, item) => acc + item.quantity, 0)}</span>}
                   </button>
-                  <button onClick={() => setIsProfileOpen(true)} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/50 shadow-lg hover:border-brand-500 transition-all">
+                  <button onClick={() => setIsProfileOpen(true)} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/50 shadow-lg hover:border-brand-500 transition-all ring-2 ring-transparent hover:ring-brand-200">
                       {userProfile?.avatar_url ? (
                         <img src={userProfile.avatar_url} className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full bg-brand-600 flex items-center justify-center text-white font-bold">{user.email[0].toUpperCase()}</div>
+                        <div className="w-full h-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white font-bold">{user.email[0].toUpperCase()}</div>
                       )}
                   </button>
               </div>
             ) : (
-              <button onClick={() => setAuthModal({ isOpen: true, type: 'signin' })} className="bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-brand-500/30 transition-all hover:translate-y-0.5 active:translate-y-0 text-sm">
+              <button onClick={() => setAuthModal({ isOpen: true, type: 'signin' })} className="bg-white text-brand-900 hover:bg-brand-50 px-6 py-2.5 rounded-full font-bold shadow-lg shadow-black/5 transition-all hover:translate-y-[-1px] hover:shadow-xl text-sm border border-transparent">
                  {CONTENT.auth.signIn[language]}
               </button>
             )}
           </div>
           
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden p-2 ${scrolled ? 'text-gray-900 dark:text-white' : 'text-white'}`}>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden p-2 rounded-lg ${scrolled ? 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800' : 'text-white hover:bg-white/20'}`}>
              {isMenuOpen ? <Icons.X /> : <Icons.Menu />}
           </button>
         </div>
@@ -264,89 +280,75 @@ const App: React.FC = () => {
               className="w-full h-full object-cover animate-pulse-slow scale-105"
               style={{ objectPosition: '50% 85%' }} 
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/30"></div>
-            <div className="absolute inset-0 bg-brand-900/20 mix-blend-overlay"></div>
+            {/* Multi-layered gradient for depth */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900/90"></div>
+            <div className="absolute inset-0 bg-brand-900/20 mix-blend-color-dodge"></div>
          </div>
 
          <div className="container mx-auto px-6 relative z-10 pt-20 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6 animate-fade-in-up">
-               <Icons.Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-               <span>#1 Premium Cleaning Service in Bucharest</span>
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white shadow-2xl mb-8 animate-fade-in-up hover:bg-white/10 transition-colors cursor-default">
+               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+               <span className="text-sm font-semibold tracking-wide">#1 Premium Cleaning Service in Bucharest</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-8 leading-[1.1] drop-shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            <h1 className="text-6xl md:text-7xl lg:text-9xl font-extrabold text-white tracking-tighter mb-8 leading-[1.05] drop-shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               {language === 'en' ? 'Revive Your' : 'Revitalizează'} <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-white to-brand-300">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-white to-brand-400 relative z-10">
                 {language === 'en' ? 'Living Space' : 'Spațiul Tău'}
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto mb-12 leading-relaxed font-light animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed font-light animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               {CONTENT.hero.subtitle[language]}
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-               <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="group relative px-8 py-4 bg-white text-brand-900 font-bold text-lg rounded-full overflow-hidden transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.5)]">
+               <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="group relative px-9 py-4 bg-white text-brand-950 font-bold text-lg rounded-full overflow-hidden transition-all hover:shadow-[0_0_50px_-12px_rgba(255,255,255,0.6)] hover:scale-105">
                   <span className="relative z-10 flex items-center gap-2">
                     {CONTENT.hero.cta[language]} <Icons.ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
-                  <div className="absolute inset-0 bg-brand-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
                </a>
-               <button onClick={() => setIsChatOpen(true)} className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-lg rounded-full hover:bg-white/20 transition-all flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+               <button onClick={() => setIsChatOpen(true)} className="px-9 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white font-bold text-lg rounded-full hover:bg-white/10 transition-all flex items-center gap-3 hover:border-white/30">
+                  <Icons.Sparkles className="w-5 h-5 text-brand-300" />
                   {CONTENT.assistant.title[language]}
                </button>
             </div>
          </div>
 
-         {/* Trust Bar */}
-         <div className="absolute bottom-0 left-0 right-0 bg-white/5 backdrop-blur-lg border-t border-white/10 py-6 hidden md:block">
-            <div className="container mx-auto px-6 flex justify-between items-center text-white/80">
-               <div className="flex items-center gap-3">
-                  <Icons.ShieldCheck className="w-8 h-8 text-brand-400" />
-                  <div className="text-left">
-                     <p className="font-bold text-white text-sm">100% Satisfaction</p>
-                     <p className="text-xs">Or free re-cleaning</p>
-                  </div>
-               </div>
-               <div className="flex items-center gap-3">
-                  <Icons.User className="w-8 h-8 text-brand-400" />
-                  <div className="text-left">
-                     <p className="font-bold text-white text-sm">500+ Clients</p>
-                     <p className="text-xs">Trusted in Bucharest</p>
-                  </div>
-               </div>
-               <div className="flex items-center gap-3">
-                  <Icons.Clock className="w-8 h-8 text-brand-400" />
-                  <div className="text-left">
-                     <p className="font-bold text-white text-sm">Fast Booking</p>
-                     <p className="text-xs">24/48h Turnaround</p>
-                  </div>
-               </div>
+         {/* Scroll Indicator */}
+         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-in-up" style={{ animationDelay: '1s' }}>
+            <div className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center p-1.5">
+               <div className="w-1.5 h-1.5 bg-white rounded-full animate-scroll"></div>
             </div>
+            <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Scroll</span>
          </div>
       </section>
 
-      {/* Services Grid (Formerly Products) */}
-      <section id="services" className="py-24 bg-gray-50 dark:bg-gray-900 relative">
-         <div className="container mx-auto px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-               <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-sm mb-3">Our Expertise</h2>
-               <h3 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">Premium Services</h3>
-               <p className="text-gray-600 dark:text-gray-400 text-lg">Select a service to request a personalized quote. We bring industrial-grade cleaning directly to your location.</p>
+      {/* Services Grid */}
+      <section id="services" className="py-32 bg-gray-50 dark:bg-gray-950 relative overflow-hidden">
+         {/* Background Decoration */}
+         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+         
+         <div className="container mx-auto px-6 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-20">
+               <h2 className="text-brand-600 dark:text-brand-400 font-extrabold uppercase tracking-widest text-sm mb-4">Our Expertise</h2>
+               <h3 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-6">Premium Services</h3>
+               <p className="text-gray-600 dark:text-gray-400 text-xl font-light">Select a service to request a personalized quote. We bring industrial-grade cleaning directly to your location.</p>
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex flex-wrap justify-center gap-3 mb-16">
-               {categories.map(cat => (
-                  <button 
-                    key={cat} 
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${activeCategory === cat ? 'bg-brand-600 text-white shadow-lg shadow-brand-500/25 scale-105' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
-                  >
-                    {CONTENT.categories[cat][language]}
-                  </button>
-               ))}
+            {/* Filter Pills - Modern Segmented Control */}
+            <div className="flex justify-center mb-16">
+               <div className="inline-flex flex-wrap justify-center gap-2 bg-white dark:bg-gray-900 p-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-800">
+                  {categories.map(cat => (
+                     <button 
+                       key={cat} 
+                       onClick={() => setActiveCategory(cat)}
+                       className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 ${activeCategory === cat ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-lg scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                     >
+                       {CONTENT.categories[cat][language]}
+                     </button>
+                  ))}
+               </div>
             </div>
 
             {/* Service Cards */}
@@ -355,30 +357,31 @@ const App: React.FC = () => {
             ) : (
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredProducts.map((product) => (
-                     <div key={product.id} className="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700/50 hover:-translate-y-2">
-                        <div className="relative h-72 overflow-hidden">
-                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                           <img src={product.image} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" alt={product.name_en} />
-                           <div className="absolute bottom-4 left-4 z-20">
-                              <span className="bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-2 inline-block">
+                     <div key={product.id} className="group bg-white dark:bg-gray-900 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-800 hover:-translate-y-2">
+                        <div className="relative h-80 overflow-hidden">
+                           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent z-10 opacity-60"></div>
+                           <img src={product.image} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" alt={product.name_en} />
+                           
+                           {/* Floating Price Tag */}
+                           <div className="absolute top-6 right-6 z-20 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg">
+                              Starting {product.price} RON
+                           </div>
+
+                           <div className="absolute bottom-6 left-6 z-20">
+                              <span className="text-brand-300 text-xs font-bold uppercase tracking-wider mb-2 block">
                                  {CONTENT.categories[product.category as ProductCategory]?.[language] || product.category}
                               </span>
-                              <h4 className="text-white font-bold text-xl">{language === 'en' ? product.name_en : product.name_ro}</h4>
+                              <h4 className="text-white font-bold text-2xl group-hover:text-brand-200 transition-colors">{language === 'en' ? product.name_en : product.name_ro}</h4>
                            </div>
                         </div>
-                        <div className="p-6">
-                           <p className="text-gray-600 dark:text-gray-400 mb-6 text-sm leading-relaxed line-clamp-3">
+                        <div className="p-8">
+                           <p className="text-gray-600 dark:text-gray-400 mb-8 text-base leading-relaxed line-clamp-3">
                               {language === 'en' ? product.description_en : product.description_ro}
                            </p>
-                           <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
-                              <div>
-                                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">Starting from</p>
-                                 <p className="text-xl font-bold text-brand-600">{product.price} RON</p>
-                              </div>
-                              <button onClick={() => handleAddToCart(product)} className="w-12 h-12 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
-                                 <Icons.Plus className="w-6 h-6" />
-                              </button>
-                           </div>
+                           <button onClick={() => handleAddToCart(product)} className="w-full py-4 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white font-bold hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all flex items-center justify-center gap-2 group/btn">
+                              {language === 'en' ? 'Add to Request' : 'Adaugă la Cerere'}
+                              <Icons.ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                           </button>
                         </div>
                      </div>
                   ))}
@@ -388,49 +391,49 @@ const App: React.FC = () => {
       </section>
 
       {/* Process / About Section */}
-      <section id="about" className="py-24 bg-white dark:bg-gray-950 overflow-hidden">
+      <section id="about" className="py-32 bg-white dark:bg-gray-900 overflow-hidden">
          <div className="container mx-auto px-6">
-            <div className="flex flex-col lg:flex-row gap-16 items-center">
+            <div className="flex flex-col lg:flex-row gap-20 items-center">
                <div className="lg:w-1/2 relative">
-                  <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-gray-800">
-                     <img src="https://images.unsplash.com/photo-1581578731117-10d52143b1e8?q=80&w=2070" alt="Process" className="w-full object-cover" />
+                  <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl">
+                     <img src="https://images.unsplash.com/photo-1581578731117-10d52143b1e8?q=80&w=2070" alt="Process" className="w-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
                      {/* Floating Badge */}
-                     <div className="absolute bottom-8 right-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl max-w-xs animate-float">
-                        <div className="flex gap-4">
-                           <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center shrink-0">
-                              <Icons.CheckCircle className="w-6 h-6" />
+                     <div className="absolute bottom-10 right-10 bg-white dark:bg-gray-800/90 backdrop-blur-xl p-6 rounded-2xl shadow-2xl max-w-xs animate-float border border-gray-100 dark:border-gray-700">
+                        <div className="flex gap-4 items-center">
+                           <div className="w-14 h-14 bg-green-50 text-green-600 rounded-full flex items-center justify-center shrink-0">
+                              <Icons.ShieldCheck className="w-7 h-7" />
                            </div>
                            <div>
-                              <p className="font-bold text-gray-900 dark:text-white">Eco-Friendly</p>
-                              <p className="text-xs text-gray-500 mt-1">Safe for kids & pets. Non-toxic solutions.</p>
+                              <p className="font-bold text-gray-900 dark:text-white text-lg">Eco-Friendly</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Safe for kids & pets. <br/>Non-toxic solutions.</p>
                            </div>
                         </div>
                      </div>
                   </div>
                   {/* Decorative Elements */}
-                  <div className="absolute -top-10 -left-10 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl"></div>
-                  <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+                  <div className="absolute -top-10 -left-10 w-72 h-72 bg-brand-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-normal"></div>
+                  <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-normal"></div>
                </div>
 
                <div className="lg:w-1/2">
-                  <h2 className="text-brand-600 font-bold uppercase tracking-widest text-sm mb-3">Why Choose SofaSteam</h2>
-                  <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">{CONTENT.about.title[language]}</h3>
-                  <div className="space-y-6 text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-10">
+                  <h2 className="text-brand-600 dark:text-brand-400 font-extrabold uppercase tracking-widest text-sm mb-4">Why Choose SofaSteam</h2>
+                  <h3 className="text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-8 leading-tight">{CONTENT.about.title[language]}</h3>
+                  <div className="space-y-6 text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-12 font-light">
                      <p>{CONTENT.about.text[language]}</p>
-                     <p className="font-medium text-gray-800 dark:text-gray-200">{CONTENT.about.qualityText[language]}</p>
+                     <p className="font-medium text-gray-900 dark:text-white border-l-4 border-brand-500 pl-6">{CONTENT.about.qualityText[language]}</p>
                   </div>
 
-                  <div className="grid gap-6">
+                  <div className="grid gap-4">
                      {CONTENT.about.steps.map((step, idx) => {
                         const Icon = Icons[step.icon as keyof typeof Icons] || Icons.Star;
                         return (
-                           <div key={idx} className="flex gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors cursor-default group">
-                              <div className="w-14 h-14 bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                                 <Icon className="w-7 h-7" />
+                           <div key={idx} className="flex gap-6 p-6 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-default group border border-transparent hover:border-gray-100 dark:hover:border-gray-800">
+                              <div className="w-16 h-16 bg-white dark:bg-gray-800 shadow-lg text-brand-600 dark:text-brand-400 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform border border-gray-100 dark:border-gray-700">
+                                 <Icon className="w-8 h-8" />
                               </div>
                               <div>
-                                 <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-1">{step.title[language]}</h4>
-                                 <p className="text-sm text-gray-500 dark:text-gray-400">{step.desc[language]}</p>
+                                 <h4 className="font-bold text-xl text-gray-900 dark:text-white mb-2">{step.title[language]}</h4>
+                                 <p className="text-gray-500 dark:text-gray-400 leading-relaxed">{step.desc[language]}</p>
                               </div>
                            </div>
                         )
@@ -442,69 +445,74 @@ const App: React.FC = () => {
       </section>
 
       {/* Contact Section - Modernized */}
-      <section id="contact" className="py-24 bg-gray-900 relative overflow-hidden text-white">
+      <section id="contact" className="py-32 bg-gray-950 relative overflow-hidden text-white">
          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-900/50 to-transparent"></div>
+         <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-brand-900/30 to-transparent pointer-events-none"></div>
+         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-brand-900/20 to-transparent pointer-events-none"></div>
          
          <div className="container mx-auto px-6 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-16">
+            <div className="grid lg:grid-cols-2 gap-20 items-center">
                <div>
-                  <h2 className="text-brand-400 font-bold uppercase tracking-widest text-sm mb-3">Contact Us</h2>
-                  <h3 className="text-4xl md:text-5xl font-bold mb-6">Ready for a spotless home?</h3>
-                  <p className="text-xl text-gray-300 mb-10">{CONTENT.contact.subtitle[language]}</p>
+                  <h2 className="text-brand-400 font-bold uppercase tracking-widest text-sm mb-4">Contact Us</h2>
+                  <h3 className="text-5xl font-extrabold mb-8 leading-tight">Ready for a <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-white">spotless home?</span></h3>
+                  <p className="text-xl text-gray-400 mb-12 font-light">{CONTENT.contact.subtitle[language]}</p>
                   
                   <div className="space-y-8">
-                     <div className="flex items-center gap-6 group">
-                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 group-hover:bg-brand-500 group-hover:text-white transition-colors">
-                           <Icons.Phone className="w-8 h-8" />
+                     <a href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} target="_blank" className="flex items-center gap-8 group p-4 rounded-2xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-600 to-brand-700 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                           <Icons.Phone className="w-7 h-7" />
                         </div>
                         <div>
-                           <p className="text-sm text-gray-400 uppercase tracking-wide font-bold">Call / WhatsApp</p>
-                           <a href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} className="text-2xl font-bold hover:text-brand-400 transition-colors">{PHONE}</a>
+                           <p className="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Call / WhatsApp</p>
+                           <span className="text-3xl font-bold font-mono group-hover:text-brand-300 transition-colors">{PHONE}</span>
                         </div>
-                     </div>
+                     </a>
                      
-                     <div className="flex items-center gap-6 group">
-                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 group-hover:bg-brand-500 group-hover:text-white transition-colors">
-                           <Icons.Mail className="w-8 h-8" />
+                     <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-8 group p-4 rounded-2xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                        <div className="w-16 h-16 rounded-2xl bg-gray-800 flex items-center justify-center text-gray-300 group-hover:bg-gray-700 group-hover:text-white transition-all">
+                           <Icons.Mail className="w-7 h-7" />
                         </div>
                         <div>
-                           <p className="text-sm text-gray-400 uppercase tracking-wide font-bold">Email</p>
-                           <a href={`mailto:${CONTACT_EMAIL}`} className="text-2xl font-bold hover:text-brand-400 transition-colors">{CONTACT_EMAIL}</a>
+                           <p className="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Email</p>
+                           <span className="text-2xl font-bold group-hover:text-brand-300 transition-colors">{CONTACT_EMAIL}</span>
                         </div>
-                     </div>
+                     </a>
                      
-                     <div className="flex items-center gap-6 group">
-                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 group-hover:bg-brand-500 group-hover:text-white transition-colors">
-                           <Icons.MapPin className="w-8 h-8" />
+                     <div className="flex items-center gap-8 group p-4">
+                        <div className="w-16 h-16 rounded-2xl bg-gray-800 flex items-center justify-center text-gray-300">
+                           <Icons.MapPin className="w-7 h-7" />
                         </div>
                         <div>
-                           <p className="text-sm text-gray-400 uppercase tracking-wide font-bold">Location</p>
-                           <p className="text-xl font-medium">{ADDRESS}</p>
+                           <p className="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Location</p>
+                           <p className="text-xl font-medium text-gray-200">{ADDRESS}</p>
                         </div>
                      </div>
                   </div>
                </div>
 
-               <div className="bg-white text-gray-900 rounded-3xl p-8 lg:p-10 shadow-2xl">
-                  <h4 className="text-2xl font-bold mb-6">Send us a message</h4>
-                  <form className="space-y-5" onSubmit={handleSendMessage}>
-                     <div className="grid grid-cols-2 gap-5">
-                        <div>
-                           <label className="block text-sm font-bold text-gray-600 mb-2">{CONTENT.contact.nameLabel[language]}</label>
-                           <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none" placeholder="John Doe" required />
+               <div className="glass-card bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-[2rem] shadow-2xl relative">
+                  <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+                     <Icons.Quote className="w-32 h-32 text-white" />
+                  </div>
+                  <h4 className="text-3xl font-bold mb-8 text-white">Send a request</h4>
+                  <form className="space-y-6" onSubmit={handleSendMessage}>
+                     <div className="grid grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.nameLabel[language]}</label>
+                           <input type="text" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-500 transition-all focus:bg-white/10" placeholder="John Doe" required />
                         </div>
-                        <div>
-                           <label className="block text-sm font-bold text-gray-600 mb-2">{CONTENT.contact.emailLabel[language]}</label>
-                           <input type="email" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none" placeholder="john@example.com" required />
+                        <div className="space-y-2">
+                           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.emailLabel[language]}</label>
+                           <input type="email" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-500 transition-all focus:bg-white/10" placeholder="john@example.com" required />
                         </div>
                      </div>
-                     <div>
-                        <label className="block text-sm font-bold text-gray-600 mb-2">{CONTENT.contact.messageLabel[language]}</label>
-                        <textarea rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none resize-none" placeholder="Tell us about your cleaning needs..." required></textarea>
+                     <div className="space-y-2">
+                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.messageLabel[language]}</label>
+                        <textarea rows={4} className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-500 resize-none transition-all focus:bg-white/10" placeholder="Tell us about your cleaning needs..." required></textarea>
                      </div>
-                     <button className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all active:scale-95">
+                     <button className="w-full bg-white text-brand-950 hover:bg-brand-50 font-bold py-5 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] flex justify-center items-center gap-3">
                         {CONTENT.contact.sendButton[language]}
+                        <Icons.Send className="w-5 h-5" />
                      </button>
                   </form>
                </div>
@@ -512,35 +520,48 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Mega Footer */}
-      <footer className="bg-white dark:bg-gray-950 pt-20 pb-10 border-t border-gray-200 dark:border-gray-800">
-         <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-               <div className="col-span-1 lg:col-span-1">
-                  <div className="flex items-center gap-3 mb-6">
-                     <img src={LOGO_URL} className="w-10 h-10 rounded-lg" alt="Logo" />
-                     <span className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">{APP_NAME}</span>
+      {/* Stunning Mega Footer */}
+      <footer className="bg-gray-950 pt-32 pb-12 text-white relative overflow-hidden border-t border-white/5">
+         {/* Giant Background Text */}
+         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none opacity-[0.03]">
+            <span className="text-[20vw] font-black leading-none text-white tracking-widest">SOFASTEAM</span>
+         </div>
+         
+         {/* Gradient Orbs */}
+         <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-brand-900/10 rounded-full blur-[120px] pointer-events-none"></div>
+         <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+         <div className="container mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-24">
+               {/* Column 1: Brand & Identity */}
+               <div className="space-y-8">
+                  <div className="flex items-center gap-4">
+                     <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-lg">
+                        <img src={LOGO_URL} className="w-10 h-10 object-contain" alt="Logo" />
+                     </div>
+                     <span className="text-2xl font-extrabold tracking-tight">{APP_NAME}</span>
                   </div>
-                  <p className="text-gray-500 dark:text-gray-400 mb-6 leading-relaxed">
-                     Redefining cleanliness in Bucharest with premium technology and eco-friendly solutions. Experience the difference today.
+                  <p className="text-gray-400 text-base leading-relaxed font-light">
+                     Redefining cleanliness in Bucharest with premium technology and eco-friendly solutions. 
+                     We bring showroom quality back to your living space.
                   </p>
-                  <div className="flex gap-4">
-                     <a href={INSTAGRAM_URL} target="_blank" className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-brand-500 hover:text-white transition-all">
-                        <Icons.Instagram className="w-5 h-5" />
-                     </a>
-                     <a href="#" className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-brand-500 hover:text-white transition-all">
-                        <Icons.Mail className="w-5 h-5" />
-                     </a>
-                  </div>
                </div>
 
+               {/* Column 2: Navigation */}
                <div>
-                  <h4 className="font-bold text-gray-900 dark:text-white mb-6 text-lg">{CONTENT.footer.quickLinks[language]}</h4>
-                  <ul className="space-y-4 text-gray-500 dark:text-gray-400">
+                  <h4 className="font-bold text-white mb-8 text-lg flex items-center gap-2">
+                    <span className="w-8 h-[2px] bg-brand-500 inline-block"></span>
+                    Company
+                  </h4>
+                  <ul className="space-y-4">
                      {NAV_ITEMS.map(item => (
                         <li key={item.id}>
-                           <a href={item.href} onClick={(e) => handleNavClick(e, item.id)} className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors flex items-center gap-2 group">
-                              <span className="w-1.5 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full group-hover:bg-brand-500 transition-colors"></span>
+                           <a 
+                             href={item.href} 
+                             onClick={(e) => handleNavClick(e, item.id)} 
+                             className="text-gray-400 hover:text-white transition-all block py-1 text-base hover:translate-x-1 flex items-center gap-2 group"
+                           >
+                              <Icons.ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-brand-500" />
                               {item.label[language]}
                            </a>
                         </li>
@@ -548,51 +569,72 @@ const App: React.FC = () => {
                   </ul>
                </div>
 
+               {/* Column 3: Follow Us */}
                <div>
-                  <h4 className="font-bold text-gray-900 dark:text-white mb-6 text-lg">Our Services</h4>
-                  <ul className="space-y-4 text-gray-500 dark:text-gray-400">
-                     <li className="hover:text-brand-600 dark:hover:text-brand-400 cursor-pointer">Deep Upholstery Cleaning</li>
-                     <li className="hover:text-brand-600 dark:hover:text-brand-400 cursor-pointer">Carpet Revitalization</li>
-                     <li className="hover:text-brand-600 dark:hover:text-brand-400 cursor-pointer">Mattress Sanitization</li>
-                     <li className="hover:text-brand-600 dark:hover:text-brand-400 cursor-pointer">Commercial Spaces</li>
-                  </ul>
+                  <h4 className="font-bold text-white mb-8 text-lg flex items-center gap-2">
+                    <span className="w-8 h-[2px] bg-brand-500 inline-block"></span>
+                    {CONTENT.footer.followUs[language]}
+                  </h4>
+                  <a 
+                     href={INSTAGRAM_URL} 
+                     target="_blank" 
+                     className="inline-flex items-center gap-3 text-gray-400 hover:text-white transition-all group p-3 bg-white/5 rounded-xl hover:bg-brand-600 border border-white/10 hover:border-brand-500"
+                  >
+                     <Icons.Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                     <span className="font-medium text-sm">@sofasteambucuresti</span>
+                  </a>
                </div>
 
+               {/* Column 4: Newsletter & Contact */}
                <div>
-                  <h4 className="font-bold text-gray-900 dark:text-white mb-6 text-lg">{CONTENT.footer.newsletter[language]}</h4>
-                  <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm">Subscribe to get seasonal offers and cleaning tips.</p>
-                  <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-                     <input type="email" placeholder="Email" className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
-                     <button className="bg-brand-600 hover:bg-brand-700 text-white rounded-lg px-4 transition-colors">
-                        <Icons.ArrowRight className="w-5 h-5" />
+                  <h4 className="font-bold text-white mb-8 text-lg flex items-center gap-2">
+                    <span className="w-8 h-[2px] bg-brand-500 inline-block"></span>
+                    {CONTENT.footer.newsletter[language]}
+                  </h4>
+                  <p className="text-gray-400 mb-6 text-sm leading-relaxed">
+                     Join our exclusive list for seasonal offers and expert maintenance tips.
+                  </p>
+                  <form className="relative group mb-8" onSubmit={(e) => e.preventDefault()}>
+                     <input 
+                       type="email" 
+                       placeholder="Enter your email" 
+                       className="w-full bg-white/5 border border-white/10 rounded-xl pl-5 pr-12 py-4 text-sm focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" 
+                     />
+                     <button className="absolute right-2 top-2 bottom-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg w-10 flex items-center justify-center transition-all shadow-lg hover:shadow-brand-500/25">
+                        <Icons.ArrowRight className="w-4 h-4" />
                      </button>
                   </form>
                </div>
             </div>
             
-            <div className="border-t border-gray-100 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-               <p className="text-gray-400 text-sm font-medium text-center md:text-left">{CONTENT.footer.rights[language]}</p>
-               <div className="flex gap-6 text-sm text-gray-400">
-                  <a href="#" className="hover:text-brand-500 transition-colors">Privacy Policy</a>
-                  <a href="#" className="hover:text-brand-500 transition-colors">Terms of Service</a>
+            <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+               <p className="text-gray-500 text-sm font-medium tracking-wide">
+                 {CONTENT.footer.rights[language]}
+               </p>
+               <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
+                  <a href="#" className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Privacy Policy</a>
+                  <a href="#" className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Terms of Service</a>
+                  <button onClick={scrollToTop} className="flex items-center gap-2 hover:text-white transition-colors">
+                     Back to Top <Icons.ArrowRight className="-rotate-90 w-3 h-3" />
+                  </button>
                </div>
             </div>
          </div>
       </footer>
 
       {/* Floating Chatbot */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+      <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-4">
           {isChatOpen && (
-              <div className="w-[360px] h-[550px] bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800 animate-fade-in-up origin-bottom-right ring-1 ring-black/5">
+              <div className="w-[380px] h-[600px] bg-white dark:bg-gray-900 rounded-[2rem] shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800 animate-fade-in-up origin-bottom-right ring-1 ring-black/5 flex flex-col">
                   <ChatAssistant language={language} onClose={() => setIsChatOpen(false)} />
               </div>
           )}
           <button 
             onClick={() => setIsChatOpen(!isChatOpen)} 
-            className="group bg-brand-600 hover:bg-brand-500 text-white p-4 rounded-full shadow-2xl hover:shadow-brand-500/40 transition-all hover:scale-110 active:scale-95 flex items-center justify-center relative"
+            className="group bg-brand-600 hover:bg-brand-500 text-white w-16 h-16 rounded-full shadow-2xl shadow-brand-500/30 transition-all hover:scale-110 active:scale-95 flex items-center justify-center relative"
           >
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white dark:border-gray-900"></span>
-              {isChatOpen ? <Icons.X className="w-7 h-7" /> : <Icons.MessageCircle className="w-7 h-7" />}
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white dark:border-gray-900 animate-pulse"></span>
+              {isChatOpen ? <Icons.X className="w-8 h-8" /> : <Icons.MessageCircle className="w-8 h-8" />}
           </button>
       </div>
 

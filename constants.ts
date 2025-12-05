@@ -66,7 +66,7 @@ export const CONTENT = {
   },
   footer: {
     quickLinks: { en: "Navigation", ro: "Navigare" },
-    followUs: { en: "Connect", ro: "Conectare" },
+    followUs: { en: "Follow Us", ro: "Urmărește-ne" },
     contact: { en: "Contact Info", ro: "Info Contact" },
     newsletter: { en: "Stay Updated", ro: "Rămâi Informat" },
     subscribe: { en: "Join", ro: "Alătură-te" },
