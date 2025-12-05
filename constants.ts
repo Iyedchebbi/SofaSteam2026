@@ -102,8 +102,10 @@ export const CONTENT = {
     title: { en: "My Profile", ro: "Profilul Meu" },
     save: { en: "Save Changes", ro: "Salvează Modificări" },
     phone: { en: "Phone Number", ro: "Număr de Telefon" },
-    avatar: { en: "Avatar URL", ro: "Link Poză Profil" },
-    fullName: { en: "Full Name", ro: "Nume Complet" }
+    avatar: { en: "Avatar", ro: "Poză Profil" },
+    fullName: { en: "Full Name", ro: "Nume Complet" },
+    upload: { en: "Upload Photo", ro: "Încarcă Poză" },
+    uploading: { en: "Uploading...", ro: "Se încarcă..." }
   },
   categories: {
     all: { en: "All", ro: "Toate" },
@@ -120,6 +122,8 @@ export const CONTENT = {
     deleteProduct: { en: "Delete", ro: "Șterge" },
     confirmDelete: { en: "Are you sure you want to delete this product?", ro: "Sigur doriți să ștergeți acest produs?" },
     save: { en: "Save Product", ro: "Salvează Produs" },
-    manage: { en: "Manage Products", ro: "Gestionează Produse" }
+    manage: { en: "Manage Products", ro: "Gestionează Produse" },
+    imageUpload: { en: "Product Image", ro: "Imagine Produs" },
+    selectImage: { en: "Select Image", ro: "Alege Imagine" }
   }
 };
