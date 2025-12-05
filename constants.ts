@@ -1,4 +1,4 @@
-import { NavItem, Product } from './types';
+import { NavItem } from './types';
 
 export const APP_NAME = "SofaSteam";
 export const OWNER_NAME = "Med Amine Damdoum";
@@ -6,7 +6,6 @@ export const ADDRESS = "Bulevardul Iuliu Maniu 71, Bucharest";
 export const PHONE = "+40745275324";
 export const CONTACT_EMAIL = "contact@sofasteam.com";
 export const INSTAGRAM_URL = "https://www.instagram.com/sofasteambucuresti/";
-// Using a reliable Google Drive thumbnail link hack for better uptime
 export const LOGO_URL = "https://drive.google.com/thumbnail?id=1BacA0IQieo9xB9cuIGHNtHGOxtSHYx8A&sz=w1000";
 export const HERO_BG_URL = "https://drive.google.com/thumbnail?id=1xxtR5hULJbnG61HBqwMeR3IiI_xdaZMt&sz=w1920";
 
@@ -15,57 +14,6 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'about', label: { en: 'About', ro: 'Despre' }, href: '#about' },
   { id: 'products', label: { en: 'Products', ro: 'Produse' }, href: '#products' },
   { id: 'contact', label: { en: 'Contact', ro: 'Contact' }, href: '#contact' },
-];
-
-export const PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: { en: "Upholstery Cleaner Pro", ro: "Curățător Tapițerie Pro" },
-    description: { en: "Professional grade stain remover for sofas.", ro: "Soluție profesională pentru îndepărtarea petelor de pe canapele." },
-    price: 120,
-    image: "https://picsum.photos/400/300?random=1",
-    category: "solutions"
-  },
-  {
-    id: 2,
-    name: { en: "Steam Master 3000", ro: "Steam Master 3000" },
-    description: { en: "High pressure steam cleaner for deep cleaning.", ro: "Curățător cu abur de înaltă presiune pentru curățare profundă." },
-    price: 850,
-    image: "https://picsum.photos/400/300?random=2",
-    category: "equipment"
-  },
-  {
-    id: 3,
-    name: { en: "Fabric Fresh Spray", ro: "Spray Prospețime Țesături" },
-    description: { en: "Keeps your furniture smelling like new.", ro: "Păstrează mirosul proaspăt al mobilierului tău." },
-    price: 45,
-    image: "https://picsum.photos/400/300?random=3",
-    category: "solutions"
-  },
-  {
-    id: 4,
-    name: { en: "Leather Care Kit", ro: "Kit Îngrijire Piele" },
-    description: { en: "Restore and protect your leather furniture.", ro: "Restaurează și protejează mobilierul din piele." },
-    price: 150,
-    image: "https://picsum.photos/400/300?random=4",
-    category: "accessories"
-  },
-  {
-    id: 5,
-    name: { en: "Detailing Brush Set", ro: "Set Perii Detailing" },
-    description: { en: "Perfect for tight corners and seams.", ro: "Perfect pentru colțuri înguste și cusături." },
-    price: 65,
-    image: "https://picsum.photos/400/300?random=5",
-    category: "accessories"
-  },
-  {
-    id: 6,
-    name: { en: "Industrial Vacuum", ro: "Aspirator Industrial" },
-    description: { en: "Heavy duty vacuum for wet and dry mess.", ro: "Aspirator puternic pentru murdărie umedă și uscată." },
-    price: 1200,
-    image: "https://picsum.photos/400/300?random=6",
-    category: "equipment"
-  }
 ];
 
 export const CONTENT = {
@@ -135,16 +83,43 @@ export const CONTENT = {
     name: { en: "Full Name", ro: "Nume Complet" },
     submit: { en: "Submit", ro: "Trimite" },
     cancel: { en: "Cancel", ro: "Anulează" },
-    google: { en: "Continue with Google", ro: "Continuă cu Google" }
+    google: { en: "Continue with Google", ro: "Continuă cu Google" },
+    haveAccount: { en: "Already have an account?", ro: "Ai deja cont?" },
+    noAccount: { en: "Don't have an account?", ro: "Nu ai cont?" },
+    signInLink: { en: "Sign In", ro: "Conectează-te" },
+    signUpLink: { en: "Sign Up", ro: "Înregistrează-te" }
   },
   cart: {
+    title: { en: "Your Cart", ro: "Coșul Tău" },
+    empty: { en: "Your cart is empty", ro: "Coșul tău este gol" },
+    total: { en: "Total", ro: "Total" },
+    checkout: { en: "Checkout", ro: "Finalizează Comanda" },
     addSuccess: { en: "added to cart!", ro: "adăugat în coș!" },
-    loginRequired: { en: "Please log in to add items to cart.", ro: "Vă rugăm să vă conectați pentru a adăuga produse în coș." }
+    loginRequired: { en: "Please log in to add items to cart.", ro: "Vă rugăm să vă conectați pentru a adăuga produse în coș." },
+    items: { en: "items", ro: "produse" }
+  },
+  profile: {
+    title: { en: "My Profile", ro: "Profilul Meu" },
+    save: { en: "Save Changes", ro: "Salvează Modificări" },
+    phone: { en: "Phone Number", ro: "Număr de Telefon" },
+    avatar: { en: "Avatar URL", ro: "Link Poză Profil" },
+    fullName: { en: "Full Name", ro: "Nume Complet" }
   },
   categories: {
     all: { en: "All", ro: "Toate" },
     solutions: { en: "Cleaning Solutions", ro: "Soluții Curățare" },
     equipment: { en: "Machines & Equipment", ro: "Echipamente" },
     accessories: { en: "Accessories", ro: "Accesorii" }
+  },
+  admin: {
+    dashboard: { en: "Admin Dashboard", ro: "Panou Administrator" },
+    products: { en: "Products", ro: "Produse" },
+    orders: { en: "Orders", ro: "Comenzi" },
+    addProduct: { en: "Add Product", ro: "Adaugă Produs" },
+    editProduct: { en: "Edit Product", ro: "Editează Produs" },
+    deleteProduct: { en: "Delete", ro: "Șterge" },
+    confirmDelete: { en: "Are you sure you want to delete this product?", ro: "Sigur doriți să ștergeți acest produs?" },
+    save: { en: "Save Product", ro: "Salvează Produs" },
+    manage: { en: "Manage Products", ro: "Gestionează Produse" }
   }
 };
