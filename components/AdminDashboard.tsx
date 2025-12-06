@@ -68,6 +68,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
     }
   };
 
+  const handleDeleteAllOrders = async () => {
+    if (!window.confirm("ARE YOU SURE? This will delete ALL orders from the database. This action cannot be undone.")) return;
+    try {
+        const { error } = await supabase.from('orders').delete().neq('id', 0); // Delete all
+        if (error) throw error;
+        await fetchOrders();
+        alert("All orders deleted.");
+    } catch (error: any) {
+        alert("Error: " + error.message);
+    }
+  };
+
   const handleUpdateOrderStatus = async (id: number, status: 'confirmed' | 'cancelled') => {
      try {
          const { error } = await supabase.from('orders').update({ status }).eq('id', id);
@@ -81,14 +93,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 font-sans text-gray-900 dark:text-gray-100">
       {/* Topbar */}
-      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex justify-between items-center sticky top-0 z-30">
-        <div className="flex items-center gap-3">
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 sticky top-0 z-30">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           <div className="bg-brand-600 p-2 rounded-lg text-white">
             <Icons.LayoutDashboard className="w-5 h-5" />
           </div>
           <h1 className="text-xl font-bold">{t.dashboard[language]}</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
            <span className="text-sm text-gray-500 hidden sm:block">{user.email}</span>
            <button onClick={onLogout} className="flex items-center gap-2 text-red-500 hover:text-red-700 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
              <Icons.LogOut className="w-4 h-4" />
@@ -99,11 +111,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
 
       <div className="container mx-auto px-4 py-8">
         {/* Tabs */}
-        <div className="flex gap-4 mb-8">
-           <button onClick={() => setActiveTab('products')} className={`px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all ${activeTab === 'products' ? 'bg-brand-600 text-white shadow-lg' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
+        <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
+           <button onClick={() => setActiveTab('products')} className={`px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all whitespace-nowrap ${activeTab === 'products' ? 'bg-brand-600 text-white shadow-lg' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
              <Icons.Package className="w-4 h-4" /> {t.products[language]}
            </button>
-           <button onClick={() => setActiveTab('orders')} className={`px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all ${activeTab === 'orders' ? 'bg-brand-600 text-white shadow-lg' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
+           <button onClick={() => setActiveTab('orders')} className={`px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all whitespace-nowrap ${activeTab === 'orders' ? 'bg-brand-600 text-white shadow-lg' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
              <Icons.ClipboardList className="w-4 h-4" /> {t.orders[language]}
            </button>
         </div>
@@ -113,12 +125,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
             <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
                <h2 className="text-lg font-bold">{t.manage[language]}</h2>
-               <button onClick={() => setProductModal({ isOpen: true, product: null })} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors shadow-md">
+               <button onClick={() => setProductModal({ isOpen: true, product: null })} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors shadow-md text-sm sm:text-base">
                  <Icons.Plus className="w-4 h-4" /> {t.addProduct[language]}
                </button>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[600px]">
                 <thead className="bg-gray-50 dark:bg-gray-800 text-xs uppercase text-gray-500 font-semibold">
                   <tr>
                     <th className="px-6 py-4 text-left">Product</th>
@@ -137,8 +149,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                           <div className="flex items-center gap-4">
                             <img src={product.image} alt="" className="w-12 h-12 rounded-lg object-cover bg-gray-100" />
                             <div>
-                               <div className="font-bold text-gray-900 dark:text-white">{product.name_en}</div>
-                               <div className="text-xs text-gray-500">{product.name_ro}</div>
+                               <div className="font-bold text-gray-900 dark:text-white line-clamp-1">{product.name_en}</div>
+                               <div className="text-xs text-gray-500 line-clamp-1">{product.name_ro}</div>
                             </div>
                           </div>
                         </td>
@@ -164,14 +176,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
         ) : (
           /* Orders View */
           <div className="space-y-4">
+             <div className="flex justify-end mb-4">
+                <button 
+                    onClick={handleDeleteAllOrders} 
+                    className="text-red-500 hover:text-red-700 text-xs font-bold border border-red-200 hover:bg-red-50 px-3 py-1 rounded-full transition-colors"
+                >
+                    DELETE ALL ORDERS (TEST)
+                </button>
+             </div>
              {orders.length === 0 ? (
                  <div className="text-center py-20 text-gray-400">No bookings found.</div>
              ) : (
                  orders.map(order => (
-                    <div key={order.id} className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 relative group">
-                        <div className="flex flex-col md:flex-row justify-between items-start mb-4 gap-4">
-                           <div>
-                              <div className="flex items-center gap-3 mb-1">
+                    <div key={order.id} className="bg-white dark:bg-gray-900 p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 relative group">
+                        <div className="flex flex-col lg:flex-row justify-between items-start mb-4 gap-4">
+                           <div className="w-full lg:w-auto">
+                              <div className="flex flex-wrap items-center gap-3 mb-2">
                                  <div className="font-bold text-lg">Booking #{order.id}</div>
                                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
                                      order.status === 'confirmed' ? 'bg-green-100 text-green-800' : 
@@ -193,19 +213,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                            </div>
                            
                            {/* Client Info */}
-                           <div className="bg-gray-50 dark:bg-gray-800 px-4 py-2 rounded-lg text-sm">
+                           <div className="bg-gray-50 dark:bg-gray-800 px-4 py-3 rounded-lg text-sm w-full lg:w-auto">
                                <div className="font-bold text-gray-700 dark:text-gray-300 mb-1">{t.clientInfo[language]}</div>
                                <div>{order.client_name || 'N/A'}</div>
                                <div className="font-mono">{order.client_phone || 'N/A'}</div>
-                               <div className="text-xs text-gray-500 mt-1 max-w-xs">{order.shipping_address}</div>
+                               <div className="text-xs text-gray-500 mt-1 max-w-xs break-words">{order.shipping_address}</div>
                            </div>
+                        </div>
 
-                           <div className="flex items-center gap-3">
+                        <div className="flex flex-wrap items-center gap-3 mb-4">
                               {order.status === 'pending' && (
                                 <>
                                     <button 
                                         onClick={() => handleUpdateOrderStatus(order.id, 'confirmed')}
-                                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-bold shadow-md hover:bg-green-500 transition-colors"
+                                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-bold shadow-md hover:bg-green-500 transition-colors text-sm"
                                         title="Confirm Order"
                                     >
                                         <Icons.Check className="w-4 h-4" />
@@ -213,7 +234,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                                     </button>
                                     <button 
                                         onClick={() => handleUpdateOrderStatus(order.id, 'cancelled')}
-                                        className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                        className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm"
                                         title="Cancel Order"
                                     >
                                         <Icons.X className="w-4 h-4" />
@@ -223,7 +244,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                               {order.status === 'confirmed' && (
                                    <button 
                                      onClick={() => handleUpdateOrderStatus(order.id, 'cancelled')}
-                                     className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-600 rounded-lg font-bold hover:bg-red-200 transition-colors"
+                                     className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-600 rounded-lg font-bold hover:bg-red-200 transition-colors text-sm"
                                    >
                                        <Icons.X className="w-4 h-4" /> {t.cancelOrder[language]}
                                    </button>
@@ -232,12 +253,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                               <button 
                                 onClick={() => handleDeleteOrder(order.id)}
                                 disabled={deletingOrderId === order.id}
-                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors ml-2"
+                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors ml-auto"
                                 title="Delete from database"
                               >
                                 {deletingOrderId === order.id ? <div className="w-4 h-4 border-2 border-red-200 border-t-red-600 rounded-full animate-spin"></div> : <Icons.Trash className="w-4 h-4" />}
                               </button>
-                           </div>
                         </div>
                         
                         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">

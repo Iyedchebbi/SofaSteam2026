@@ -1,4 +1,5 @@
 
+
 import { NavItem } from './types';
 
 export const APP_NAME = "SofaSteam";
@@ -222,26 +223,26 @@ export const CONTENT = {
   },
   guide: {
     welcome: {
-      title: { en: "Welcome to SofaSteam", ro: "Bun venit la SofaSteam" },
-      desc: { en: "Let us show you how to book premium cleaning services in seconds.", ro: "Hai să îți arătăm cum poți rezerva servicii premium în câteva secunde." },
+      title: { en: "Welcome to SofaSteam", ro: "Bine ați venit la SofaSteam" },
+      desc: { en: "Let us show you how to get the best cleaning experience.", ro: "Haideți să vă arătăm cum să obțineți cea mai bună experiență de curățare." },
       skip: { en: "Skip Tour", ro: "Sari Peste" },
       btn: { en: "Start Tour", ro: "Începe Turul" }
     },
+    next: { en: "Next", ro: "Următorul" },
+    finish: { en: "Finish", ro: "Finalizează" },
     steps: [
       {
         title: { en: "Filter Services", ro: "Filtrează Serviciile" },
-        desc: { en: "Easily browse our services by category: Upholstery, Carpets, Auto, and more.", ro: "Navighează ușor printre serviciile noastre pe categorii: Tapițerie, Covoare, Auto și altele." }
+        desc: { en: "Easily find what you need by selecting a category.", ro: "Găsește ușor ce ai nevoie selectând o categorie." }
       },
       {
-        title: { en: "AI Cleaning Expert", ro: "Expert AI Curățenie" },
-        desc: { en: "Have questions about stains or fabrics? Ask our AI assistant anytime.", ro: "Ai întrebări despre pete sau țesături? Întreabă asistentul nostru AI oricând." }
+        title: { en: "AI Assistant", ro: "Asistent AI" },
+        desc: { en: "Ask our AI expert about stains, fabrics, and more.", ro: "Întreabă expertul nostru AI despre pete, țesături și altele." }
       },
       {
-        title: { en: "Client Account", ro: "Cont Client" },
-        desc: { en: "Log in to manage your bookings and view order history.", ro: "Conectează-te pentru a gestiona rezervările și istoricul comenzilor." }
+        title: { en: "Client Access", ro: "Acces Client" },
+        desc: { en: "Login to manage bookings and view history.", ro: "Conectează-te pentru a gestiona rezervările și istoricul." }
       }
-    ],
-    next: { en: "Next", ro: "Următorul" },
-    finish: { en: "Finish", ro: "Finalizare" }
+    ]
   }
 };

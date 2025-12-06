@@ -50,7 +50,6 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
       try {
           const { error } = await supabase.from('orders').update({ status: 'cancelled' }).eq('id', id);
           if (error) throw error;
-          // Optimistic update
           setOrders(prev => prev.map(o => o.id === id ? { ...o, status: 'cancelled' } : o));
       } catch (error: any) {
           alert(error.message);
@@ -65,7 +64,6 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
       try {
           const { error } = await supabase.from('orders').delete().eq('id', id);
           if (error) throw error;
-          // Optimistic update
           setOrders(prev => prev.filter(o => o.id !== id));
       } catch (error: any) {
           alert(error.message);
@@ -74,26 +72,48 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
       }
   };
 
+  const handleClearHistory = async () => {
+    if (!window.confirm(language === 'ro' ? "Ștergeți toate cererile finalizate?" : "Delete all finished requests?")) return;
+    setLoading(true);
+    try {
+        // Only delete completed/cancelled
+        const { error } = await supabase.from('orders').delete().eq('user_id', user.id).in('status', ['completed', 'cancelled']);
+        if (error) throw error;
+        await fetchMyOrders();
+    } catch (error: any) {
+        alert(error.message);
+    } finally {
+        setLoading(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-[fadeIn_0.2s_ease-out]">
-       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col relative border border-gray-200 dark:border-gray-800">
+       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl h-[90vh] sm:h-[80vh] flex flex-col relative border border-gray-200 dark:border-gray-800">
             {/* Header */}
-            <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-white dark:bg-gray-900 z-10 rounded-t-2xl">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                    <div className="p-2 bg-brand-50 dark:bg-brand-900/20 rounded-lg text-brand-600">
+            <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-white dark:bg-gray-900 z-10 rounded-t-2xl">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                    <div className="p-2 bg-brand-50 dark:bg-brand-900/20 rounded-lg text-brand-600 hidden sm:block">
                         <Icons.History className="w-6 h-6" />
                     </div>
                     {t.title[language]}
                 </h2>
-                <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all">
-                    <Icons.X className="w-6 h-6" />
-                </button>
+                <div className="flex items-center gap-2">
+                    {orders.some(o => o.status === 'cancelled' || o.status === 'completed') && (
+                        <button onClick={handleClearHistory} className="text-xs sm:text-sm text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-1.5 rounded-lg transition-colors">
+                            {CONTENT.bookings.deleteRequest[language]} (All)
+                        </button>
+                    )}
+                    <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all">
+                        <Icons.X className="w-6 h-6" />
+                    </button>
+                </div>
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900/50">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50 dark:bg-gray-900/50">
                 {loading ? (
                     <div className="flex justify-center py-10"><div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div></div>
                 ) : orders.length === 0 ? (
@@ -102,10 +122,10 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
                         <p>{t.noOrders[language]}</p>
                     </div>
                 ) : (
-                    <div className="space-y-6">
+                    <div className="space-y-4 sm:space-y-6">
                         {orders.map(order => (
-                            <div key={order.id} className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 relative group">
-                                <div className="flex justify-between items-start mb-4">
+                            <div key={order.id} className="bg-white dark:bg-gray-900 p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 relative group">
+                                <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2">
                                     <div>
                                         <div className="font-bold text-lg text-gray-900 dark:text-white">Order #{order.id}</div>
                                         <div className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString()}</div>
@@ -116,7 +136,7 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex flex-col items-end gap-2">
+                                    <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 w-full sm:w-auto justify-between sm:justify-start">
                                         <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase flex items-center gap-2 ${
                                             order.status === 'confirmed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
                                             order.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
