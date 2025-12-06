@@ -8,7 +8,6 @@ import CartDrawer from './components/CartDrawer';
 import AdminDashboard from './components/AdminDashboard';
 import LegalModal from './components/LegalModal';
 import BookingsModal from './components/BookingsModal';
-import ChatAssistant from './components/ChatAssistant';
 import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL } from './constants';
 import { Language, Product, ProductCategory, UserProfile, CartItem } from './types';
 import { supabase } from './services/supabase';
@@ -25,7 +24,6 @@ const App: React.FC = () => {
   const [bookingsModal, setBookingsModal] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   
   // Data State
   const [user, setUser] = useState<any>(null);
@@ -814,25 +812,6 @@ const App: React.FC = () => {
               <span className="absolute 1.5 -right-1.5 w-4 h-4 lg:w-5 lg:h-5 bg-green-400 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></span>
               <Icons.Phone className="w-6 h-6 lg:w-9 lg:h-9 animate-tada" />
           </a>
-      </div>
-
-      {/* AI Assistant Floating */}
-      <div className="fixed bottom-6 left-6 lg:bottom-8 lg:left-8 z-[50]">
-          <button 
-            onClick={() => setIsChatOpen(!isChatOpen)}
-            className="group bg-white dark:bg-gray-800 text-brand-600 hover:text-brand-700 w-12 h-12 lg:w-14 lg:h-14 rounded-full shadow-2xl shadow-brand-500/20 transition-all hover:scale-110 active:scale-95 flex items-center justify-center border border-gray-100 dark:border-gray-700 relative"
-          >
-              <Icons.Sparkles className="w-5 h-5 lg:w-6 lg:h-6" />
-              {!isChatOpen && (
-                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 lg:w-3 lg:h-3 bg-red-500 rounded-full animate-ping"></span>
-              )}
-          </button>
-          
-          {isChatOpen && (
-              <div className="absolute bottom-16 left-0 w-[90vw] sm:w-[350px] h-[500px] shadow-2xl rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 animate-[scaleIn_0.2s_ease-out] origin-bottom-left">
-                  <ChatAssistant language={language} onClose={() => setIsChatOpen(false)} />
-              </div>
-          )}
       </div>
 
       <AuthModal 

@@ -1,4 +1,5 @@
 
+
 import { GoogleGenAI } from "@google/genai";
 import { ChatMessage, GroundingSource } from "../types";
 
@@ -9,21 +10,7 @@ If the user asks in Romanian, reply in Romanian. If in English, reply in English
 ALWAYS use the 'googleSearch' tool to find the most up-to-date and accurate information about cleaning techniques (e.g., how to remove specific stains, best practices for different fabrics).
 When you use information from search, the grounding chunks will be automatically handled by the UI, so just incorporate the facts naturally.`;
 
-// Safe access to environment variable to prevent "process is not defined" error in browser
-const getApiKey = () => {
-  try {
-    // Check if process and process.env exist before accessing
-    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-      return process.env.API_KEY;
-    }
-  } catch (e) {
-    // Ignore error
-  }
-  // Fallback or empty string if not found (will cause API error but not app crash)
-  return 'AIzaSyArl9Hwq6KQKGjYgv_zInD2Oyi_7apxp2E';
-};
-
-const ai = new GoogleGenAI({ apiKey: getApiKey() });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const generateCleaningAdvice = async (
   prompt: string,

@@ -1,4 +1,5 @@
 
+
 import { NavItem } from './types';
 
 export const APP_NAME = "SofaSteam";
@@ -55,12 +56,6 @@ export const CONTENT = {
         desc: { en: "Our experts restore your furniture to like-new condition.", ro: "Experții noștri îți restaurează mobilierul." }
       }
     ]
-  },
-  assistant: {
-    title: { en: "AI Cleaning Consultant", ro: "Consultant AI Curățenie" },
-    subtitle: { en: "Ask about stains, fabrics, or our process", ro: "Întreabă despre pete, țesături sau procesul nostru" },
-    placeholder: { en: "Is steam cleaning safe for velvet?", ro: "Este curățarea cu abur sigură pentru catifea?" },
-    disclaimer: { en: "SofaSteam AI Assistant. Verify critical info.", ro: "Asistent AI SofaSteam. Verifică informațiile critice." }
   },
   contact: {
     title: { en: "Get in Touch", ro: "Contactează-ne" },
@@ -219,5 +214,10 @@ export const CONTENT = {
         `
       }
     }
+  },
+  assistant: {
+    title: { en: "Cleaning Assistant", ro: "Asistent Curățenie" },
+    placeholder: { en: "Ask about stains, fabrics...", ro: "Întreabă despre pete, materiale..." },
+    disclaimer: { en: "AI advice. Always test on a small area first.", ro: "Sfaturi AI. Testează mereu pe o zonă mică." }
   }
 };
