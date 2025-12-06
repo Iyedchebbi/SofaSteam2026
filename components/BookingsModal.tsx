@@ -15,6 +15,7 @@ interface BookingsModalProps {
 const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language, user }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState<number | null>(null);
   const t = CONTENT.bookings;
 
   useEffect(() => {
@@ -41,6 +42,36 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
           setOrders(data as Order[]);
       }
       setLoading(false);
+  };
+
+  const handleCancelOrder = async (id: number) => {
+      if (!window.confirm(language === 'ro' ? "Sigur doriți să anulați această cerere?" : "Are you sure you want to cancel this request?")) return;
+      setProcessingId(id);
+      try {
+          const { error } = await supabase.from('orders').update({ status: 'cancelled' }).eq('id', id);
+          if (error) throw error;
+          // Optimistic update
+          setOrders(prev => prev.map(o => o.id === id ? { ...o, status: 'cancelled' } : o));
+      } catch (error: any) {
+          alert(error.message);
+      } finally {
+          setProcessingId(null);
+      }
+  };
+
+  const handleDeleteOrder = async (id: number) => {
+      if (!window.confirm(language === 'ro' ? "Ștergeți din istoric?" : "Delete from history?")) return;
+      setProcessingId(id);
+      try {
+          const { error } = await supabase.from('orders').delete().eq('id', id);
+          if (error) throw error;
+          // Optimistic update
+          setOrders(prev => prev.filter(o => o.id !== id));
+      } catch (error: any) {
+          alert(error.message);
+      } finally {
+          setProcessingId(null);
+      }
   };
 
   if (!isOpen) return null;
@@ -73,7 +104,7 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
                 ) : (
                     <div className="space-y-6">
                         {orders.map(order => (
-                            <div key={order.id} className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                            <div key={order.id} className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 relative group">
                                 <div className="flex justify-between items-start mb-4">
                                     <div>
                                         <div className="font-bold text-lg text-gray-900 dark:text-white">Order #{order.id}</div>
@@ -85,13 +116,36 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
                                             </div>
                                         )}
                                     </div>
-                                    <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase flex items-center gap-2 ${
-                                        order.status === 'confirmed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                                        'bg-gray-100 text-gray-600'
-                                    }`}>
-                                        {order.status === 'confirmed' && <Icons.CheckCircle className="w-4 h-4" />}
-                                        {t.status[order.status]?.[language] || order.status}
+                                    <div className="flex flex-col items-end gap-2">
+                                        <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase flex items-center gap-2 ${
+                                            order.status === 'confirmed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                                            order.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
+                                            order.status === 'cancelled' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+                                            'bg-gray-100 text-gray-600'
+                                        }`}>
+                                            {order.status === 'confirmed' && <Icons.CheckCircle className="w-4 h-4" />}
+                                            {t.status[order.status]?.[language] || order.status}
+                                        </div>
+
+                                        {/* Actions */}
+                                        {order.status === 'pending' && (
+                                            <button 
+                                                onClick={() => handleCancelOrder(order.id)} 
+                                                disabled={processingId === order.id}
+                                                className="text-xs text-red-500 hover:text-red-700 font-bold hover:underline"
+                                            >
+                                                {t.cancelRequest[language]}
+                                            </button>
+                                        )}
+                                        {(order.status === 'cancelled' || order.status === 'completed') && (
+                                            <button 
+                                                onClick={() => handleDeleteOrder(order.id)}
+                                                disabled={processingId === order.id}
+                                                className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 flex items-center gap-1"
+                                            >
+                                                <Icons.Trash className="w-3 h-3" /> {t.deleteRequest[language]}
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
 
@@ -114,6 +168,11 @@ const BookingsModal: React.FC<BookingsModalProps> = ({ isOpen, onClose, language
                                     <div className="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/50 p-4 rounded-xl flex gap-3 text-green-800 dark:text-green-300">
                                         <Icons.CheckCircle className="w-5 h-5 shrink-0" />
                                         <p className="text-sm font-medium">{t.message.confirmed[language]}</p>
+                                    </div>
+                                ) : order.status === 'cancelled' ? (
+                                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50 p-4 rounded-xl flex gap-3 text-red-800 dark:text-red-300">
+                                        <Icons.X className="w-5 h-5 shrink-0" />
+                                        <p className="text-sm font-medium">{t.message.cancelled[language]}</p>
                                     </div>
                                 ) : (
                                     <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-100 dark:border-yellow-900/50 p-4 rounded-xl flex gap-3 text-yellow-800 dark:text-yellow-300">

@@ -64,12 +64,12 @@ export const CONTENT = {
   },
   contact: {
     title: { en: "Get in Touch", ro: "Contactează-ne" },
-    subtitle: { en: "Ready to transform your home? Contact us for a personalized quote or appointment.", ro: "Gata să îți transformi casa? Contactează-ne pentru o ofertă personalizată." },
+    subtitle: { en: "Have a special request or booking issue? We are here to help.", ro: "Ai o cerere specială sau o problemă cu rezervarea? Suntem aici să te ajutăm." },
     nameLabel: { en: "Your Name", ro: "Numele Tău" },
     emailLabel: { en: "Email Address", ro: "Adresa de Email" },
-    messageLabel: { en: "How can we help?", ro: "Cum te putem ajuta?" },
-    sendButton: { en: "Send Request", ro: "Trimite Cerere" },
-    successMessage: { en: "Request sent! We will contact you shortly.", ro: "Cerere trimisă! Te vom contacta în curând." }
+    messageLabel: { en: "Your Message", ro: "Mesajul Tău" },
+    sendButton: { en: "Request Consultation", ro: "Cere Consultație" },
+    successMessage: { en: "Inquiry sent! We will contact you shortly.", ro: "Mesaj trimis! Te vom contacta în curând." }
   },
   footer: {
     quickLinks: { en: "Navigation", ro: "Navigare" },
@@ -116,6 +116,8 @@ export const CONTENT = {
   bookings: {
     title: { en: "My Requests", ro: "Cererile Mele" },
     noOrders: { en: "No active requests found.", ro: "Nu aveți cereri active." },
+    cancelRequest: { en: "Cancel Request", ro: "Anulează Cererea" },
+    deleteRequest: { en: "Delete from History", ro: "Șterge din Istoric" },
     status: {
       pending: { en: "Pending Confirmation", ro: "În Așteptare" },
       confirmed: { en: "Request Confirmed", ro: "Cerere Confirmată" },
@@ -123,8 +125,9 @@ export const CONTENT = {
       cancelled: { en: "Cancelled", ro: "Anulat" }
     },
     message: {
-      confirmed: { en: "We have received your request! Our team is preparing for your appointment.", ro: "Am primit cererea ta! Echipa noastră se pregătește pentru programare." },
-      pending: { en: "Waiting for admin approval.", ro: "Se așteaptă aprobarea administratorului." }
+      confirmed: { en: "Request confirmed! We will get in touch with you shortly for more details.", ro: "Cerere confirmată! Te vom contacta în curând pentru mai multe detalii." },
+      pending: { en: "Waiting for admin approval.", ro: "Se așteaptă aprobarea administratorului." },
+      cancelled: { en: "This request has been cancelled.", ro: "Această cerere a fost anulată." }
     }
   },
   profile: {
@@ -160,7 +163,8 @@ export const CONTENT = {
     manage: { en: "Manage Services", ro: "Gestionează Servicii" },
     imageUpload: { en: "Service Image", ro: "Imagine Serviciu" },
     selectImage: { en: "Upload Image", ro: "Încarcă Imagine" },
-    confirmOrder: { en: "Confirm Order", ro: "Confirmă Comanda" },
+    confirmOrder: { en: "Confirm", ro: "Confirmă" },
+    cancelOrder: { en: "Cancel", ro: "Anulează" },
     clientInfo: { en: "Client Info", ro: "Info Client" },
     scheduledFor: { en: "Scheduled For", ro: "Programat Pentru" }
   },
@@ -219,25 +223,25 @@ export const CONTENT = {
   guide: {
     welcome: {
       title: { en: "Welcome to SofaSteam", ro: "Bun venit la SofaSteam" },
-      desc: { en: "Let's take a quick tour of our premium services and features.", ro: "Să facem un tur rapid al serviciilor și funcțiilor noastre premium." },
-      skip: { en: "Skip Tour", ro: "Sari peste tur" },
+      desc: { en: "Let us show you how to book premium cleaning services in seconds.", ro: "Hai să îți arătăm cum poți rezerva servicii premium în câteva secunde." },
+      skip: { en: "Skip Tour", ro: "Sari Peste" },
       btn: { en: "Start Tour", ro: "Începe Turul" }
     },
     steps: [
       {
         title: { en: "Filter Services", ro: "Filtrează Serviciile" },
-        desc: { en: "Easily navigate through our specialized cleaning categories.", ro: "Navighează ușor prin categoriile noastre de curățenie specializată." }
+        desc: { en: "Easily browse our services by category: Upholstery, Carpets, Auto, and more.", ro: "Navighează ușor printre serviciile noastre pe categorii: Tapițerie, Covoare, Auto și altele." }
       },
       {
-        title: { en: "AI Assistant", ro: "Asistent AI" },
-        desc: { en: "Get instant advice on stains and fabric care from our AI.", ro: "Primește sfaturi instantanee despre pete și îngrijirea țesăturilor de la AI-ul nostru." }
+        title: { en: "AI Cleaning Expert", ro: "Expert AI Curățenie" },
+        desc: { en: "Have questions about stains or fabrics? Ask our AI assistant anytime.", ro: "Ai întrebări despre pete sau țesături? Întreabă asistentul nostru AI oricând." }
       },
       {
-        title: { en: "Client Access", ro: "Acces Client" },
-        desc: { en: "Sign in to manage bookings and view your history.", ro: "Conectează-te pentru a gestiona rezervările și a vedea istoricul." }
+        title: { en: "Client Account", ro: "Cont Client" },
+        desc: { en: "Log in to manage your bookings and view order history.", ro: "Conectează-te pentru a gestiona rezervările și istoricul comenzilor." }
       }
     ],
     next: { en: "Next", ro: "Următorul" },
-    finish: { en: "Finish", ro: "Finalizează" }
+    finish: { en: "Finish", ro: "Finalizare" }
   }
 };

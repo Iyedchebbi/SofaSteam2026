@@ -8,6 +8,7 @@ import CartDrawer from './components/CartDrawer';
 import AdminDashboard from './components/AdminDashboard';
 import LegalModal from './components/LegalModal';
 import BookingsModal from './components/BookingsModal';
+import ChatAssistant from './components/ChatAssistant';
 import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL } from './constants';
 import { Language, Product, ProductCategory, UserProfile, CartItem } from './types';
 import { supabase } from './services/supabase';
@@ -24,12 +25,14 @@ const App: React.FC = () => {
   const [bookingsModal, setBookingsModal] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   
   // Data State
   const [user, setUser] = useState<any>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [confirmedCount, setConfirmedCount] = useState(0);
   
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -59,6 +62,7 @@ const App: React.FC = () => {
       if (currentUser) {
         fetchUserProfile(currentUser.id, currentUser);
         fetchCart(currentUser.id);
+        fetchConfirmedCount(currentUser.id);
       }
     });
 
@@ -68,15 +72,44 @@ const App: React.FC = () => {
       if (currentUser) {
         fetchUserProfile(currentUser.id, currentUser);
         fetchCart(currentUser.id);
+        fetchConfirmedCount(currentUser.id);
       } else {
         setIsAdmin(false);
         setUserProfile(null);
         setCartItems([]);
+        setConfirmedCount(0);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Real-time Order Updates (Notifications)
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel('orders-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'orders',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          if (payload.new.status === 'confirmed') {
+            setConfirmedCount((prev) => prev + 1);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
 
   useEffect(() => {
     fetchProducts();
@@ -89,6 +122,16 @@ const App: React.FC = () => {
       setProducts(data as Product[]);
     }
     setLoadingProducts(false);
+  };
+
+  const fetchConfirmedCount = async (uid: string) => {
+    const { count } = await supabase
+        .from('orders')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', uid)
+        .eq('status', 'confirmed');
+    
+    if (count !== null) setConfirmedCount(count);
   };
 
   const fetchUserProfile = async (uid: string, sessionUser?: any) => {
@@ -169,6 +212,7 @@ const App: React.FC = () => {
       setUserProfile(null);
       setIsAdmin(false);
       setCartItems([]);
+      setConfirmedCount(0);
     }
   };
 
@@ -214,8 +258,8 @@ const App: React.FC = () => {
     const email = formData.get('email') as string;
     const message = formData.get('message') as string;
     
-    const subject = `Service Request from ${name}`;
-    const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+    const subject = `Consultation Request from ${name}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\nInquiry:\n${message}`;
     
     // Open mail client
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -305,11 +349,14 @@ const App: React.FC = () => {
             </button>
             
             {/* Auth / User Area */}
-            <div>
+            <div id="auth-button">
               {user ? (
                 <div className={`flex items-center gap-3 pl-4 border-l ${scrolled ? 'border-gray-200 dark:border-gray-700' : 'border-white/20'}`}>
-                    <button onClick={() => setBookingsModal(true)} className={`p-2.5 rounded-full transition-all group ${scrolled ? 'text-gray-600 dark:text-gray-300 hover:text-brand-600 hover:bg-brand-50' : 'text-white/80 hover:bg-white/10 hover:text-white'}`} title={CONTENT.profile.myBookings[language]}>
+                    <button onClick={() => { setBookingsModal(true); setConfirmedCount(0); }} className={`p-2.5 rounded-full transition-all group relative ${scrolled ? 'text-gray-600 dark:text-gray-300 hover:text-brand-600 hover:bg-brand-50' : 'text-white/80 hover:bg-white/10 hover:text-white'}`} title={CONTENT.profile.myBookings[language]}>
                        <Icons.History size={20} />
+                       {confirmedCount > 0 && (
+                           <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 border-2 border-white dark:border-gray-900 rounded-full animate-pulse"></span>
+                       )}
                     </button>
                     <button onClick={() => setIsCartOpen(true)} className="relative group">
                       <div className={`p-2.5 rounded-full transition-all ${scrolled ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 border border-brand-100 dark:border-brand-900' : 'bg-white/90 text-brand-700 shadow-lg'}`}>
@@ -377,9 +424,10 @@ const App: React.FC = () => {
                            </div>
                            {CONTENT.profile.title[language]}
                        </button>
-                       <button onClick={() => { setBookingsModal(true); setIsMenuOpen(false); }} className="flex items-center gap-3 text-xl text-gray-700 dark:text-gray-200 p-3 w-full justify-center bg-gray-100 dark:bg-gray-900 rounded-xl">
+                       <button onClick={() => { setBookingsModal(true); setConfirmedCount(0); setIsMenuOpen(false); }} className="flex items-center gap-3 text-xl text-gray-700 dark:text-gray-200 p-3 w-full justify-center bg-gray-100 dark:bg-gray-900 rounded-xl">
                            <Icons.History />
                            {CONTENT.profile.myBookings[language]}
+                           {confirmedCount > 0 && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{confirmedCount}</span>}
                        </button>
                        <button onClick={() => { setIsCartOpen(true); setIsMenuOpen(false); }} className="flex items-center gap-3 text-xl text-gray-700 dark:text-gray-200 p-3 w-full justify-center bg-gray-100 dark:bg-gray-900 rounded-xl">
                            <Icons.ClipboardList />
@@ -482,7 +530,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="flex justify-center mb-16">
-               <div className="inline-flex flex-wrap justify-center gap-2 bg-white dark:bg-gray-900/50 p-2.5 rounded-full shadow-lg border border-gray-100 dark:border-white/5 backdrop-blur-sm">
+               <div id="services-filter" className="inline-flex flex-wrap justify-center gap-2 bg-white dark:bg-gray-900/50 p-2.5 rounded-full shadow-lg border border-gray-100 dark:border-white/5 backdrop-blur-sm">
                   {categories.map(cat => (
                      <button 
                        key={cat} 
@@ -564,7 +612,7 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Contact Section */}
+      {/* Contact Section - Extraordinary Form */}
       <section id="contact" className="py-32 bg-[#050505] relative overflow-hidden text-white">
          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
          <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-brand-900/20 to-transparent pointer-events-none"></div>
@@ -609,27 +657,38 @@ const App: React.FC = () => {
                   </div>
                </div>
 
-               <div className="glass-card bg-white/5 backdrop-blur-2xl border border-white/10 p-12 rounded-[3rem] shadow-2xl relative">
+               <div className="glass-card bg-black/40 backdrop-blur-2xl border border-white/10 p-12 rounded-[3rem] shadow-2xl relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                   <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
                      <Icons.Quote className="w-40 h-40 text-white" />
                   </div>
-                  <h4 className="text-4xl font-display font-bold mb-10 text-white">Send a request</h4>
-                  <form className="space-y-8" onSubmit={handleSendMessage}>
-                     <div className="grid grid-cols-2 gap-8">
-                        <div className="space-y-3">
-                           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.nameLabel[language]}</label>
-                           <input type="text" name="name" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" placeholder="John Doe" required />
+                  
+                  <h4 className="text-4xl font-display font-bold mb-10 text-white relative z-10">
+                      {CONTENT.contact.sendButton[language]}
+                  </h4>
+                  
+                  <form className="space-y-8 relative z-10" onSubmit={handleSendMessage}>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-3 group/input">
+                           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1 group-focus-within/input:text-brand-400 transition-colors">{CONTENT.contact.nameLabel[language]}</label>
+                           <input type="text" name="name" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" placeholder="John Doe" required />
                         </div>
-                        <div className="space-y-3">
-                           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.emailLabel[language]}</label>
-                           <input type="email" name="email" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" placeholder="john@example.com" required />
+                        <div className="space-y-3 group/input">
+                           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1 group-focus-within/input:text-brand-400 transition-colors">{CONTENT.contact.emailLabel[language]}</label>
+                           <input type="email" name="email" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" placeholder="john@example.com" required />
                         </div>
                      </div>
-                     <div className="space-y-3">
-                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.messageLabel[language]}</label>
-                        <textarea name="message" rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 resize-none transition-all focus:bg-white/10 focus:border-white/20" placeholder="Tell us about your cleaning needs..." required></textarea>
+                     <div className="space-y-3 group/input">
+                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1 group-focus-within/input:text-brand-400 transition-colors">{CONTENT.contact.messageLabel[language]}</label>
+                        <textarea 
+                            name="message" 
+                            rows={4} 
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white placeholder-gray-600 resize-none transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" 
+                            placeholder={language === 'en' ? "Tell us about your cleaning needs or questions..." : "Spune-ne despre nevoile tale de curățenie sau întrebări..."} 
+                            required
+                        ></textarea>
                      </div>
-                     <button className="w-full bg-white text-brand-950 hover:bg-brand-50 font-bold py-6 rounded-2xl text-xl shadow-lg hover:shadow-2xl hover:shadow-white/20 transition-all active:scale-[0.98] flex justify-center items-center gap-3">
+                     <button className="w-full bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-bold py-6 rounded-2xl text-xl shadow-lg hover:shadow-brand-500/40 transition-all active:scale-[0.98] flex justify-center items-center gap-3 border border-white/10">
                         {CONTENT.contact.sendButton[language]}
                         <Icons.Send className="w-6 h-6" />
                      </button>
@@ -649,15 +708,15 @@ const App: React.FC = () => {
 
          <div className="container mx-auto px-6 relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-32 items-start">
-               {/* Brand */}
-               <div className="space-y-8">
+               {/* Brand - Centered */}
+               <div className="space-y-8 flex flex-col items-center text-center md:items-start md:text-left">
                   <div className="flex items-center gap-5 h-10 mb-2">
                      <div className="w-20 h-20 -ml-2">
                         <img src={LOGO_URL} className="w-full h-full object-contain" alt="Logo" />
                      </div>
                      <span className="text-3xl font-display font-black tracking-tight pt-2">{APP_NAME}</span>
                   </div>
-                  <p className="text-gray-400 text-lg leading-relaxed font-light text-left max-w-sm">
+                  <p className="text-gray-400 text-lg leading-relaxed font-light max-w-sm">
                      Redefining cleanliness with premium technology. Showroom quality for your living space.
                   </p>
                </div>
@@ -747,6 +806,25 @@ const App: React.FC = () => {
               <span className="absolute 1.5 -right-1.5 w-5 h-5 bg-green-400 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></span>
               <Icons.Phone className="w-9 h-9 animate-tada" />
           </a>
+      </div>
+
+      {/* AI Assistant Floating */}
+      <div id="ai-widget" className="fixed bottom-8 left-8 z-[50]">
+          <button 
+            onClick={() => setIsChatOpen(!isChatOpen)}
+            className="group bg-white dark:bg-gray-800 text-brand-600 hover:text-brand-700 w-14 h-14 rounded-full shadow-2xl shadow-brand-500/20 transition-all hover:scale-110 active:scale-95 flex items-center justify-center border border-gray-100 dark:border-gray-700 relative"
+          >
+              <Icons.Sparkles className="w-6 h-6" />
+              {!isChatOpen && (
+                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
+              )}
+          </button>
+          
+          {isChatOpen && (
+              <div className="absolute bottom-16 left-0 w-[350px] h-[500px] shadow-2xl rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 animate-[scaleIn_0.2s_ease-out] origin-bottom-left">
+                  <ChatAssistant language={language} onClose={() => setIsChatOpen(false)} />
+              </div>
+          )}
       </div>
 
       <AuthModal 

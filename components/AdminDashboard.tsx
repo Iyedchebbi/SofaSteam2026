@@ -46,7 +46,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
     try {
       const { error } = await supabase.from('products').delete().eq('id', id);
       if (error) throw error;
-      setProducts(prev => prev.filter(p => p.id !== id));
+      await fetchProducts();
     } catch (error: any) {
       alert(`Error: ${error.message}`);
     } finally {
@@ -60,7 +60,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
     try {
       const { error } = await supabase.from('orders').delete().eq('id', id);
       if (error) throw error;
-      setOrders(prev => prev.filter(o => o.id !== id));
+      await fetchOrders(); // Sync with DB
     } catch (error: any) {
       alert(`Error: ${error.message}`);
     } finally {
@@ -68,13 +68,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
     }
   };
 
-  const handleConfirmOrder = async (id: number) => {
+  const handleUpdateOrderStatus = async (id: number, status: 'confirmed' | 'cancelled') => {
      try {
-         const { error } = await supabase.from('orders').update({ status: 'confirmed' }).eq('id', id);
+         const { error } = await supabase.from('orders').update({ status }).eq('id', id);
          if (error) throw error;
-         setOrders(prev => prev.map(o => o.id === id ? { ...o, status: 'confirmed' } : o));
+         await fetchOrders(); // Sync with DB
      } catch (error: any) {
-         alert(`Error confirming: ${error.message}`);
+         alert(`Error updating status: ${error.message}`);
      }
   };
 
@@ -168,12 +168,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                  <div className="text-center py-20 text-gray-400">No bookings found.</div>
              ) : (
                  orders.map(order => (
-                    <div key={order.id} className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
+                    <div key={order.id} className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 relative group">
                         <div className="flex flex-col md:flex-row justify-between items-start mb-4 gap-4">
                            <div>
                               <div className="flex items-center gap-3 mb-1">
                                  <div className="font-bold text-lg">Booking #{order.id}</div>
-                                 <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${order.status === 'confirmed' ? 'bg-green-100 text-green-800' : order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'}`}>
+                                 <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
+                                     order.status === 'confirmed' ? 'bg-green-100 text-green-800' : 
+                                     order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                                     'bg-yellow-100 text-yellow-800'
+                                 }`}>
                                    {order.status}
                                  </span>
                               </div>
@@ -198,18 +202,38 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
 
                            <div className="flex items-center gap-3">
                               {order.status === 'pending' && (
-                                <button 
-                                  onClick={() => handleConfirmOrder(order.id)}
-                                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-bold shadow-md hover:bg-green-500 transition-colors"
-                                >
-                                    <Icons.Check className="w-4 h-4" />
-                                    {t.confirmOrder[language]}
-                                </button>
+                                <>
+                                    <button 
+                                        onClick={() => handleUpdateOrderStatus(order.id, 'confirmed')}
+                                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-bold shadow-md hover:bg-green-500 transition-colors"
+                                        title="Confirm Order"
+                                    >
+                                        <Icons.Check className="w-4 h-4" />
+                                        {t.confirmOrder[language]}
+                                    </button>
+                                    <button 
+                                        onClick={() => handleUpdateOrderStatus(order.id, 'cancelled')}
+                                        className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                        title="Cancel Order"
+                                    >
+                                        <Icons.X className="w-4 h-4" />
+                                    </button>
+                                </>
                               )}
+                              {order.status === 'confirmed' && (
+                                   <button 
+                                     onClick={() => handleUpdateOrderStatus(order.id, 'cancelled')}
+                                     className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-600 rounded-lg font-bold hover:bg-red-200 transition-colors"
+                                   >
+                                       <Icons.X className="w-4 h-4" /> {t.cancelOrder[language]}
+                                   </button>
+                              )}
+                              
                               <button 
                                 onClick={() => handleDeleteOrder(order.id)}
                                 disabled={deletingOrderId === order.id}
-                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors ml-2"
+                                title="Delete from database"
                               >
                                 {deletingOrderId === order.id ? <div className="w-4 h-4 border-2 border-red-200 border-t-red-600 rounded-full animate-spin"></div> : <Icons.Trash className="w-4 h-4" />}
                               </button>

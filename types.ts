@@ -34,7 +34,7 @@ export interface Order {
   id: number;
   created_at: string;
   total_amount: number;
-  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'completed';
   shipping_address: string;
   scheduled_date?: string;
   client_name?: string;
