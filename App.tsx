@@ -479,16 +479,16 @@ const App: React.FC = () => {
                <span className="text-xs sm:text-sm font-semibold tracking-wide uppercase font-display">#1 Premium Cleaning in Bucharest</span>
             </div>
             
-            {/* Main Headline */}
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-display font-black text-white tracking-tight mb-8 sm:mb-10 leading-[1.1] sm:leading-[1] drop-shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            {/* Main Headline - Optimized for Mobile scaling */}
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-display font-black text-white tracking-tight mb-8 sm:mb-10 leading-[1.1] sm:leading-[1] drop-shadow-2xl animate-fade-in-up px-2" style={{ animationDelay: '0.1s' }}>
               {language === 'en' ? 'Revive Your' : 'Revitalizează'} <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-white to-brand-400 relative z-10 filter drop-shadow-lg break-words sm:break-normal">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-white to-brand-400 relative z-10 filter drop-shadow-lg break-words">
                 {language === 'en' ? 'Living Space' : 'Spațiul Tău'}
               </span>
             </h1>
             
             {/* Subheadline */}
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto mb-10 sm:mb-14 leading-relaxed font-light animate-fade-in-up drop-shadow-md px-2" style={{ animationDelay: '0.2s' }}>
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto mb-10 sm:mb-14 leading-relaxed font-light animate-fade-in-up drop-shadow-md px-4" style={{ animationDelay: '0.2s' }}>
               {CONTENT.hero.subtitle[language]}
             </p>
             
@@ -516,15 +516,15 @@ const App: React.FC = () => {
       </section>
 
       {/* Services Grid */}
-      <section id="services" className="py-20 lg:py-32 bg-gray-50 dark:bg-[#030712] relative overflow-hidden">
+      <section id="services" className="py-16 sm:py-20 lg:py-32 bg-gray-50 dark:bg-[#030712] relative overflow-hidden">
          <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] lg:w-[800px] h-[300px] sm:h-[400px] lg:h-[800px] bg-brand-500/5 rounded-full blur-[80px] lg:blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
          <div className="absolute bottom-0 left-0 w-[200px] sm:w-[300px] lg:w-[600px] h-[200px] sm:h-[300px] lg:h-[600px] bg-purple-500/5 rounded-full blur-[60px] lg:blur-[100px] translate-y-1/2 -translate-x-1/3"></div>
          
          <div className="container mx-auto px-4 sm:px-6 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 lg:mb-20">
+            <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 lg:mb-20">
                <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4 font-display">Our Expertise</h2>
-               <h3 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-6 tracking-tight">Premium Services</h3>
-               <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl font-light leading-relaxed">Select a service to request a personalized quote. <br className="hidden md:block"/>We bring industrial-grade cleaning directly to your location.</p>
+               <h3 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 tracking-tight">Premium Services</h3>
+               <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl font-light leading-relaxed px-2">Select a service to request a personalized quote. <br className="hidden md:block"/>We bring industrial-grade cleaning directly to your location.</p>
             </div>
 
             <div className="flex justify-center mb-10 sm:mb-16 overflow-x-auto pb-4 scrollbar-hide px-2">
@@ -582,7 +582,7 @@ const App: React.FC = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 lg:py-32 bg-white dark:bg-[#080c14] overflow-hidden border-t border-gray-100 dark:border-white/5">
+      <section id="about" className="py-16 sm:py-20 lg:py-32 bg-white dark:bg-[#080c14] overflow-hidden border-t border-gray-100 dark:border-white/5">
          <div className="container mx-auto px-4 sm:px-6 text-center">
             <div className="max-w-4xl mx-auto">
                 <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4 font-display">Why Choose SofaSteam</h2>
@@ -611,7 +611,7 @@ const App: React.FC = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 lg:py-32 bg-[#050505] relative overflow-hidden text-white">
+      <section id="contact" className="py-16 sm:py-20 lg:py-32 bg-[#050505] relative overflow-hidden text-white">
          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
          <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-brand-900/20 to-transparent pointer-events-none"></div>
          
@@ -629,7 +629,7 @@ const App: React.FC = () => {
                         </div>
                         <div>
                            <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Call / WhatsApp</p>
-                           <span className="text-2xl lg:text-3xl font-bold font-mono group-hover:text-brand-300 transition-colors">{PHONE}</span>
+                           <span className="text-xl sm:text-2xl lg:text-3xl font-bold font-mono group-hover:text-brand-300 transition-colors">{PHONE}</span>
                         </div>
                      </a>
                      
@@ -639,7 +639,7 @@ const App: React.FC = () => {
                         </div>
                         <div className="overflow-hidden">
                            <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Email</p>
-                           <span className="text-lg lg:text-2xl font-bold group-hover:text-brand-300 transition-colors truncate block">{CONTACT_EMAIL}</span>
+                           <span className="text-base sm:text-lg lg:text-2xl font-bold group-hover:text-brand-300 transition-colors truncate block">{CONTACT_EMAIL}</span>
                         </div>
                      </a>
                      
@@ -657,7 +657,7 @@ const App: React.FC = () => {
 
                <div className="order-1 lg:order-2 glass-card bg-black/40 backdrop-blur-2xl border border-white/10 p-6 lg:p-12 rounded-[2rem] lg:rounded-[3rem] shadow-2xl relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                  <div className="absolute top-0 right-0 p-8 lg:p-12 opacity-5 pointer-events-none">
+                  <div className="absolute top-0 right-0 p-6 sm:p-8 lg:p-12 opacity-5 pointer-events-none">
                      <Icons.Quote className="w-24 h-24 lg:w-40 lg:h-40 text-white" />
                   </div>
                   
@@ -787,7 +787,7 @@ const App: React.FC = () => {
                </div>
             </div>
             
-            <div className="border-t border-white/10 pt-10 lg:pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="border-t border-white/10 pt-10 lg:pt-12 flex flex-col md:flex-row justify-between items-center gap-8 pb-20 sm:pb-8">
                <p className="text-gray-500 text-sm font-medium tracking-wide text-center md:text-left">
                  {CONTENT.footer.rights[language]}
                </p>
@@ -803,7 +803,7 @@ const App: React.FC = () => {
       </footer>
 
       {/* WhatsApp Floating */}
-      <div className="fixed bottom-6 right-6 lg:bottom-8 lg:right-8 z-[100] flex flex-col items-end gap-6">
+      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[100] flex flex-col items-end gap-6">
           <a 
             href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} 
             target="_blank"
