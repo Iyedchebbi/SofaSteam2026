@@ -1,3 +1,4 @@
+
 import { NavItem } from './types';
 
 export const APP_NAME = "SofaSteam";
@@ -7,6 +8,12 @@ export const CONTACT_EMAIL = "contact@sofasteam.com";
 export const INSTAGRAM_URL = "https://www.instagram.com/sofasteambucuresti/";
 export const LOGO_URL = "https://drive.google.com/thumbnail?id=1BacA0IQieo9xB9cuIGHNtHGOxtSHYx8A&sz=w1000";
 export const HERO_BG_URL = "https://drive.google.com/thumbnail?id=1xxtR5hULJbnG61HBqwMeR3IiI_xdaZMt&sz=w1920";
+
+export const WHY_US_IMAGES = [
+  "https://drive.google.com/thumbnail?id=1bStuxBqDd3Y8Ugcgj-_hzL0_ih6QZFub&sz=w1000",
+  "https://drive.google.com/thumbnail?id=14VD1-6G5lZYAB4YT-C95UC7tSeIGjArW&sz=w1000",
+  "https://drive.google.com/thumbnail?id=1_RqdPTOqJC1sa9xQmBoV7IZdD4HPmfyJ&sz=w1000"
+];
 
 export const NAV_ITEMS: NavItem[] = [
   { id: 'home', label: { en: 'Home', ro: 'Acasă' }, href: '#home' },
@@ -24,12 +31,12 @@ export const CONTENT = {
   about: {
     title: { en: "Excellence in Every Detail", ro: "Excelență în Fiecare Detaliu" },
     text: { 
-      en: `SofaSteam is Bucharest's premier cleaning service, dedicated to transforming living spaces through advanced technology and expert care.`,
-      ro: `SofaSteam este serviciul de curățenie premier din București, dedicat transformării spațiilor de locuit prin tehnologie avansată și îngrijire expertă.`
+      en: `See the difference our technology makes. From deep-cleaning car interiors to revitalizing delicate sofas, our results speak for themselves.`,
+      ro: `Vezi diferența pe care o face tehnologia noastră. De la curățarea profundă a interioarelor auto până la revitalizarea canapelelor delicate, rezultatele vorbesc de la sine.`
     },
     qualityText: {
-      en: "We don't just clean; we revitalize. Using industrial-grade steam technology and eco-friendly solutions, we eliminate 99.9% of bacteria and allergens while restoring the beauty of your fabrics. Your health and satisfaction are our absolute priorities.",
-      ro: "Nu doar curățăm; revitalizăm. Folosind tehnologie cu abur de grad industrial și soluții ecologice, eliminăm 99,9% din bacterii și alergeni, restabilind în același timp frumusețea țesăturilor tale. Sănătatea și satisfacția ta sunt prioritățile noastre absolute."
+      en: "We eliminate 99.9% of bacteria using industrial-grade steam and eco-friendly solutions, restoring the original beauty of your fabrics.",
+      ro: "Eliminăm 99,9% din bacterii folosind abur industrial și soluții ecologice, restabilind frumusețea originală a țesăturilor tale."
     },
     steps: [
       {
@@ -70,7 +77,7 @@ export const CONTENT = {
     contact: { en: "Contact Info", ro: "Info Contact" },
     newsletter: { en: "Stay Updated", ro: "Rămâi Informat" },
     subscribe: { en: "Join", ro: "Alătură-te" },
-    rights: { en: "© 2025 SofaSteam. Premium Cleaning Services.", ro: "© 2025 SofaSteam. Servicii Premium de Curățenie." }
+    rights: { en: "© 2025 SofaSteam. All rights reserved.", ro: "© 2025 SofaSteam. Toate drepturile rezervate." }
   },
   auth: {
     signIn: { en: "Client Access", ro: "Acces Client" },
@@ -112,7 +119,7 @@ export const CONTENT = {
     carpet: { en: "Carpets & Rugs", ro: "Covoare & Mochete" },
     auto: { en: "Auto Detailing", ro: "Detailing Auto" },
     general: { en: "Specialized Cleaning", ro: "Curățare Specializată" },
-    // Keeping old keys for backward compatibility if needed, but UI uses above
+    // Keeping old keys for backward compatibility
     solutions: { en: "Solutions", ro: "Soluții" },
     equipment: { en: "Equipment", ro: "Echipamente" },
     accessories: { en: "Accessories", ro: "Accesorii" }
@@ -129,5 +136,57 @@ export const CONTENT = {
     manage: { en: "Manage Services", ro: "Gestionează Servicii" },
     imageUpload: { en: "Service Image", ro: "Imagine Serviciu" },
     selectImage: { en: "Upload Image", ro: "Încarcă Imagine" }
+  },
+  legal: {
+    privacy: {
+      title: { en: "Privacy Policy", ro: "Politica de Confidențialitate" },
+      content: {
+        en: `
+          <h3>1. Information We Collect</h3>
+          <p>We collect information you provide directly to us when you create an account, request a service, or communicate with us.</p>
+          
+          <h3>2. How We Use Your Information</h3>
+          <p>We use your information to provide, maintain, and improve our services, process transactions, and communicate with you.</p>
+          
+          <h3>3. Information Sharing</h3>
+          <p>We do not share your personal information with third parties except as necessary to provide our services.</p>
+        `,
+        ro: `
+          <h3>1. Informațiile pe care le colectăm</h3>
+          <p>Colectăm informațiile pe care ni le furnizați direct atunci când vă creați un cont sau solicitați un serviciu.</p>
+          
+          <h3>2. Cum utilizăm informațiile dvs.</h3>
+          <p>Folosim informațiile dvs. pentru a furniza și îmbunătăți serviciile noastre și pentru a comunica cu dvs.</p>
+          
+          <h3>3. Partajarea informațiilor</h3>
+          <p>Nu partajăm informațiile dvs. personale cu terțe părți, cu excepția cazurilor necesare pentru furnizarea serviciilor.</p>
+        `
+      }
+    },
+    terms: {
+      title: { en: "Terms of Service", ro: "Termeni și Condiții" },
+      content: {
+        en: `
+          <h3>1. Acceptance of Terms</h3>
+          <p>By using our services, you agree to be bound by these Terms.</p>
+          
+          <h3>2. Services</h3>
+          <p>SofaSteam provides professional cleaning services subject to availability.</p>
+          
+          <h3>3. Booking</h3>
+          <p>Final pricing may be adjusted based on on-site inspection.</p>
+        `,
+        ro: `
+          <h3>1. Acceptarea Termenilor</h3>
+          <p>Prin utilizarea serviciilor noastre, sunteți de acord să respectați acești Termeni.</p>
+          
+          <h3>2. Servicii</h3>
+          <p>SofaSteam oferă servicii profesionale de curățenie în limita disponibilității.</p>
+          
+          <h3>3. Rezervare</h3>
+          <p>Prețul final poate fi ajustat pe baza inspecției la fața locului.</p>
+        `
+      }
+    }
   }
 };

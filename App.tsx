@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Icons } from './components/Icon';
 import ChatAssistant from './components/ChatAssistant';
@@ -6,7 +7,8 @@ import ProductModal from './components/ProductModal';
 import ProfileModal from './components/ProfileModal';
 import CartDrawer from './components/CartDrawer';
 import AdminDashboard from './components/AdminDashboard';
-import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL } from './constants';
+import LegalModal from './components/LegalModal';
+import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL, WHY_US_IMAGES } from './constants';
 import { Language, Product, ProductCategory, UserProfile, CartItem } from './types';
 import { supabase } from './services/supabase';
 
@@ -18,6 +20,7 @@ const App: React.FC = () => {
   // Modals & UI State
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; type: 'signin' | 'signup' }>({ isOpen: false, type: 'signin' });
   const [productModal, setProductModal] = useState<{ isOpen: boolean; product: Product | null }>({ isOpen: false, product: null });
+  const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'privacy' | 'terms' | null }>({ isOpen: false, type: null });
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -206,9 +209,8 @@ const App: React.FC = () => {
           
           {/* Logo */}
           <a href="#home" onClick={(e) => handleNavClick(e, 'home')} className="flex items-center gap-3 group">
-            <div className="w-12 h-12 overflow-hidden rounded-xl shadow-2xl ring-2 ring-white/20 group-hover:ring-brand-500 transition-all duration-500 relative">
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
-              <img src={LOGO_URL} alt={APP_NAME} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+            <div className="w-14 h-14 lg:w-16 lg:h-16 transition-transform duration-500 group-hover:scale-110">
+              <img src={LOGO_URL} alt={APP_NAME} className="w-full h-full object-contain" />
             </div>
             <div className="flex flex-col">
               <span className={`text-2xl font-extrabold tracking-tight leading-none ${scrolled ? 'text-gray-900 dark:text-white' : 'text-white'}`}>
@@ -255,6 +257,13 @@ const App: React.FC = () => {
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white font-bold">{user.email[0].toUpperCase()}</div>
                       )}
+                  </button>
+                  <button 
+                    onClick={handleLogout}
+                    className={`p-2.5 rounded-full transition-all group ${scrolled ? 'text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' : 'text-white/70 hover:text-red-400 hover:bg-white/10'}`}
+                    title={CONTENT.auth.signOut[language]}
+                  >
+                    <Icons.LogOut size={20} className="group-hover:-translate-x-0.5 transition-transform" />
                   </button>
               </div>
             ) : (
@@ -336,7 +345,7 @@ const App: React.FC = () => {
                <p className="text-gray-600 dark:text-gray-400 text-xl font-light">Select a service to request a personalized quote. We bring industrial-grade cleaning directly to your location.</p>
             </div>
 
-            {/* Filter Pills - Modern Segmented Control */}
+            {/* Filter Pills */}
             <div className="flex justify-center mb-16">
                <div className="inline-flex flex-wrap justify-center gap-2 bg-white dark:bg-gray-900 p-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-800">
                   {categories.map(cat => (
@@ -390,29 +399,42 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Process / About Section */}
+      {/* Process / About Section with Image Collage */}
       <section id="about" className="py-32 bg-white dark:bg-gray-900 overflow-hidden">
          <div className="container mx-auto px-6">
-            <div className="flex flex-col lg:flex-row gap-20 items-center">
+            <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+               
+               {/* Bento Grid / Masonry Layout for Images */}
                <div className="lg:w-1/2 relative">
-                  <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl">
-                     <img src="https://images.unsplash.com/photo-1581578731117-10d52143b1e8?q=80&w=2070" alt="Process" className="w-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-                     {/* Floating Badge */}
-                     <div className="absolute bottom-10 right-10 bg-white dark:bg-gray-800/90 backdrop-blur-xl p-6 rounded-2xl shadow-2xl max-w-xs animate-float border border-gray-100 dark:border-gray-700">
-                        <div className="flex gap-4 items-center">
-                           <div className="w-14 h-14 bg-green-50 text-green-600 rounded-full flex items-center justify-center shrink-0">
-                              <Icons.ShieldCheck className="w-7 h-7" />
-                           </div>
-                           <div>
-                              <p className="font-bold text-gray-900 dark:text-white text-lg">Eco-Friendly</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Safe for kids & pets. <br/>Non-toxic solutions.</p>
-                           </div>
-                        </div>
+                  <div className="grid grid-cols-2 gap-4 h-[600px] w-full">
+                     {/* Image 1: Tall / Left */}
+                     <div className="relative rounded-[2rem] overflow-hidden row-span-2 group h-full shadow-2xl">
+                         <img src={WHY_US_IMAGES[0]} alt="Car Cleaning" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                         <div className="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-xl">
+                            <span className="text-white font-bold text-sm block">Auto Detailing</span>
+                         </div>
+                     </div>
+                     
+                     {/* Image 2: Top Right */}
+                     <div className="relative rounded-[2rem] overflow-hidden group h-full shadow-xl">
+                         <img src={WHY_US_IMAGES[1]} alt="Sofa Cleaning" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                         <div className="absolute bottom-4 left-4 bg-white/10 backdrop-blur-md border border-white/20 p-2 px-3 rounded-xl">
+                            <span className="text-white font-bold text-xs block">Deep Clean</span>
+                         </div>
+                     </div>
+
+                     {/* Image 3: Bottom Right */}
+                     <div className="relative rounded-[2rem] overflow-hidden group h-full shadow-xl">
+                         <img src={WHY_US_IMAGES[2]} alt="Process" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                         <div className="absolute bottom-4 left-4 bg-white/10 backdrop-blur-md border border-white/20 p-2 px-3 rounded-xl">
+                            <span className="text-white font-bold text-xs block">Technology</span>
+                         </div>
                      </div>
                   </div>
-                  {/* Decorative Elements */}
-                  <div className="absolute -top-10 -left-10 w-72 h-72 bg-brand-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-normal"></div>
-                  <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-normal"></div>
+                  
+                  {/* Decorative Glows */}
+                  <div className="absolute -top-10 -left-10 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl -z-10"></div>
+                  <div className="absolute bottom-10 -right-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
                </div>
 
                <div className="lg:w-1/2">
@@ -532,34 +554,34 @@ const App: React.FC = () => {
          <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[100px] pointer-events-none"></div>
 
          <div className="container mx-auto px-6 relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-24 items-start">
                {/* Column 1: Brand & Identity */}
-               <div className="space-y-8">
-                  <div className="flex items-center gap-4">
-                     <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-lg">
-                        <img src={LOGO_URL} className="w-10 h-10 object-contain" alt="Logo" />
+               <div className="space-y-6">
+                  <div className="flex items-center gap-4 h-8 mb-6">
+                     <div className="w-16 h-16 lg:w-20 lg:h-20 -ml-2">
+                        <img src={LOGO_URL} className="w-full h-full object-contain" alt="Logo" />
                      </div>
-                     <span className="text-2xl font-extrabold tracking-tight">{APP_NAME}</span>
+                     <span className="text-2xl font-extrabold tracking-tight pt-2">{APP_NAME}</span>
                   </div>
-                  <p className="text-gray-400 text-base leading-relaxed font-light">
-                     Redefining cleanliness in Bucharest with premium technology and eco-friendly solutions. 
-                     We bring showroom quality back to your living space.
+                  <p className="text-gray-400 text-base leading-snug font-light text-left">
+                     Redefining cleanliness with premium technology. <br/>
+                     Showroom quality for your living space.
                   </p>
                </div>
 
                {/* Column 2: Navigation */}
-               <div>
-                  <h4 className="font-bold text-white mb-8 text-lg flex items-center gap-2">
+               <div className="pt-2">
+                  <h4 className="font-bold text-white mb-6 text-lg flex items-center gap-2 h-8">
                     <span className="w-8 h-[2px] bg-brand-500 inline-block"></span>
                     Company
                   </h4>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3">
                      {NAV_ITEMS.map(item => (
                         <li key={item.id}>
                            <a 
                              href={item.href} 
                              onClick={(e) => handleNavClick(e, item.id)} 
-                             className="text-gray-400 hover:text-white transition-all block py-1 text-base hover:translate-x-1 flex items-center gap-2 group"
+                             className="text-gray-400 hover:text-white transition-all block text-base hover:translate-x-1 flex items-center gap-2 group"
                            >
                               <Icons.ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-brand-500" />
                               {item.label[language]}
@@ -570,15 +592,15 @@ const App: React.FC = () => {
                </div>
 
                {/* Column 3: Follow Us */}
-               <div>
-                  <h4 className="font-bold text-white mb-8 text-lg flex items-center gap-2">
+               <div className="pt-2">
+                  <h4 className="font-bold text-white mb-6 text-lg flex items-center gap-2 h-8">
                     <span className="w-8 h-[2px] bg-brand-500 inline-block"></span>
                     {CONTENT.footer.followUs[language]}
                   </h4>
                   <a 
                      href={INSTAGRAM_URL} 
                      target="_blank" 
-                     className="inline-flex items-center gap-3 text-gray-400 hover:text-white transition-all group p-3 bg-white/5 rounded-xl hover:bg-brand-600 border border-white/10 hover:border-brand-500"
+                     className="inline-flex items-center gap-3 text-gray-400 hover:text-white transition-all group p-3 bg-white/5 rounded-xl hover:bg-brand-600 border border-white/10 hover:border-brand-500 w-full"
                   >
                      <Icons.Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
                      <span className="font-medium text-sm">@sofasteambucuresti</span>
@@ -586,21 +608,21 @@ const App: React.FC = () => {
                </div>
 
                {/* Column 4: Newsletter & Contact */}
-               <div>
-                  <h4 className="font-bold text-white mb-8 text-lg flex items-center gap-2">
+               <div className="pt-2">
+                  <h4 className="font-bold text-white mb-6 text-lg flex items-center gap-2 h-8">
                     <span className="w-8 h-[2px] bg-brand-500 inline-block"></span>
                     {CONTENT.footer.newsletter[language]}
                   </h4>
-                  <p className="text-gray-400 mb-6 text-sm leading-relaxed">
-                     Join our exclusive list for seasonal offers and expert maintenance tips.
+                  <p className="text-gray-400 mb-4 text-sm leading-snug">
+                     Join for exclusive seasonal offers <br/> and maintenance tips.
                   </p>
-                  <form className="relative group mb-8" onSubmit={(e) => e.preventDefault()}>
+                  <form className="relative group" onSubmit={(e) => e.preventDefault()}>
                      <input 
                        type="email" 
                        placeholder="Enter your email" 
-                       className="w-full bg-white/5 border border-white/10 rounded-xl pl-5 pr-12 py-4 text-sm focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" 
+                       className="w-full bg-white/5 border border-white/10 rounded-xl pl-5 pr-12 py-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" 
                      />
-                     <button className="absolute right-2 top-2 bottom-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg w-10 flex items-center justify-center transition-all shadow-lg hover:shadow-brand-500/25">
+                     <button className="absolute right-2 top-1.5 bottom-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg w-10 flex items-center justify-center transition-all shadow-lg hover:shadow-brand-500/25">
                         <Icons.ArrowRight className="w-4 h-4" />
                      </button>
                   </form>
@@ -612,8 +634,8 @@ const App: React.FC = () => {
                  {CONTENT.footer.rights[language]}
                </p>
                <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
-                  <a href="#" className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Privacy Policy</a>
-                  <a href="#" className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Terms of Service</a>
+                  <button onClick={() => setLegalModal({ isOpen: true, type: 'privacy' })} className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Privacy Policy</button>
+                  <button onClick={() => setLegalModal({ isOpen: true, type: 'terms' })} className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Terms of Service</button>
                   <button onClick={scrollToTop} className="flex items-center gap-2 hover:text-white transition-colors">
                      Back to Top <Icons.ArrowRight className="-rotate-90 w-3 h-3" />
                   </button>
@@ -669,6 +691,13 @@ const App: React.FC = () => {
         product={productModal.product} 
         onSaved={fetchProducts} 
         language={language} 
+      />
+
+      <LegalModal 
+        isOpen={legalModal.isOpen}
+        onClose={() => setLegalModal({ isOpen: false, type: null })}
+        type={legalModal.type}
+        language={language}
       />
     </div>
   );
