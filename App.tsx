@@ -57,7 +57,7 @@ const App: React.FC = () => {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
-        fetchUserProfile(currentUser.id);
+        fetchUserProfile(currentUser.id, currentUser);
         fetchCart(currentUser.id);
       }
     });
@@ -66,7 +66,7 @@ const App: React.FC = () => {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
-        fetchUserProfile(currentUser.id);
+        fetchUserProfile(currentUser.id, currentUser);
         fetchCart(currentUser.id);
       } else {
         setIsAdmin(false);
@@ -91,9 +91,52 @@ const App: React.FC = () => {
     setLoadingProducts(false);
   };
 
-  const fetchUserProfile = async (uid: string) => {
-    const { data } = await supabase.from('profiles').select('*').eq('id', uid).single();
+  const fetchUserProfile = async (uid: string, sessionUser?: any) => {
+    let { data, error } = await supabase.from('profiles').select('*').eq('id', uid).single();
+    
+    // Fallback: If profile doesn't exist (trigger failed or lag), create it manually using Google Metadata
+    if (!data && sessionUser) {
+        // Prepare profile data from Google session if available
+        const googleName = sessionUser.user_metadata?.full_name || '';
+        const googleAvatar = sessionUser.user_metadata?.avatar_url || '';
+        const email = sessionUser.email || '';
+
+        const { data: newProfile, error: createError } = await supabase.from('profiles').insert({
+            id: uid,
+            email: email,
+            role: 'customer',
+            full_name: googleName,
+            avatar_url: googleAvatar
+        }).select().single();
+        
+        if (newProfile && !createError) {
+             data = newProfile;
+        } else {
+             console.error("Failed to create fallback profile:", createError);
+        }
+    }
+
     if (data) {
+      // Sync Google Metadata if profile exists but fields are empty
+      if (sessionUser && sessionUser.app_metadata.provider === 'google') {
+          const googleAvatar = sessionUser.user_metadata.avatar_url;
+          const googleName = sessionUser.user_metadata.full_name;
+          
+          if (googleAvatar || googleName) {
+             const updates: any = {};
+             // Only update if current profile field is empty/null
+             if (!data.avatar_url && googleAvatar) updates.avatar_url = googleAvatar;
+             if (!data.full_name && googleName) updates.full_name = googleName;
+
+             if (Object.keys(updates).length > 0) {
+                 await supabase.from('profiles').update(updates).eq('id', uid);
+                 // Update local state immediately
+                 data.avatar_url = updates.avatar_url || data.avatar_url;
+                 data.full_name = updates.full_name || data.full_name;
+             }
+          }
+      }
+
       setUserProfile(data as UserProfile);
       setIsAdmin(data.role === 'admin');
     }
