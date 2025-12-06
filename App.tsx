@@ -7,7 +7,6 @@ import ProfileModal from './components/ProfileModal';
 import CartDrawer from './components/CartDrawer';
 import AdminDashboard from './components/AdminDashboard';
 import LegalModal from './components/LegalModal';
-import OnboardingGuide from './components/OnboardingGuide';
 import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL } from './constants';
 import { Language, Product, ProductCategory, UserProfile, CartItem } from './types';
 import { supabase } from './services/supabase';
@@ -206,8 +205,20 @@ const App: React.FC = () => {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(CONTENT.contact.successMessage[language]);
-    (e.target as HTMLFormElement).reset();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+    
+    const subject = `Service Request from ${name}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+    
+    // Open mail client
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    form.reset();
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -251,9 +262,6 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-[#030712] overflow-x-hidden selection:bg-brand-500 selection:text-white">
       
-      {/* Onboarding Tour */}
-      <OnboardingGuide language={language} />
-
       {/* Navbar - Floating Island Style */}
       <nav className={`fixed top-4 left-0 right-0 z-50 transition-all duration-500 flex justify-center px-4 pointer-events-none`}>
         <div className={`pointer-events-auto flex items-center justify-between transition-all duration-500 rounded-full ${scrolled ? 'glass-nav shadow-2xl shadow-black/5 py-3 px-6 w-full max-w-6xl mx-auto' : 'bg-transparent py-4 px-6 w-full container'}`}>
@@ -294,8 +302,8 @@ const App: React.FC = () => {
               {theme === 'light' ? <Icons.Moon size={18} /> : <Icons.Sun size={18} />}
             </button>
             
-            {/* Auth / User Area - ID for Tour */}
-            <div id="auth-button">
+            {/* Auth / User Area */}
+            <div>
               {user ? (
                 <div className={`flex items-center gap-3 pl-4 border-l ${scrolled ? 'border-gray-200 dark:border-gray-700' : 'border-white/20'}`}>
                     <button onClick={() => setIsCartOpen(true)} className="relative group">
@@ -440,14 +448,6 @@ const App: React.FC = () => {
                     {CONTENT.hero.cta[language]} <Icons.ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                </a>
-               <a 
-                 href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} 
-                 target="_blank"
-                 className="px-10 py-5 bg-white/5 backdrop-blur-md border border-white/10 text-white font-bold text-lg rounded-full hover:bg-white/10 transition-all flex items-center gap-3 hover:border-white/30 hover:shadow-glow"
-               >
-                  <Icons.Sparkles className="w-5 h-5 text-brand-300 animate-pulse" />
-                  {CONTENT.assistant.title[language]}
-               </a>
             </div>
          </div>
 
@@ -473,8 +473,8 @@ const App: React.FC = () => {
                <p className="text-gray-600 dark:text-gray-400 text-xl font-light leading-relaxed">Select a service to request a personalized quote. <br/>We bring industrial-grade cleaning directly to your location.</p>
             </div>
 
-            {/* Filter Pills - ID for Tour */}
-            <div className="flex justify-center mb-16" id="services-filter">
+            {/* Filter Pills */}
+            <div className="flex justify-center mb-16">
                <div className="inline-flex flex-wrap justify-center gap-2 bg-white dark:bg-gray-900/50 p-2.5 rounded-full shadow-lg border border-gray-100 dark:border-white/5 backdrop-blur-sm">
                   {categories.map(cat => (
                      <button 
@@ -615,16 +615,16 @@ const App: React.FC = () => {
                      <div className="grid grid-cols-2 gap-8">
                         <div className="space-y-3">
                            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.nameLabel[language]}</label>
-                           <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" placeholder="John Doe" required />
+                           <input type="text" name="name" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" placeholder="John Doe" required />
                         </div>
                         <div className="space-y-3">
                            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.emailLabel[language]}</label>
-                           <input type="email" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" placeholder="john@example.com" required />
+                           <input type="email" name="email" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" placeholder="john@example.com" required />
                         </div>
                      </div>
                      <div className="space-y-3">
                         <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{CONTENT.contact.messageLabel[language]}</label>
-                        <textarea rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 resize-none transition-all focus:bg-white/10 focus:border-white/20" placeholder="Tell us about your cleaning needs..." required></textarea>
+                        <textarea name="message" rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 resize-none transition-all focus:bg-white/10 focus:border-white/20" placeholder="Tell us about your cleaning needs..." required></textarea>
                      </div>
                      <button className="w-full bg-white text-brand-950 hover:bg-brand-50 font-bold py-6 rounded-2xl text-xl shadow-lg hover:shadow-2xl hover:shadow-white/20 transition-all active:scale-[0.98] flex justify-center items-center gap-3">
                         {CONTENT.contact.sendButton[language]}
@@ -738,7 +738,7 @@ const App: React.FC = () => {
       </footer>
 
       {/* Floating WhatsApp - Direct Redirect */}
-      <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-6" id="ai-widget">
+      <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-6">
           <a 
             href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} 
             target="_blank"

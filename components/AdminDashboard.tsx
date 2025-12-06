@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { CONTENT } from '../constants';
 import { Language, Product } from '../types';
@@ -15,6 +16,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<number | null>(null); // Track which ID is deleting
+  const [deletingOrderId, setDeletingOrderId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
   const [productModal, setProductModal] = useState<{ isOpen: boolean; product: Product | null }>({ isOpen: false, product: null });
   const [orders, setOrders] = useState<any[]>([]);
@@ -59,6 +61,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
       );
     } finally {
       setDeletingId(null);
+    }
+  };
+
+  const handleDeleteOrder = async (id: number) => {
+    if (!window.confirm(t.confirmDeleteOrder[language])) return;
+
+    setDeletingOrderId(id);
+    try {
+      const { error } = await supabase.from('orders').delete().eq('id', id);
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Update UI immediately
+      setOrders(prev => prev.filter(o => o.id !== id));
+    } catch (error: any) {
+      console.error("Delete order error:", error);
+      alert(language === 'ro' 
+        ? `Eroare la ștergerea rezervării: ${error.message}` 
+        : `Error deleting booking: ${error.message}`
+      );
+    } finally {
+      setDeletingOrderId(null);
     }
   };
 
@@ -183,9 +209,23 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                               <div className="font-bold text-lg">Order #{order.id}</div>
                               <div className="text-sm text-gray-500">{new Date(order.created_at).toLocaleString()}</div>
                            </div>
-                           <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
-                             {order.status}
-                           </span>
+                           <div className="flex items-center gap-3">
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
+                                {order.status}
+                              </span>
+                              <button 
+                                onClick={() => handleDeleteOrder(order.id)}
+                                disabled={deletingOrderId === order.id}
+                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                title="Delete Order"
+                              >
+                                {deletingOrderId === order.id ? (
+                                   <div className="w-4 h-4 border-2 border-red-200 border-t-red-600 rounded-full animate-spin"></div>
+                                ) : (
+                                   <Icons.Trash className="w-4 h-4" />
+                                )}
+                              </button>
+                           </div>
                         </div>
                         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-4">
                             {order.order_items.map((item: any) => (

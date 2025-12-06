@@ -4,7 +4,7 @@ import { NavItem } from './types';
 export const APP_NAME = "SofaSteam";
 export const ADDRESS = "Bulevardul Iuliu Maniu 71, Bucharest";
 export const PHONE = "+40745275324";
-export const CONTACT_EMAIL = "contact@sofasteam.com";
+export const CONTACT_EMAIL = "sofasteambucharest@gmail.com";
 export const INSTAGRAM_URL = "https://www.instagram.com/sofasteambucuresti/";
 export const LOGO_URL = "https://drive.google.com/thumbnail?id=1BacA0IQieo9xB9cuIGHNtHGOxtSHYx8A&sz=w1000";
 export const HERO_BG_URL = "https://drive.google.com/thumbnail?id=1xxtR5hULJbnG61HBqwMeR3IiI_xdaZMt&sz=w1920";
@@ -132,34 +132,11 @@ export const CONTENT = {
     editProduct: { en: "Edit Service", ro: "Editează Serviciu" },
     deleteProduct: { en: "Remove", ro: "Șterge" },
     confirmDelete: { en: "Delete this service offering?", ro: "Ștergeți acest serviciu?" },
+    confirmDeleteOrder: { en: "Delete this booking request?", ro: "Ștergeți această rezervare?" },
     save: { en: "Save Service", ro: "Salvează Serviciu" },
     manage: { en: "Manage Services", ro: "Gestionează Servicii" },
     imageUpload: { en: "Service Image", ro: "Imagine Serviciu" },
     selectImage: { en: "Upload Image", ro: "Încarcă Imagine" }
-  },
-  guide: {
-    welcome: {
-        title: { en: "Welcome to SofaSteam!", ro: "Bine ați venit la SofaSteam!" },
-        desc: { en: "Let's take a quick tour of our premium features.", ro: "Haideți să facem un tur rapid al funcțiilor noastre premium." },
-        btn: { en: "Start Tour", ro: "Începe Turul" },
-        skip: { en: "Skip", ro: "Sari" }
-    },
-    steps: [
-        {
-            title: { en: "Services", ro: "Servicii" },
-            desc: { en: "Filter and browse our diverse range of cleaning services here.", ro: "Filtrează și explorează gama noastră diversă de servicii aici." }
-        },
-        {
-            title: { en: "AI Assistant", ro: "Asistent AI" },
-            desc: { en: "Have questions about stains? Ask our AI expert instantly.", ro: "Ai întrebări despre pete? Întreabă expertul nostru AI." }
-        },
-        {
-            title: { en: "Client Access", ro: "Acces Client" },
-            desc: { en: "Login here to manage your profile and bookings.", ro: "Conectează-te aici pentru a gestiona profilul și rezervările." }
-        }
-    ],
-    next: { en: "Next", ro: "Următorul" },
-    finish: { en: "Finish", ro: "Gata" }
   },
   legal: {
     privacy: {
@@ -212,5 +189,29 @@ export const CONTENT = {
         `
       }
     }
+  },
+  guide: {
+    welcome: {
+      title: { en: "Welcome to SofaSteam", ro: "Bine ați venit la SofaSteam" },
+      desc: { en: "Let us show you how to book our premium cleaning services in just a few steps.", ro: "Haideți să vă arătăm cum să rezervați serviciile noastre de curățenie premium în doar câțiva pași." },
+      skip: { en: "Skip Tour", ro: "Sari Peste" },
+      btn: { en: "Start Guide", ro: "Începe Ghidul" }
+    },
+    steps: [
+      {
+        title: { en: "Filter Services", ro: "Filtrare Servicii" },
+        desc: { en: "Quickly find the service you need by selecting a category.", ro: "Găsiți rapid serviciul de care aveți nevoie selectând o categorie." }
+      },
+      {
+        title: { en: "AI Assistant", ro: "Asistent AI" },
+        desc: { en: "Have questions about stains? Ask our AI expert.", ro: "Aveți întrebări despre pete? Întrebați expertul nostru AI." }
+      },
+      {
+        title: { en: "Client Access", ro: "Acces Client" },
+        desc: { en: "Sign in to manage your bookings and profile.", ro: "Conectați-vă pentru a gestiona rezervările și profilul." }
+      }
+    ],
+    next: { en: "Next", ro: "Următorul" },
+    finish: { en: "Finish", ro: "Finalizare" }
   }
 };
