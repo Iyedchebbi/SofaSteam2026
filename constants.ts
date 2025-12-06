@@ -137,6 +137,30 @@ export const CONTENT = {
     imageUpload: { en: "Service Image", ro: "Imagine Serviciu" },
     selectImage: { en: "Upload Image", ro: "Încarcă Imagine" }
   },
+  guide: {
+    welcome: {
+        title: { en: "Welcome to SofaSteam!", ro: "Bine ați venit la SofaSteam!" },
+        desc: { en: "Let's take a quick tour of our premium features.", ro: "Haideți să facem un tur rapid al funcțiilor noastre premium." },
+        btn: { en: "Start Tour", ro: "Începe Turul" },
+        skip: { en: "Skip", ro: "Sari" }
+    },
+    steps: [
+        {
+            title: { en: "Services", ro: "Servicii" },
+            desc: { en: "Filter and browse our diverse range of cleaning services here.", ro: "Filtrează și explorează gama noastră diversă de servicii aici." }
+        },
+        {
+            title: { en: "AI Assistant", ro: "Asistent AI" },
+            desc: { en: "Have questions about stains? Ask our AI expert instantly.", ro: "Ai întrebări despre pete? Întreabă expertul nostru AI." }
+        },
+        {
+            title: { en: "Client Access", ro: "Acces Client" },
+            desc: { en: "Login here to manage your profile and bookings.", ro: "Conectează-te aici pentru a gestiona profilul și rezervările." }
+        }
+    ],
+    next: { en: "Next", ro: "Următorul" },
+    finish: { en: "Finish", ro: "Gata" }
+  },
   legal: {
     privacy: {
       title: { en: "Privacy Policy", ro: "Politica de Confidențialitate" },

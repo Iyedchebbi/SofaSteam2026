@@ -1,13 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import { Icons } from './components/Icon';
-import ChatAssistant from './components/ChatAssistant';
 import AuthModal from './components/AuthModal';
 import ProductModal from './components/ProductModal';
 import ProfileModal from './components/ProfileModal';
 import CartDrawer from './components/CartDrawer';
 import AdminDashboard from './components/AdminDashboard';
 import LegalModal from './components/LegalModal';
-import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL, WHY_US_IMAGES } from './constants';
+import OnboardingGuide from './components/OnboardingGuide';
+import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL } from './constants';
 import { Language, Product, ProductCategory, UserProfile, CartItem } from './types';
 import { supabase } from './services/supabase';
 
@@ -22,7 +23,6 @@ const App: React.FC = () => {
   const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'privacy' | 'terms' | null }>({ isOpen: false, type: null });
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   
   // Data State
   const [user, setUser] = useState<any>(null);
@@ -251,6 +251,9 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-[#030712] overflow-x-hidden selection:bg-brand-500 selection:text-white">
       
+      {/* Onboarding Tour */}
+      <OnboardingGuide language={language} />
+
       {/* Navbar - Floating Island Style */}
       <nav className={`fixed top-4 left-0 right-0 z-50 transition-all duration-500 flex justify-center px-4 pointer-events-none`}>
         <div className={`pointer-events-auto flex items-center justify-between transition-all duration-500 rounded-full ${scrolled ? 'glass-nav shadow-2xl shadow-black/5 py-3 px-6 w-full max-w-6xl mx-auto' : 'bg-transparent py-4 px-6 w-full container'}`}>
@@ -291,34 +294,37 @@ const App: React.FC = () => {
               {theme === 'light' ? <Icons.Moon size={18} /> : <Icons.Sun size={18} />}
             </button>
             
-            {user ? (
-              <div className={`flex items-center gap-3 pl-4 border-l ${scrolled ? 'border-gray-200 dark:border-gray-700' : 'border-white/20'}`}>
-                  <button onClick={() => setIsCartOpen(true)} className="relative group">
-                     <div className={`p-2.5 rounded-full transition-all ${scrolled ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 border border-brand-100 dark:border-brand-900' : 'bg-white/90 text-brand-700 shadow-lg'}`}>
-                        <Icons.ClipboardList size={20} />
-                     </div>
-                     {cartItems.length > 0 && <span className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full shadow-lg ring-2 ring-white dark:ring-gray-900 transform group-hover:scale-110 transition-transform">{cartItems.reduce((acc, item) => acc + item.quantity, 0)}</span>}
-                  </button>
-                  <button onClick={() => setIsProfileOpen(true)} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/50 shadow-lg hover:border-brand-500 transition-all ring-2 ring-transparent hover:ring-brand-200">
-                      {userProfile?.avatar_url ? (
-                        <img src={userProfile.avatar_url} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white font-bold">{user.email?.[0].toUpperCase()}</div>
-                      )}
-                  </button>
-                  <button 
-                    onClick={handleLogout}
-                    className={`p-2.5 rounded-full transition-all group ${scrolled ? 'text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' : 'text-white/70 hover:text-red-400 hover:bg-white/10'}`}
-                  >
-                    <Icons.LogOut size={20} className="group-hover:-translate-x-0.5 transition-transform" />
-                  </button>
-              </div>
-            ) : (
-              <button onClick={() => setAuthModal({ isOpen: true, type: 'signin' })} className={`px-6 py-2.5 rounded-full font-bold shadow-lg transition-all hover:translate-y-[-1px] hover:shadow-xl text-sm border border-transparent flex items-center gap-2 ${scrolled ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-white text-brand-900 hover:bg-brand-50'}`}>
-                 <Icons.User className="w-4 h-4" />
-                 {CONTENT.auth.signIn[language]}
-              </button>
-            )}
+            {/* Auth / User Area - ID for Tour */}
+            <div id="auth-button">
+              {user ? (
+                <div className={`flex items-center gap-3 pl-4 border-l ${scrolled ? 'border-gray-200 dark:border-gray-700' : 'border-white/20'}`}>
+                    <button onClick={() => setIsCartOpen(true)} className="relative group">
+                      <div className={`p-2.5 rounded-full transition-all ${scrolled ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 border border-brand-100 dark:border-brand-900' : 'bg-white/90 text-brand-700 shadow-lg'}`}>
+                          <Icons.ClipboardList size={20} />
+                      </div>
+                      {cartItems.length > 0 && <span className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full shadow-lg ring-2 ring-white dark:ring-gray-900 transform group-hover:scale-110 transition-transform">{cartItems.reduce((acc, item) => acc + item.quantity, 0)}</span>}
+                    </button>
+                    <button onClick={() => setIsProfileOpen(true)} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/50 shadow-lg hover:border-brand-500 transition-all ring-2 ring-transparent hover:ring-brand-200">
+                        {userProfile?.avatar_url ? (
+                          <img src={userProfile.avatar_url} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white font-bold">{user.email?.[0].toUpperCase()}</div>
+                        )}
+                    </button>
+                    <button 
+                      onClick={handleLogout}
+                      className={`p-2.5 rounded-full transition-all group ${scrolled ? 'text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' : 'text-white/70 hover:text-red-400 hover:bg-white/10'}`}
+                    >
+                      <Icons.LogOut size={20} className="group-hover:-translate-x-0.5 transition-transform" />
+                    </button>
+                </div>
+              ) : (
+                <button onClick={() => setAuthModal({ isOpen: true, type: 'signin' })} className={`px-6 py-2.5 rounded-full font-bold shadow-lg transition-all hover:translate-y-[-1px] hover:shadow-xl text-sm border border-transparent flex items-center gap-2 ${scrolled ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-white text-brand-900 hover:bg-brand-50'}`}>
+                  <Icons.User className="w-4 h-4" />
+                  {CONTENT.auth.signIn[language]}
+                </button>
+              )}
+            </div>
           </div>
           
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`lg:hidden p-2 rounded-lg ${scrolled ? 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800' : 'text-white hover:bg-white/20'}`}>
@@ -326,6 +332,63 @@ const App: React.FC = () => {
           </button>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 z-40 bg-white/95 dark:bg-gray-950/95 backdrop-blur-2xl transition-all duration-300 lg:hidden flex flex-col justify-center items-center gap-8 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="flex flex-col items-center gap-6 w-full px-6">
+              {NAV_ITEMS.map(item => (
+                  <a 
+                      key={item.id}
+                      href={item.href}
+                      onClick={(e) => handleNavClick(e, item.id)}
+                      className="text-3xl font-bold text-gray-900 dark:text-white hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                  >
+                      {item.label[language]}
+                  </a>
+              ))}
+          </div>
+
+          <div className="w-20 h-[1px] bg-gray-200 dark:bg-gray-800"></div>
+
+          <div className="flex flex-col items-center gap-6 w-full px-6">
+              {/* Auth / Profile Mobile */}
+              {user ? (
+                   <div className="flex flex-col items-center gap-5 w-full">
+                       <button onClick={() => { setIsProfileOpen(true); setIsMenuOpen(false); }} className="flex items-center gap-3 text-xl text-gray-700 dark:text-gray-200 p-3 w-full justify-center bg-gray-100 dark:bg-gray-900 rounded-xl">
+                           <div className="w-8 h-8 rounded-full overflow-hidden bg-brand-500 flex items-center justify-center text-white text-sm">
+                               {userProfile?.avatar_url ? (
+                                   <img src={userProfile.avatar_url} className="w-full h-full object-cover" />
+                               ) : (
+                                   user.email[0].toUpperCase()
+                               )}
+                           </div>
+                           {CONTENT.profile.title[language]}
+                       </button>
+                       <button onClick={() => { setIsCartOpen(true); setIsMenuOpen(false); }} className="flex items-center gap-3 text-xl text-gray-700 dark:text-gray-200 p-3 w-full justify-center bg-gray-100 dark:bg-gray-900 rounded-xl">
+                           <Icons.ClipboardList />
+                           {CONTENT.cart.title[language]} ({cartItems.length})
+                       </button>
+                       <button onClick={handleLogout} className="text-red-500 font-bold mt-2">
+                           {CONTENT.auth.signOut[language]}
+                       </button>
+                   </div>
+              ) : (
+                   <button onClick={() => { setAuthModal({ isOpen: true, type: 'signin' }); setIsMenuOpen(false); }} className="text-xl font-bold text-white bg-brand-600 py-3 px-8 rounded-full shadow-lg w-full max-w-xs">
+                       {CONTENT.auth.signIn[language]}
+                   </button>
+              )}
+
+              {/* Toggles Mobile */}
+              <div className="flex items-center gap-6 mt-4">
+                   <button onClick={toggleLanguage} className="text-gray-900 dark:text-white font-bold uppercase border-2 border-gray-200 dark:border-gray-700 px-6 py-2 rounded-xl">
+                       {language}
+                   </button>
+                   <button onClick={toggleTheme} className="text-gray-900 dark:text-white p-3 bg-gray-100 dark:bg-gray-800 rounded-full">
+                       {theme === 'light' ? <Icons.Moon /> : <Icons.Sun />}
+                   </button>
+              </div>
+          </div>
+      </div>
 
       {/* Hero Section - Immersive & Premium */}
       <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -377,13 +440,14 @@ const App: React.FC = () => {
                     {CONTENT.hero.cta[language]} <Icons.ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                </a>
-               <button 
-                 onClick={() => setIsChatOpen(true)} 
+               <a 
+                 href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} 
+                 target="_blank"
                  className="px-10 py-5 bg-white/5 backdrop-blur-md border border-white/10 text-white font-bold text-lg rounded-full hover:bg-white/10 transition-all flex items-center gap-3 hover:border-white/30 hover:shadow-glow"
                >
                   <Icons.Sparkles className="w-5 h-5 text-brand-300 animate-pulse" />
                   {CONTENT.assistant.title[language]}
-               </button>
+               </a>
             </div>
          </div>
 
@@ -409,8 +473,8 @@ const App: React.FC = () => {
                <p className="text-gray-600 dark:text-gray-400 text-xl font-light leading-relaxed">Select a service to request a personalized quote. <br/>We bring industrial-grade cleaning directly to your location.</p>
             </div>
 
-            {/* Filter Pills - Premium Segmented Control */}
-            <div className="flex justify-center mb-16">
+            {/* Filter Pills - ID for Tour */}
+            <div className="flex justify-center mb-16" id="services-filter">
                <div className="inline-flex flex-wrap justify-center gap-2 bg-white dark:bg-gray-900/50 p-2.5 rounded-full shadow-lg border border-gray-100 dark:border-white/5 backdrop-blur-sm">
                   {categories.map(cat => (
                      <button 
@@ -468,70 +532,31 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* About Section - Bento Layout */}
+      {/* About Section - Simple & Centered */}
       <section id="about" className="py-32 bg-white dark:bg-[#080c14] overflow-hidden border-t border-gray-100 dark:border-white/5">
-         <div className="container mx-auto px-6">
-            <div className="flex flex-col lg:flex-row gap-20 items-center">
-               
-               {/* Bento Grid */}
-               <div className="lg:w-1/2 relative">
-                  <div className="grid grid-cols-2 gap-5 h-[650px] w-full">
-                     {/* Image 1: Tall / Left */}
-                     <div className="relative rounded-[2.5rem] overflow-hidden row-span-2 group h-full shadow-2xl border border-gray-100 dark:border-white/5">
-                         <img src={WHY_US_IMAGES[0]} alt="Car Cleaning" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                         <div className="absolute bottom-6 left-6 right-6 glass-card p-4 rounded-2xl border-white/10">
-                            <span className="text-white font-bold font-display text-lg block">Auto Detailing</span>
-                            <span className="text-gray-300 text-xs mt-1 block">Interior Deep Clean</span>
-                         </div>
-                     </div>
-                     
-                     {/* Image 2: Top Right */}
-                     <div className="relative rounded-[2.5rem] overflow-hidden group h-full shadow-xl border border-gray-100 dark:border-white/5">
-                         <img src={WHY_US_IMAGES[1]} alt="Sofa Cleaning" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                         <div className="absolute bottom-4 left-4 glass-card p-2 px-4 rounded-full">
-                            <span className="text-white font-bold text-xs block">Fabric Restore</span>
-                         </div>
-                     </div>
+         <div className="container mx-auto px-6 text-center">
+            <div className="max-w-4xl mx-auto">
+                <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-sm mb-6 font-display">Why Choose SofaSteam</h2>
+                <h3 className="text-5xl lg:text-7xl font-display font-bold text-gray-900 dark:text-white mb-8 leading-[1.1] tracking-tight">{CONTENT.about.title[language]}</h3>
+                <div className="space-y-8 text-gray-600 dark:text-gray-300 text-xl leading-relaxed mb-16 font-light">
+                    <p>{CONTENT.about.text[language]}</p>
+                    <p className="font-medium text-gray-900 dark:text-white">{CONTENT.about.qualityText[language]}</p>
+                </div>
 
-                     {/* Image 3: Bottom Right */}
-                     <div className="relative rounded-[2.5rem] overflow-hidden group h-full shadow-xl border border-gray-100 dark:border-white/5">
-                         <img src={WHY_US_IMAGES[2]} alt="Process" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                         <div className="absolute bottom-4 left-4 glass-card p-2 px-4 rounded-full">
-                            <span className="text-white font-bold text-xs block">Technology</span>
-                         </div>
-                     </div>
-                  </div>
-                  
-                  {/* Decorative Glows */}
-                  <div className="absolute -top-20 -left-20 w-80 h-80 bg-brand-500/20 rounded-full blur-[100px] -z-10 mix-blend-multiply dark:mix-blend-screen"></div>
-               </div>
-
-               <div className="lg:w-1/2">
-                  <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-sm mb-6 font-display">Why Choose SofaSteam</h2>
-                  <h3 className="text-5xl lg:text-7xl font-display font-bold text-gray-900 dark:text-white mb-8 leading-[1.1] tracking-tight">{CONTENT.about.title[language]}</h3>
-                  <div className="space-y-8 text-gray-600 dark:text-gray-300 text-xl leading-relaxed mb-12 font-light">
-                     <p>{CONTENT.about.text[language]}</p>
-                     <p className="font-medium text-gray-900 dark:text-white border-l-4 border-brand-500 pl-6 py-1">{CONTENT.about.qualityText[language]}</p>
-                  </div>
-
-                  <div className="grid gap-5">
-                     {CONTENT.about.steps.map((step, idx) => {
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {CONTENT.about.steps.map((step, idx) => {
                         const Icon = Icons[step.icon as keyof typeof Icons] || Icons.Star;
                         return (
-                           <div key={idx} className="flex gap-8 p-6 rounded-3xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-default group border border-transparent hover:border-gray-200 dark:hover:border-white/10">
-                              <div className="w-16 h-16 bg-white dark:bg-gray-800 shadow-xl text-brand-600 dark:text-brand-400 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform border border-gray-100 dark:border-white/10">
-                                 <Icon className="w-8 h-8" />
-                              </div>
-                              <div>
-                                 <h4 className="font-bold text-xl text-gray-900 dark:text-white mb-2 font-display">{step.title[language]}</h4>
-                                 <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-base">{step.desc[language]}</p>
-                              </div>
-                           </div>
+                            <div key={idx} className="flex flex-col items-center p-8 rounded-3xl bg-gray-50 dark:bg-white/5 transition-colors cursor-default group border border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:shadow-lg">
+                                <div className="w-20 h-20 bg-white dark:bg-gray-800 shadow-xl text-brand-600 dark:text-brand-400 rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform border border-gray-100 dark:border-white/10 mb-6">
+                                    <Icon className="w-8 h-8" />
+                                </div>
+                                <h4 className="font-bold text-xl text-gray-900 dark:text-white mb-3 font-display">{step.title[language]}</h4>
+                                <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-base">{step.desc[language]}</p>
+                            </div>
                         )
-                     })}
-                  </div>
-               </div>
+                    })}
+                </div>
             </div>
          </div>
       </section>
@@ -712,20 +737,16 @@ const App: React.FC = () => {
          </div>
       </footer>
 
-      {/* Floating Chatbot */}
-      <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-6">
-          {isChatOpen && (
-              <div className="w-[380px] h-[600px] bg-white dark:bg-[#0B1120] rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800 animate-fade-in-up origin-bottom-right ring-1 ring-black/5 flex flex-col">
-                  <ChatAssistant language={language} onClose={() => setIsChatOpen(false)} />
-              </div>
-          )}
-          <button 
-            onClick={() => setIsChatOpen(!isChatOpen)} 
-            className="group bg-brand-600 hover:bg-brand-500 text-white w-20 h-20 rounded-full shadow-2xl shadow-brand-500/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center relative border-4 border-white dark:border-gray-900"
+      {/* Floating WhatsApp - Direct Redirect */}
+      <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-6" id="ai-widget">
+          <a 
+            href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} 
+            target="_blank"
+            className="group bg-brand-600 hover:bg-green-500 text-white w-20 h-20 rounded-full shadow-2xl shadow-brand-500/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center relative border-4 border-white dark:border-gray-900"
           >
               <span className="absolute 1.5 -right-1.5 w-5 h-5 bg-green-400 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></span>
-              {isChatOpen ? <Icons.X className="w-9 h-9" /> : <Icons.MessageCircle className="w-9 h-9" />}
-          </button>
+              <Icons.Phone className="w-9 h-9 animate-tada" />
+          </a>
       </div>
 
       <AuthModal 
