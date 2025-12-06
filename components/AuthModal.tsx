@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { CONTENT } from '../constants';
 import { Language } from '../types';
@@ -28,7 +27,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
 
   const handleSwitch = (newType: 'signin' | 'signup') => {
     setError(null);
-    setPassword(''); // Clear password on switch for security/UX
+    setPassword(''); 
     onSwitchMode(newType);
   };
 
@@ -37,7 +36,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
     setLoading(true);
     setError(null);
     
-    // Robust sanitization: Remove all whitespace including non-breaking spaces (U+00A0)
     const cleanedEmail = email.replace(/\s/g, '').trim().toLowerCase();
     const cleanedPassword = password.trim();
     const cleanedName = name.trim();
@@ -83,7 +81,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
         onClose();
       }
     } catch (err: any) {
-      console.error("Auth Error:", err);
       const msg = err.message || '';
       
       if (msg.includes('already registered')) {
@@ -107,54 +104,49 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
     setGoogleLoading(true);
     setError(null);
     try {
-        // PRODUCTION NOTE: Ensure your Supabase Dashboard -> Authentication -> URL Configuration
-        // includes your hosted URL (e.g., https://your-site.netlify.app) in "Redirect URLs"
-        // otherwise this will redirect to localhost.
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
               redirectTo: window.location.origin,
               queryParams: {
-                prompt: 'consent', // Forces account selection
-                // Removed 'access_type: offline' to reduce complexity/403 errors
+                prompt: 'consent',
               },
             }
         });
         if (error) throw error;
     } catch (err: any) {
-        console.error("Google Auth Error:", err);
         setError(err.message);
         setGoogleLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-[fadeIn_0.2s_ease-out]">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-[scaleIn_0.3s_ease-out] border border-gray-200 dark:border-gray-700">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-[fadeIn_0.3s_ease-out]">
+      <div className="bg-white dark:bg-[#0F172A] rounded-3xl shadow-2xl w-full max-w-md p-8 relative animate-[scaleIn_0.3s_ease-out] border border-gray-100 dark:border-gray-800">
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+          className="absolute top-6 right-6 text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white transition-colors"
         >
           <Icons.X className="w-6 h-6" />
         </button>
 
-        <h2 className="text-2xl font-bold mb-6 text-brand-700 dark:text-brand-500 text-center font-sans tracking-tight">
+        <h2 className="text-3xl font-display font-bold mb-8 text-center text-gray-900 dark:text-white tracking-tight">
           {isSignUp ? t.signUp[language] : t.signIn[language]}
         </h2>
 
         {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-xl border border-red-100 dark:border-red-800 flex items-start gap-2">
-                <div className="mt-1 min-w-[4px] h-4 bg-red-500 rounded-full"></div>
+            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 text-sm rounded-xl border border-red-100 dark:border-red-900/30 flex items-start gap-3">
+                <div className="mt-0.5 min-w-[4px] h-4 bg-red-500 rounded-full"></div>
                 <span className="flex-1 font-medium">{error}</span>
             </div>
         )}
 
-        <div className="mb-6">
+        <div className="mb-8">
             <button
                 type="button"
                 onClick={handleGoogleLogin}
                 disabled={googleLoading || loading}
-                className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-gray-700 font-bold py-3.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-all shadow-sm hover:shadow-md disabled:opacity-70 disabled:cursor-not-allowed group"
+                className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-bold py-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm hover:shadow-md disabled:opacity-70 disabled:cursor-not-allowed group"
             >
                 {googleLoading ? (
                   <div className="w-5 h-5 border-2 border-gray-300 border-t-brand-600 rounded-full animate-spin"></div>
@@ -172,23 +164,23 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
             </button>
         </div>
 
-        <div className="relative mb-6">
+        <div className="relative mb-8">
             <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
             </div>
-            <div className="relative flex justify-center text-xs uppercase font-bold tracking-wider">
-                <span className="px-3 py-1 bg-white dark:bg-gray-800 text-gray-400 rounded-full">
+            <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
+                <span className="px-4 py-1 bg-white dark:bg-[#0F172A] text-gray-400 rounded-full">
                     {language === 'ro' ? 'sau cu email' : 'or with email'}
                 </span>
             </div>
         </div>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-5" onSubmit={handleSubmit}>
           {isSignUp && (
             <div className="animate-[fadeIn_0.2s_ease-out]">
-              <label className="block text-xs font-bold mb-1.5 uppercase text-gray-500 tracking-wider ml-1">{t.name[language]}</label>
-              <div className="relative">
-                <Icons.User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <label className="block text-xs font-bold mb-2 uppercase text-gray-500 tracking-wider ml-1">{t.name[language]}</label>
+              <div className="relative group">
+                <Icons.User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-brand-500 transition-colors" />
                 <input 
                   type="text" 
                   name="name"
@@ -196,7 +188,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 pl-10 pr-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400"
+                  className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
                   placeholder={language === 'ro' ? "Ion Popescu" : "John Doe"}
                 />
               </div>
@@ -204,9 +196,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
           )}
 
           <div>
-            <label className="block text-xs font-bold mb-1.5 uppercase text-gray-500 tracking-wider ml-1">{t.email[language]}</label>
-            <div className="relative">
-               <Icons.Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <label className="block text-xs font-bold mb-2 uppercase text-gray-500 tracking-wider ml-1">{t.email[language]}</label>
+            <div className="relative group">
+               <Icons.Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-brand-500 transition-colors" />
                <input 
                 type="email" 
                 name="email"
@@ -214,32 +206,37 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 pl-10 pr-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400"
+                className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
                 placeholder="hello@sofasteam.com"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold mb-1.5 uppercase text-gray-500 tracking-wider ml-1">{t.password[language]}</label>
-            <input 
-              type="password" 
-              name="password"
-              autoComplete="current-password"
-              required
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400"
-              placeholder="••••••••"
-            />
+            <label className="block text-xs font-bold mb-2 uppercase text-gray-500 tracking-wider ml-1">{t.password[language]}</label>
+            <div className="relative group">
+               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-500 transition-colors">
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+               </div>
+               <input 
+                  type="password" 
+                  name="password"
+                  autoComplete="current-password"
+                  required
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
+                  placeholder="••••••••"
+                />
+            </div>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-4">
             <button 
               type="submit"
               disabled={loading || googleLoading}
-              className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 active:scale-[0.98]"
+              className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg hover:shadow-brand-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 active:scale-[0.98]"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -249,13 +246,13 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
             </button>
           </div>
           
-          <div className="text-center mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+          <div className="text-center mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
              <p className="text-sm text-gray-600 dark:text-gray-400">
                {isSignUp ? t.haveAccount[language] : t.noAccount[language]}{' '}
                <button 
                  type="button" 
                  onClick={() => handleSwitch(isSignUp ? 'signin' : 'signup')} 
-                 className="text-brand-600 hover:text-brand-500 font-bold hover:underline transition-all"
+                 className="text-brand-600 hover:text-brand-500 font-bold hover:underline transition-all ml-1"
                >
                  {isSignUp ? t.signInLink[language] : t.signUpLink[language]}
                </button>

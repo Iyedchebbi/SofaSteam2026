@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SofaSteam - Premium Cleaning Services</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -13,86 +15,122 @@
           extend: {
             fontFamily: {
               sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+              display: ['"Outfit"', 'sans-serif'],
             },
             colors: {
               brand: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                200: '#bae6fd',
-                300: '#7dd3fc',
-                400: '#38bdf8',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                700: '#0369a1',
-                800: '#075985',
-                900: '#0c4a6e',
-                950: '#082f49',
+                50: '#f0f7ff',
+                100: '#e0effe',
+                200: '#bae0fd',
+                300: '#7cc7fb',
+                400: '#36aaf7',
+                500: '#0c8de9',
+                600: '#0271c7', // Primary Brand Color
+                700: '#035ba1',
+                800: '#074d85',
+                900: '#0c416e',
+                950: '#082a49',
               }
             },
             animation: {
-              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+              'fade-in-up': 'fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+              'fade-in': 'fadeIn 0.6s ease-out forwards',
               'float': 'float 6s ease-in-out infinite',
               'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               'scroll': 'scroll 2s ease-in-out infinite',
+              'spin-slow': 'spin 3s linear infinite',
             },
             keyframes: {
               fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '0%': { opacity: '0', transform: 'translateY(40px)' },
                 '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
               },
               float: {
                 '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' },
+                '50%': { transform: 'translateY(-15px)' },
               },
               scroll: {
                 '0%': { transform: 'translateY(0)', opacity: '1' },
                 '100%': { transform: 'translateY(10px)', opacity: '0' },
               }
+            },
+            boxShadow: {
+              'glow': '0 0 20px rgba(12, 141, 233, 0.35)',
+              'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
             }
           }
         }
       }
     </script>
     <style>
-      /* Custom scrollbar for better aesthetics */
+      /* Smooth Scrolling & Scrollbar */
+      html {
+        scroll-behavior: smooth;
+      }
+      
       ::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
       }
       ::-webkit-scrollbar-track {
         background: #0f172a;
       }
       ::-webkit-scrollbar-thumb {
         background: #334155;
-        border-radius: 5px;
-        border: 2px solid #0f172a;
+        border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #475569;
       }
       
+      /* Advanced Glassmorphism */
       .glass-nav {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
       .dark .glass-nav {
-        background: rgba(15, 23, 42, 0.85);
+        background: rgba(3, 7, 18, 0.6);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       
       .glass-card {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
       }
       .dark .glass-card {
-        background: rgba(30, 41, 59, 0.4);
+        background: rgba(17, 24, 39, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(16px);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
       }
 
+      /* Text Gradients & Effects */
+      .text-gradient {
+        background: linear-gradient(135deg, #0c8de9 0%, #36aaf7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
       .text-outline {
         -webkit-text-stroke: 1px rgba(255,255,255,0.1);
         color: transparent;
+      }
+
+      /* Utilities */
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
     </style>
   <script type="importmap">
@@ -108,7 +146,7 @@
 }
 </script>
 </head>
-  <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 selection:bg-brand-500 selection:text-white font-sans antialiased">
+  <body class="bg-gray-50 dark:bg-[#030712] text-gray-900 dark:text-gray-100 transition-colors duration-500 selection:bg-brand-500 selection:text-white font-sans antialiased">
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
   </body>
