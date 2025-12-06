@@ -102,7 +102,30 @@ export const CONTENT = {
     checkout: { en: "Request Quote / Book", ro: "Cere Ofertă / Rezervă" },
     addSuccess: { en: "added to list!", ro: "adăugat la listă!" },
     loginRequired: { en: "Please log in to manage your bookings.", ro: "Conectează-te pentru a gestiona rezervările." },
-    items: { en: "services", ro: "servicii" }
+    items: { en: "services", ro: "servicii" },
+    bookingForm: {
+      title: { en: "Finalize Booking", ro: "Finalizare Rezervare" },
+      name: { en: "Full Name", ro: "Nume Complet" },
+      phone: { en: "Phone Number", ro: "Număr Telefon" },
+      address: { en: "Service Address", ro: "Adresa Serviciului" },
+      date: { en: "Preferred Date & Time", ro: "Data și Ora Preferată" },
+      submit: { en: "Confirm Booking", ro: "Confirmă Rezervarea" },
+      back: { en: "Back to List", ro: "Înapoi la Listă" }
+    }
+  },
+  bookings: {
+    title: { en: "My Requests", ro: "Cererile Mele" },
+    noOrders: { en: "No active requests found.", ro: "Nu aveți cereri active." },
+    status: {
+      pending: { en: "Pending Confirmation", ro: "În Așteptare" },
+      confirmed: { en: "Request Confirmed", ro: "Cerere Confirmată" },
+      completed: { en: "Completed", ro: "Finalizat" },
+      cancelled: { en: "Cancelled", ro: "Anulat" }
+    },
+    message: {
+      confirmed: { en: "We have received your request! Our team is preparing for your appointment.", ro: "Am primit cererea ta! Echipa noastră se pregătește pentru programare." },
+      pending: { en: "Waiting for admin approval.", ro: "Se așteaptă aprobarea administratorului." }
+    }
   },
   profile: {
     title: { en: "Client Profile", ro: "Profil Client" },
@@ -111,7 +134,8 @@ export const CONTENT = {
     avatar: { en: "Profile Photo", ro: "Poză Profil" },
     fullName: { en: "Full Name", ro: "Nume Complet" },
     upload: { en: "Change Photo", ro: "Schimbă Poza" },
-    uploading: { en: "Uploading...", ro: "Se încarcă..." }
+    uploading: { en: "Uploading...", ro: "Se încarcă..." },
+    myBookings: { en: "My Bookings", ro: "Rezervările Mele" }
   },
   categories: {
     all: { en: "All Services", ro: "Toate Serviciile" },
@@ -119,7 +143,6 @@ export const CONTENT = {
     carpet: { en: "Carpets & Rugs", ro: "Covoare & Mochete" },
     auto: { en: "Auto Detailing", ro: "Detailing Auto" },
     general: { en: "Specialized Cleaning", ro: "Curățare Specializată" },
-    // Keeping old keys for backward compatibility
     solutions: { en: "Solutions", ro: "Soluții" },
     equipment: { en: "Equipment", ro: "Echipamente" },
     accessories: { en: "Accessories", ro: "Accesorii" }
@@ -136,7 +159,10 @@ export const CONTENT = {
     save: { en: "Save Service", ro: "Salvează Serviciu" },
     manage: { en: "Manage Services", ro: "Gestionează Servicii" },
     imageUpload: { en: "Service Image", ro: "Imagine Serviciu" },
-    selectImage: { en: "Upload Image", ro: "Încarcă Imagine" }
+    selectImage: { en: "Upload Image", ro: "Încarcă Imagine" },
+    confirmOrder: { en: "Confirm Order", ro: "Confirmă Comanda" },
+    clientInfo: { en: "Client Info", ro: "Info Client" },
+    scheduledFor: { en: "Scheduled For", ro: "Programat Pentru" }
   },
   legal: {
     privacy: {
@@ -192,26 +218,26 @@ export const CONTENT = {
   },
   guide: {
     welcome: {
-      title: { en: "Welcome to SofaSteam", ro: "Bine ați venit la SofaSteam" },
-      desc: { en: "Let us show you how to book our premium cleaning services in just a few steps.", ro: "Haideți să vă arătăm cum să rezervați serviciile noastre de curățenie premium în doar câțiva pași." },
-      skip: { en: "Skip Tour", ro: "Sari Peste" },
-      btn: { en: "Start Guide", ro: "Începe Ghidul" }
+      title: { en: "Welcome to SofaSteam", ro: "Bun venit la SofaSteam" },
+      desc: { en: "Let's take a quick tour of our premium services and features.", ro: "Să facem un tur rapid al serviciilor și funcțiilor noastre premium." },
+      skip: { en: "Skip Tour", ro: "Sari peste tur" },
+      btn: { en: "Start Tour", ro: "Începe Turul" }
     },
     steps: [
       {
-        title: { en: "Filter Services", ro: "Filtrare Servicii" },
-        desc: { en: "Quickly find the service you need by selecting a category.", ro: "Găsiți rapid serviciul de care aveți nevoie selectând o categorie." }
+        title: { en: "Filter Services", ro: "Filtrează Serviciile" },
+        desc: { en: "Easily navigate through our specialized cleaning categories.", ro: "Navighează ușor prin categoriile noastre de curățenie specializată." }
       },
       {
         title: { en: "AI Assistant", ro: "Asistent AI" },
-        desc: { en: "Have questions about stains? Ask our AI expert.", ro: "Aveți întrebări despre pete? Întrebați expertul nostru AI." }
+        desc: { en: "Get instant advice on stains and fabric care from our AI.", ro: "Primește sfaturi instantanee despre pete și îngrijirea țesăturilor de la AI-ul nostru." }
       },
       {
         title: { en: "Client Access", ro: "Acces Client" },
-        desc: { en: "Sign in to manage your bookings and profile.", ro: "Conectați-vă pentru a gestiona rezervările și profilul." }
+        desc: { en: "Sign in to manage bookings and view your history.", ro: "Conectează-te pentru a gestiona rezervările și a vedea istoricul." }
       }
     ],
     next: { en: "Next", ro: "Următorul" },
-    finish: { en: "Finish", ro: "Finalizare" }
+    finish: { en: "Finish", ro: "Finalizează" }
   }
 };

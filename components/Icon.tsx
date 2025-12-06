@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { 
   Menu, X, Moon, Sun, ShoppingBag, MapPin, Phone, 
   Send, Sparkles, Instagram, Mail, Search, Globe, User, LogIn, MessageCircle,
   Truck, Package, ClipboardList, LayoutDashboard, Settings, LogOut,
   Trash2, Plus, Minus, ChevronRight, CheckCircle, Upload, Image,
-  Armchair, Clock, ShieldCheck, Star, ArrowRight, Quote
+  Armchair, Clock, ShieldCheck, Star, ArrowRight, Quote, Calendar, History, Check
 } from 'lucide-react';
 
 export const Icons = {
@@ -42,5 +43,8 @@ export const Icons = {
   ShieldCheck,
   Star,
   ArrowRight,
-  Quote
+  Quote,
+  Calendar,
+  History,
+  Check
 };

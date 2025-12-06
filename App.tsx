@@ -7,6 +7,7 @@ import ProfileModal from './components/ProfileModal';
 import CartDrawer from './components/CartDrawer';
 import AdminDashboard from './components/AdminDashboard';
 import LegalModal from './components/LegalModal';
+import BookingsModal from './components/BookingsModal';
 import { NAV_ITEMS, CONTENT, APP_NAME, LOGO_URL, ADDRESS, PHONE, CONTACT_EMAIL, INSTAGRAM_URL, HERO_BG_URL } from './constants';
 import { Language, Product, ProductCategory, UserProfile, CartItem } from './types';
 import { supabase } from './services/supabase';
@@ -20,6 +21,7 @@ const App: React.FC = () => {
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; type: 'signin' | 'signup' }>({ isOpen: false, type: 'signin' });
   const [productModal, setProductModal] = useState<{ isOpen: boolean; product: Product | null }>({ isOpen: false, product: null });
   const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'privacy' | 'terms' | null }>({ isOpen: false, type: null });
+  const [bookingsModal, setBookingsModal] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   
@@ -306,6 +308,9 @@ const App: React.FC = () => {
             <div>
               {user ? (
                 <div className={`flex items-center gap-3 pl-4 border-l ${scrolled ? 'border-gray-200 dark:border-gray-700' : 'border-white/20'}`}>
+                    <button onClick={() => setBookingsModal(true)} className={`p-2.5 rounded-full transition-all group ${scrolled ? 'text-gray-600 dark:text-gray-300 hover:text-brand-600 hover:bg-brand-50' : 'text-white/80 hover:bg-white/10 hover:text-white'}`} title={CONTENT.profile.myBookings[language]}>
+                       <Icons.History size={20} />
+                    </button>
                     <button onClick={() => setIsCartOpen(true)} className="relative group">
                       <div className={`p-2.5 rounded-full transition-all ${scrolled ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 border border-brand-100 dark:border-brand-900' : 'bg-white/90 text-brand-700 shadow-lg'}`}>
                           <Icons.ClipboardList size={20} />
@@ -372,6 +377,10 @@ const App: React.FC = () => {
                            </div>
                            {CONTENT.profile.title[language]}
                        </button>
+                       <button onClick={() => { setBookingsModal(true); setIsMenuOpen(false); }} className="flex items-center gap-3 text-xl text-gray-700 dark:text-gray-200 p-3 w-full justify-center bg-gray-100 dark:bg-gray-900 rounded-xl">
+                           <Icons.History />
+                           {CONTENT.profile.myBookings[language]}
+                       </button>
                        <button onClick={() => { setIsCartOpen(true); setIsMenuOpen(false); }} className="flex items-center gap-3 text-xl text-gray-700 dark:text-gray-200 p-3 w-full justify-center bg-gray-100 dark:bg-gray-900 rounded-xl">
                            <Icons.ClipboardList />
                            {CONTENT.cart.title[language]} ({cartItems.length})
@@ -398,7 +407,7 @@ const App: React.FC = () => {
           </div>
       </div>
 
-      {/* Hero Section - Immersive & Premium */}
+      {/* Hero Section */}
       <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
          {/* Parallax Background */}
          <div className="absolute inset-0 z-0">
@@ -438,7 +447,7 @@ const App: React.FC = () => {
             </p>
             
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <div className="flex justify-center animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
                <a 
                  href="#services" 
                  onClick={(e) => handleNavClick(e, 'services')} 
@@ -460,9 +469,8 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Services Grid - Tech Luxury */}
+      {/* Services Grid */}
       <section id="services" className="py-32 bg-gray-50 dark:bg-[#030712] relative overflow-hidden">
-         {/* Background Decoration */}
          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-brand-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3"></div>
          
@@ -473,7 +481,6 @@ const App: React.FC = () => {
                <p className="text-gray-600 dark:text-gray-400 text-xl font-light leading-relaxed">Select a service to request a personalized quote. <br/>We bring industrial-grade cleaning directly to your location.</p>
             </div>
 
-            {/* Filter Pills */}
             <div className="flex justify-center mb-16">
                <div className="inline-flex flex-wrap justify-center gap-2 bg-white dark:bg-gray-900/50 p-2.5 rounded-full shadow-lg border border-gray-100 dark:border-white/5 backdrop-blur-sm">
                   {categories.map(cat => (
@@ -488,21 +495,17 @@ const App: React.FC = () => {
                </div>
             </div>
 
-            {/* Service Cards - 3D Hover Effect */}
             {loadingProducts ? (
                <div className="flex justify-center py-20"><div className="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div></div>
             ) : (
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                   {filteredProducts.map((product) => (
                      <div key={product.id} className="group bg-white dark:bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-white/5 hover:-translate-y-2 hover:border-brand-500/30 relative">
-                        {/* Spotlight Effect (simulated) */}
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-900/0 group-hover:to-brand-900/5 transition-colors duration-500"></div>
-                        
                         <div className="relative h-80 overflow-hidden">
                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent z-10 opacity-60 group-hover:opacity-50 transition-opacity"></div>
                            <img src={product.image} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000" alt={product.name_en} />
                            
-                           {/* Floating Price Tag - Glass */}
                            <div className="absolute top-6 right-6 z-20 bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-xl group-hover:bg-brand-600/90 group-hover:border-brand-500 transition-colors">
                               Starting {product.price} RON
                            </div>
@@ -532,7 +535,7 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* About Section - Simple & Centered */}
+      {/* About Section */}
       <section id="about" className="py-32 bg-white dark:bg-[#080c14] overflow-hidden border-t border-gray-100 dark:border-white/5">
          <div className="container mx-auto px-6 text-center">
             <div className="max-w-4xl mx-auto">
@@ -561,7 +564,7 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Contact Section - Architectural */}
+      {/* Contact Section */}
       <section id="contact" className="py-32 bg-[#050505] relative overflow-hidden text-white">
          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
          <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-brand-900/20 to-transparent pointer-events-none"></div>
@@ -636,20 +639,17 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Stunning Mega Footer */}
+      {/* Mega Footer */}
       <footer className="bg-black pt-40 pb-16 text-white relative overflow-hidden border-t border-white/10">
-         {/* Giant Background Text */}
          <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none opacity-[0.05]">
             <span className="text-[25vw] font-display font-black leading-none text-white tracking-tight">SOFASTEAM</span>
          </div>
-         
-         {/* Gradient Orbs */}
          <div className="absolute top-0 left-0 w-[1000px] h-[1000px] bg-brand-900/10 rounded-full blur-[150px] pointer-events-none"></div>
          <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-indigo-900/10 rounded-full blur-[150px] pointer-events-none"></div>
 
          <div className="container mx-auto px-6 relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-32 items-start">
-               {/* Column 1: Brand & Identity */}
+               {/* Brand */}
                <div className="space-y-8">
                   <div className="flex items-center gap-5 h-10 mb-2">
                      <div className="w-20 h-20 -ml-2">
@@ -662,7 +662,7 @@ const App: React.FC = () => {
                   </p>
                </div>
 
-               {/* Column 2: Navigation */}
+               {/* Links */}
                <div className="pt-2">
                   <h4 className="font-bold text-white mb-8 text-xl flex items-center gap-3 font-display">
                     <span className="w-10 h-[2px] bg-brand-500 inline-block rounded-full"></span>
@@ -684,7 +684,7 @@ const App: React.FC = () => {
                   </ul>
                </div>
 
-               {/* Column 3: Follow Us */}
+               {/* Follow */}
                <div className="pt-2">
                   <h4 className="font-bold text-white mb-8 text-xl flex items-center gap-3 font-display">
                     <span className="w-10 h-[2px] bg-brand-500 inline-block rounded-full"></span>
@@ -700,7 +700,7 @@ const App: React.FC = () => {
                   </a>
                </div>
 
-               {/* Column 4: Newsletter & Contact */}
+               {/* Newsletter */}
                <div className="pt-2">
                   <h4 className="font-bold text-white mb-8 text-xl flex items-center gap-3 font-display">
                     <span className="w-10 h-[2px] bg-brand-500 inline-block rounded-full"></span>
@@ -737,7 +737,7 @@ const App: React.FC = () => {
          </div>
       </footer>
 
-      {/* Floating WhatsApp - Direct Redirect */}
+      {/* WhatsApp Floating */}
       <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-6">
           <a 
             href={`https://wa.me/${PHONE.replace(/[^0-9]/g, '')}`} 
@@ -772,6 +772,13 @@ const App: React.FC = () => {
         cartItems={cartItems}
         language={language}
         refreshCart={() => user && fetchCart(user.id)}
+      />
+
+      <BookingsModal
+        isOpen={bookingsModal}
+        onClose={() => setBookingsModal(false)}
+        language={language}
+        user={user}
       />
       
       <ProductModal 

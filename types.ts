@@ -1,3 +1,4 @@
+
 export type Language = 'en' | 'ro';
 
 export type ProductCategory = 'all' | 'upholstery' | 'carpet' | 'auto' | 'general';
@@ -33,8 +34,17 @@ export interface Order {
   id: number;
   created_at: string;
   total_amount: number;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered';
+  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   shipping_address: string;
+  scheduled_date?: string;
+  client_name?: string;
+  client_phone?: string;
+  order_items?: {
+    id: number;
+    quantity: number;
+    product: Product;
+    price_at_purchase: number;
+  }[];
 }
 
 export interface NavItem {
