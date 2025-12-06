@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { CONTENT } from '../constants';
 import { Language, UserProfile } from '../types';
@@ -168,7 +169,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, prof
                 type="text" 
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 pl-10 pr-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all"
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 pl-10 pr-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all"
                 placeholder="John Doe"
               />
             </div>
@@ -182,7 +183,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user, prof
                 type="tel" 
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 pl-10 pr-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all"
+                className="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 pl-10 pr-4 py-3 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all"
                 placeholder="+40 700 000 000"
               />
             </div>

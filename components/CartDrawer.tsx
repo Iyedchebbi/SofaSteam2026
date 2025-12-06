@@ -205,7 +205,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                            type="text" 
                            value={formData.name}
                            onChange={e => setFormData({...formData, name: e.target.value})}
-                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all shadow-sm"
+                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all shadow-sm"
                            placeholder="John Doe"
                         />
                      </div>
@@ -220,7 +220,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                            type="tel" 
                            value={formData.phone}
                            onChange={e => setFormData({...formData, phone: e.target.value})}
-                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all shadow-sm"
+                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all shadow-sm"
                            placeholder="+40 700 000 000"
                         />
                      </div>
@@ -235,7 +235,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                            rows={3}
                            value={formData.address}
                            onChange={e => setFormData({...formData, address: e.target.value})}
-                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all shadow-sm resize-none"
+                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all shadow-sm resize-none"
                            placeholder="Street, Number, Building..."
                         />
                      </div>
@@ -250,7 +250,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                            type="datetime-local" 
                            value={formData.date}
                            onChange={e => setFormData({...formData, date: e.target.value})}
-                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all shadow-sm"
+                           className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all shadow-sm"
                         />
                      </div>
                   </div>

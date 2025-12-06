@@ -482,7 +482,7 @@ const App: React.FC = () => {
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-display font-black text-white tracking-tight mb-8 sm:mb-10 leading-[1.1] sm:leading-[1] drop-shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               {language === 'en' ? 'Revive Your' : 'Revitalizează'} <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-white to-brand-400 relative z-10 filter drop-shadow-lg">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-white to-brand-400 relative z-10 filter drop-shadow-lg break-words sm:break-normal">
                 {language === 'en' ? 'Living Space' : 'Spațiul Tău'}
               </span>
             </h1>
@@ -669,11 +669,11 @@ const App: React.FC = () => {
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
                         <div className="space-y-2 lg:space-y-3 group/input">
                            <label className="text-[10px] lg:text-xs font-bold text-gray-400 uppercase tracking-wider ml-1 group-focus-within/input:text-brand-400 transition-colors">{CONTENT.contact.nameLabel[language]}</label>
-                           <input type="text" name="name" className="w-full bg-white/5 border border-white/10 rounded-xl lg:rounded-2xl px-4 py-3 lg:px-6 lg:py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" placeholder="John Doe" required />
+                           <input type="text" name="name" className="w-full bg-white/5 border border-white/10 rounded-xl lg:rounded-2xl px-4 py-3 lg:px-6 lg:py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white text-base placeholder-gray-600 transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" placeholder="John Doe" required />
                         </div>
                         <div className="space-y-2 lg:space-y-3 group/input">
                            <label className="text-[10px] lg:text-xs font-bold text-gray-400 uppercase tracking-wider ml-1 group-focus-within/input:text-brand-400 transition-colors">{CONTENT.contact.emailLabel[language]}</label>
-                           <input type="email" name="email" className="w-full bg-white/5 border border-white/10 rounded-xl lg:rounded-2xl px-4 py-3 lg:px-6 lg:py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" placeholder="john@example.com" required />
+                           <input type="email" name="email" className="w-full bg-white/5 border border-white/10 rounded-xl lg:rounded-2xl px-4 py-3 lg:px-6 lg:py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white text-base placeholder-gray-600 transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" placeholder="john@example.com" required />
                         </div>
                      </div>
                      <div className="space-y-2 lg:space-y-3 group/input">
@@ -681,7 +681,7 @@ const App: React.FC = () => {
                         <textarea 
                             name="message" 
                             rows={4} 
-                            className="w-full bg-white/5 border border-white/10 rounded-xl lg:rounded-2xl px-4 py-3 lg:px-6 lg:py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white placeholder-gray-600 resize-none transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" 
+                            className="w-full bg-white/5 border border-white/10 rounded-xl lg:rounded-2xl px-4 py-3 lg:px-6 lg:py-4 focus:ring-1 focus:ring-brand-500 outline-none text-white text-base placeholder-gray-600 resize-none transition-all focus:bg-white/10 focus:border-brand-500/50 shadow-inner" 
                             placeholder={language === 'en' ? "Tell us about your cleaning needs or questions..." : "Spune-ne despre nevoile tale de curățenie sau întrebări..."} 
                             required
                         ></textarea>
@@ -696,7 +696,7 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Mega Footer - Perfectly Aligned */}
+      {/* Mega Footer - Perfectly Aligned & Responsive */}
       <footer className="bg-black pt-20 lg:pt-40 pb-12 lg:pb-16 text-white relative overflow-hidden border-t border-white/10">
          <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none opacity-[0.05]">
             <span className="text-[20vw] font-display font-black leading-none text-white tracking-tight">SOFASTEAM</span>
@@ -710,7 +710,7 @@ const App: React.FC = () => {
                
                {/* Column 1: Brand & Identity */}
                <div className="space-y-6 lg:space-y-8 flex flex-col items-center text-center md:items-start md:text-left">
-                  <div className="flex items-center gap-4 h-16 mb-2 lg:mb-4"> {/* Enforced Height */}
+                  <div className="flex items-center gap-4 md:h-16 mb-2 lg:mb-4"> {/* Enforced Height on Desktop */}
                      <div className="w-12 h-12">
                         <img src={LOGO_URL} className="w-full h-full object-contain" alt="Logo" />
                      </div>
@@ -723,7 +723,7 @@ const App: React.FC = () => {
 
                {/* Column 2: Navigation */}
                <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                  <div className="h-16 flex items-center w-full justify-center md:justify-start mb-2 lg:mb-4"> {/* Enforced Height */}
+                  <div className="md:h-16 flex items-center w-full justify-center md:justify-start mb-2 lg:mb-4"> {/* Enforced Height on Desktop */}
                      <h4 className="font-bold text-white text-lg lg:text-xl flex items-center gap-3 font-display">
                        <span className="w-8 h-[2px] bg-brand-500 inline-block rounded-full"></span>
                        Company
@@ -747,7 +747,7 @@ const App: React.FC = () => {
 
                {/* Column 3: Follow Us */}
                <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                  <div className="h-16 flex items-center w-full justify-center md:justify-start mb-2 lg:mb-4"> {/* Enforced Height */}
+                  <div className="md:h-16 flex items-center w-full justify-center md:justify-start mb-2 lg:mb-4"> {/* Enforced Height on Desktop */}
                      <h4 className="font-bold text-white text-lg lg:text-xl flex items-center gap-3 font-display">
                        <span className="w-8 h-[2px] bg-brand-500 inline-block rounded-full"></span>
                        {CONTENT.footer.followUs[language]}
@@ -765,7 +765,7 @@ const App: React.FC = () => {
 
                {/* Column 4: Newsletter */}
                <div className="flex flex-col items-center md:items-start text-center md:text-left w-full">
-                  <div className="h-16 flex items-center w-full justify-center md:justify-start mb-2 lg:mb-4"> {/* Enforced Height */}
+                  <div className="md:h-16 flex items-center w-full justify-center md:justify-start mb-2 lg:mb-4"> {/* Enforced Height on Desktop */}
                      <h4 className="font-bold text-white text-lg lg:text-xl flex items-center gap-3 font-display">
                        <span className="w-8 h-[2px] bg-brand-500 inline-block rounded-full"></span>
                        {CONTENT.footer.newsletter[language]}
@@ -778,7 +778,7 @@ const App: React.FC = () => {
                      <input 
                        type="email" 
                        placeholder="Enter your email" 
-                       className="w-full bg-white/5 border border-white/10 rounded-2xl pl-5 pr-14 py-3 lg:py-4 text-sm lg:text-base focus:ring-2 focus:ring-brand-500 outline-none text-white placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" 
+                       className="w-full bg-white/5 border border-white/10 rounded-2xl pl-5 pr-14 py-3 lg:py-4 text-sm lg:text-base focus:ring-2 focus:ring-brand-500 outline-none text-white text-base placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" 
                      />
                      <button className="absolute right-2 top-2 bottom-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl w-10 lg:w-12 flex items-center justify-center transition-all shadow-lg hover:shadow-brand-500/25">
                         <Icons.ArrowRight className="w-4 h-4 lg:w-5 lg:h-5" />

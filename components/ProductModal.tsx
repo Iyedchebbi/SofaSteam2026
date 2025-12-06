@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { CONTENT } from '../constants';
 import { Language, Product, ProductCategory } from '../types';
@@ -138,12 +139,12 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
                <div>
                   <label className="block text-xs font-bold mb-1 uppercase text-gray-500 tracking-wider">Service Name (EN)</label>
                   <input required type="text" value={formData.name_en} onChange={e => setFormData({...formData, name_en: e.target.value})}
-                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all" />
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all text-base" />
                </div>
                <div>
                   <label className="block text-xs font-bold mb-1 uppercase text-gray-500 tracking-wider">Description (EN)</label>
                   <textarea required rows={4} value={formData.description_en} onChange={e => setFormData({...formData, description_en: e.target.value})}
-                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all resize-none" />
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all resize-none text-base" />
                </div>
             </div>
             
@@ -151,12 +152,12 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
                <div>
                   <label className="block text-xs font-bold mb-1 uppercase text-gray-500 tracking-wider">Nume Serviciu (RO)</label>
                   <input required type="text" value={formData.name_ro} onChange={e => setFormData({...formData, name_ro: e.target.value})}
-                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all" />
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all text-base" />
                </div>
                <div>
                   <label className="block text-xs font-bold mb-1 uppercase text-gray-500 tracking-wider">Descriere (RO)</label>
                   <textarea required rows={4} value={formData.description_ro} onChange={e => setFormData({...formData, description_ro: e.target.value})}
-                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all resize-none" />
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all resize-none text-base" />
                </div>
             </div>
           </div>
@@ -166,14 +167,14 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
                 <label className="block text-xs font-bold mb-1 uppercase text-gray-500 tracking-wider">Starting Price (RON)</label>
                 <div className="relative">
                    <input required type="number" step="0.01" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})}
-                     className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all" />
+                     className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all text-base" />
                    <span className="absolute right-3 top-2.5 text-gray-400 font-bold text-sm">RON</span>
                 </div>
              </div>
              <div>
                 <label className="block text-xs font-bold mb-1 uppercase text-gray-500 tracking-wider">Category</label>
                 <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value as ProductCategory})}
-                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white cursor-pointer">
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white cursor-pointer text-base">
                     <option value="upholstery">Upholstery (Canapele)</option>
                     <option value="carpet">Carpet (Covoare)</option>
                     <option value="auto">Auto Detailing</option>

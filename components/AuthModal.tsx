@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { CONTENT } from '../constants';
 import { Language } from '../types';
@@ -188,7 +189,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
+                  className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
                   placeholder={language === 'ro' ? "Ion Popescu" : "John Doe"}
                 />
               </div>
@@ -206,7 +207,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
+                className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
                 placeholder="hello@sofasteam.com"
               />
             </div>
@@ -226,7 +227,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
+                  className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 pl-12 pr-4 py-4 focus:ring-2 focus:ring-brand-500 outline-none text-base dark:text-white transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-900"
                   placeholder="••••••••"
                 />
             </div>
