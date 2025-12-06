@@ -527,13 +527,13 @@ const App: React.FC = () => {
                <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl font-light leading-relaxed px-2">Select a service to request a personalized quote. <br className="hidden md:block"/>We bring industrial-grade cleaning directly to your location.</p>
             </div>
 
-            <div className="flex justify-center mb-10 sm:mb-16 overflow-x-auto pb-4 scrollbar-hide px-2">
-               <div className="inline-flex flex-nowrap gap-2 bg-white dark:bg-gray-900/50 p-2 sm:p-2.5 rounded-full shadow-lg border border-gray-100 dark:border-white/5 backdrop-blur-sm min-w-max">
+            <div className="flex overflow-x-auto pb-4 scrollbar-hide px-4 -mx-4 sm:mx-0 justify-start sm:justify-center mb-10 sm:mb-16 snap-x w-full">
+               <div className="inline-flex flex-nowrap gap-2 bg-white dark:bg-gray-900/50 p-2 sm:p-2.5 rounded-full shadow-lg border border-gray-100 dark:border-white/5 backdrop-blur-sm min-w-max mx-auto sm:mx-0">
                   {categories.map(cat => (
                      <button 
                        key={cat} 
                        onClick={() => setActiveCategory(cat)}
-                       className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 whitespace-nowrap ${activeCategory === cat ? 'bg-brand-600 text-white shadow-glow scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5'}`}
+                       className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 whitespace-nowrap snap-center ${activeCategory === cat ? 'bg-brand-600 text-white shadow-glow scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5'}`}
                      >
                        {CONTENT.categories[cat][language]}
                      </button>
