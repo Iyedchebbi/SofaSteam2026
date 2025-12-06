@@ -163,7 +163,23 @@ const App: React.FC = () => {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    try {
+      setIsMenuOpen(false); // Close menu immediately
+      // 1. Attempt standard sign out
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      console.error("Logout error, forcing local cleanup:", error);
+      // 2. Force cleanup if network fails
+      localStorage.clear(); // Clear local storage to remove Supabase tokens
+      window.location.reload(); // Reload page to reset all states
+    } finally {
+      // 3. Reset local state
+      setUser(null);
+      setUserProfile(null);
+      setIsAdmin(false);
+      setCartItems([]);
+    }
   };
 
   const handleAddToCart = async (product: Product) => {

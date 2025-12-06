@@ -107,14 +107,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, type, language, 
     setGoogleLoading(true);
     setError(null);
     try {
-        // Robust production configuration
+        // PRODUCTION NOTE: Ensure your Supabase Dashboard -> Authentication -> URL Configuration
+        // includes your hosted URL (e.g., https://your-site.netlify.app) in "Redirect URLs"
+        // otherwise this will redirect to localhost.
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
               redirectTo: window.location.origin,
               queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
+                prompt: 'consent', // Forces account selection
+                // Removed 'access_type: offline' to reduce complexity/403 errors
               },
             }
         });
