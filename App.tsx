@@ -15,7 +15,7 @@ import { supabase } from './services/supabase';
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>('ro');
   
   // Modals & UI State
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; type: 'signin' | 'signup' }>({ isOpen: false, type: 'signin' });
@@ -476,7 +476,7 @@ const App: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                </span>
-               <span className="text-xs sm:text-sm font-semibold tracking-wide uppercase font-display">#1 Premium Cleaning in Bucharest</span>
+               <span className="text-xs sm:text-sm font-semibold tracking-wide uppercase font-display">{CONTENT.hero.badge[language]}</span>
             </div>
             
             {/* Main Headline - Optimized for Mobile scaling */}
@@ -511,7 +511,7 @@ const App: React.FC = () => {
             <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center p-1.5 backdrop-blur-sm bg-white/5">
                <div className="w-1.5 h-1.5 bg-white rounded-full animate-scroll"></div>
             </div>
-            <span className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">Scroll</span>
+            <span className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">{CONTENT.hero.scroll[language]}</span>
          </div>
       </section>
 
@@ -522,9 +522,11 @@ const App: React.FC = () => {
          
          <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 lg:mb-20">
-               <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4 font-display">Our Expertise</h2>
-               <h3 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 tracking-tight">Premium Services</h3>
-               <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl font-light leading-relaxed px-2">Select a service to request a personalized quote. <br className="hidden md:block"/>We bring industrial-grade cleaning directly to your location.</p>
+               <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4 font-display">{CONTENT.services.badge[language]}</h2>
+               <h3 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 tracking-tight">{CONTENT.services.title[language]}</h3>
+               <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl font-light leading-relaxed px-2">
+                 {CONTENT.services.subtitle[language]}
+               </p>
             </div>
 
             <div className="flex overflow-x-auto pb-4 scrollbar-hide px-4 -mx-4 sm:mx-0 justify-start sm:justify-center mb-10 sm:mb-16 snap-x w-full">
@@ -552,8 +554,9 @@ const App: React.FC = () => {
                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent z-10 opacity-60 group-hover:opacity-50 transition-opacity"></div>
                            <img src={product.image} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000" alt={product.name_en} />
                            
-                           <div className="absolute top-5 right-5 z-20 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full font-bold text-xs sm:text-sm shadow-xl group-hover:bg-brand-600/90 group-hover:border-brand-500 transition-colors">
-                              Starting {product.price} RON
+                           <div className="absolute top-5 right-5 z-20 bg-white text-gray-900 px-4 py-2.5 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 flex items-center gap-2 transform transition-transform duration-300 group-hover:scale-105">
+                              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{CONTENT.services.starting[language]}</span>
+                              <span className="text-base sm:text-lg font-black text-brand-600">{product.price} <span className="text-xs font-bold text-gray-400">RON</span></span>
                            </div>
 
                            <div className="absolute bottom-6 left-6 z-20">
@@ -585,7 +588,7 @@ const App: React.FC = () => {
       <section id="about" className="py-16 sm:py-20 lg:py-32 bg-white dark:bg-[#080c14] overflow-hidden border-t border-gray-100 dark:border-white/5">
          <div className="container mx-auto px-4 sm:px-6 text-center">
             <div className="max-w-4xl mx-auto">
-                <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4 font-display">Why Choose SofaSteam</h2>
+                <h2 className="text-brand-600 dark:text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4 font-display">{CONTENT.about.badge[language]}</h2>
                 <h3 className="text-3xl sm:text-5xl lg:text-7xl font-display font-bold text-gray-900 dark:text-white mb-6 lg:mb-8 leading-[1.1] tracking-tight">{CONTENT.about.title[language]}</h3>
                 <div className="space-y-6 lg:space-y-8 text-gray-600 dark:text-gray-300 text-lg sm:text-xl leading-relaxed mb-12 lg:mb-16 font-light">
                     <p>{CONTENT.about.text[language]}</p>
@@ -618,8 +621,13 @@ const App: React.FC = () => {
          <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
                <div className="order-2 lg:order-1">
-                  <h2 className="text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4">Contact Us</h2>
-                  <h3 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black mb-8 leading-[1.1]">Ready for a <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-white">spotless home?</span></h3>
+                  <h2 className="text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm mb-4">{CONTENT.contact.badge[language]}</h2>
+                  <h3 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black mb-8 leading-[1.1]">
+                     {language === 'en' ? 'Ready for a' : 'Pregătit pentru o'} <br/>
+                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-white">
+                        {language === 'en' ? 'spotless home?' : 'casă impecabilă?'}
+                     </span>
+                  </h3>
                   <p className="text-xl sm:text-2xl text-gray-400 mb-10 font-light">{CONTENT.contact.subtitle[language]}</p>
                   
                   <div className="space-y-4 lg:space-y-6">
@@ -628,7 +636,7 @@ const App: React.FC = () => {
                            <Icons.Phone className="w-6 h-6 lg:w-8 lg:h-8" />
                         </div>
                         <div>
-                           <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Call / WhatsApp</p>
+                           <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">{CONTENT.contact.methods.call[language]}</p>
                            <span className="text-xl sm:text-2xl lg:text-3xl font-bold font-mono group-hover:text-brand-300 transition-colors">{PHONE}</span>
                         </div>
                      </a>
@@ -638,7 +646,7 @@ const App: React.FC = () => {
                            <Icons.Mail className="w-6 h-6 lg:w-8 lg:h-8" />
                         </div>
                         <div className="overflow-hidden">
-                           <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Email</p>
+                           <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">{CONTENT.contact.methods.email[language]}</p>
                            <span className="text-base sm:text-lg lg:text-2xl font-bold group-hover:text-brand-300 transition-colors truncate block">{CONTACT_EMAIL}</span>
                         </div>
                      </a>
@@ -648,7 +656,7 @@ const App: React.FC = () => {
                            <Icons.MapPin className="w-6 h-6 lg:w-8 lg:h-8" />
                         </div>
                         <div>
-                           <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Location</p>
+                           <p className="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">{CONTENT.contact.methods.location[language]}</p>
                            <p className="text-lg lg:text-xl font-medium text-gray-200">{ADDRESS}</p>
                         </div>
                      </div>
@@ -717,7 +725,7 @@ const App: React.FC = () => {
                      <span className="text-2xl lg:text-3xl font-display font-black tracking-tight pt-1">{APP_NAME}</span>
                   </div>
                   <p className="text-gray-400 text-base lg:text-lg leading-relaxed font-light max-w-sm">
-                     Redefining cleanliness with premium technology. Showroom quality for your living space.
+                     {CONTENT.footer.description[language]}
                   </p>
                </div>
 
@@ -726,7 +734,7 @@ const App: React.FC = () => {
                   <div className="md:h-16 flex items-center w-full justify-center md:justify-start mb-2 lg:mb-4"> {/* Enforced Height on Desktop */}
                      <h4 className="font-bold text-white text-lg lg:text-xl flex items-center gap-3 font-display">
                        <span className="w-8 h-[2px] bg-brand-500 inline-block rounded-full"></span>
-                       Company
+                       {CONTENT.footer.company[language]}
                      </h4>
                   </div>
                   <ul className="space-y-3 lg:space-y-4 w-full">
@@ -772,12 +780,12 @@ const App: React.FC = () => {
                      </h4>
                   </div>
                   <p className="text-gray-400 mb-6 text-sm lg:text-base leading-relaxed">
-                     Join for exclusive seasonal offers <br className="hidden lg:block"/> and maintenance tips.
+                     {CONTENT.footer.newsletterText[language]}
                   </p>
                   <form className="relative group w-full max-w-sm" onSubmit={(e) => e.preventDefault()}>
                      <input 
                        type="email" 
-                       placeholder="Enter your email" 
+                       placeholder={CONTENT.footer.emailPlaceholder[language]}
                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-5 pr-14 py-3 lg:py-4 text-sm lg:text-base focus:ring-2 focus:ring-brand-500 outline-none text-white text-base placeholder-gray-600 transition-all focus:bg-white/10 focus:border-white/20" 
                      />
                      <button className="absolute right-2 top-2 bottom-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl w-10 lg:w-12 flex items-center justify-center transition-all shadow-lg hover:shadow-brand-500/25">
@@ -792,10 +800,10 @@ const App: React.FC = () => {
                  {CONTENT.footer.rights[language]}
                </p>
                <div className="flex flex-wrap justify-center gap-6 lg:gap-10 text-sm text-gray-500 font-medium">
-                  <button onClick={() => setLegalModal({ isOpen: true, type: 'privacy' })} className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Privacy Policy</button>
-                  <button onClick={() => setLegalModal({ isOpen: true, type: 'terms' })} className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">Terms of Service</button>
+                  <button onClick={() => setLegalModal({ isOpen: true, type: 'privacy' })} className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">{CONTENT.footer.privacy[language]}</button>
+                  <button onClick={() => setLegalModal({ isOpen: true, type: 'terms' })} className="hover:text-white transition-colors hover:underline decoration-brand-500 decoration-2 underline-offset-4">{CONTENT.footer.terms[language]}</button>
                   <button onClick={scrollToTop} className="flex items-center gap-2 hover:text-white transition-colors text-brand-400 uppercase tracking-widest text-xs font-bold">
-                     Back to Top <Icons.ArrowRight className="-rotate-90 w-3 h-3" />
+                     {CONTENT.footer.backToTop[language]} <Icons.ArrowRight className="-rotate-90 w-3 h-3" />
                   </button>
                </div>
             </div>

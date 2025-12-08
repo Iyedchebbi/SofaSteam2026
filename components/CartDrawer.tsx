@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { CONTENT } from '../constants';
 import { Language, CartItem } from '../types';
@@ -115,7 +116,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                   {step === 'cart' ? t.title[language] : t.bookingForm.title[language]}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {step === 'cart' ? `${cartItems.length} ${t.items[language]} selected` : 'Enter details'}
+                  {step === 'cart' ? `${cartItems.length} ${t.items[language]} ${t.selected[language]}` : t.enterDetails[language]}
                 </p>
             </div>
             <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-500">

@@ -25,11 +25,23 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const CONTENT = {
   hero: {
+    badge: { en: "#1 Premium Cleaning in Bucharest", ro: "Nr. 1 Curățenie Premium în București" },
     title: { en: "Experience True Cleanliness", ro: "Experimentează Curățenia Adevărată" },
     subtitle: { en: "Premium upholstery and cleaning services for a healthier, luxurious home in Bucharest.", ro: "Servicii premium de curățare a tapițeriei pentru o casă mai sănătoasă și luxoasă în București." },
-    cta: { en: "Book a Service", ro: "Rezervă un Serviciu" }
+    cta: { en: "Book a Service", ro: "Rezervă un Serviciu" },
+    scroll: { en: "Scroll", ro: "Derulează" }
+  },
+  services: {
+    badge: { en: "Our Expertise", ro: "Expertiza Noastră" },
+    title: { en: "Premium Services", ro: "Servicii Premium" },
+    subtitle: { 
+      en: "Select a service to request a personalized quote. We bring industrial-grade cleaning directly to your location.", 
+      ro: "Selectează un serviciu pentru o ofertă personalizată. Aducem curățenia industrială direct la tine." 
+    },
+    starting: { en: "Starting", ro: "De la" }
   },
   about: {
+    badge: { en: "Why Choose SofaSteam", ro: "De Ce SofaSteam" },
     title: { en: "Excellence in Every Detail", ro: "Excelență în Fiecare Detaliu" },
     text: { 
       en: `See the difference our technology makes. From deep-cleaning car interiors to revitalizing delicate sofas, our results speak for themselves.`,
@@ -58,24 +70,44 @@ export const CONTENT = {
     ]
   },
   contact: {
+    badge: { en: "Contact Us", ro: "Contactează-ne" },
+    heroTitle: { en: "Ready for a spotless home?", ro: "Pregătit pentru o casă impecabilă?" },
     title: { en: "Get in Touch", ro: "Contactează-ne" },
     subtitle: { en: "Have a special request or booking issue? We are here to help.", ro: "Ai o cerere specială sau o problemă cu rezervarea? Suntem aici să te ajutăm." },
     nameLabel: { en: "Your Name", ro: "Numele Tău" },
     emailLabel: { en: "Email Address", ro: "Adresa de Email" },
     messageLabel: { en: "Your Message", ro: "Mesajul Tău" },
     sendButton: { en: "Request Consultation", ro: "Cere Consultație" },
-    successMessage: { en: "Inquiry sent! We will contact you shortly.", ro: "Mesaj trimis! Te vom contacta în curând." }
+    successMessage: { en: "Inquiry sent! We will contact you shortly.", ro: "Mesaj trimis! Te vom contacta în curând." },
+    methods: {
+      call: { en: "Call / WhatsApp", ro: "Sună / WhatsApp" },
+      email: { en: "Email", ro: "Email" },
+      location: { en: "Location", ro: "Locație" }
+    }
   },
   footer: {
+    description: { 
+      en: "Redefining cleanliness with premium technology. Showroom quality for your living space.", 
+      ro: "Redefinim curățenia cu tehnologie premium. Calitate de showroom pentru spațiul tău." 
+    },
+    company: { en: "Company", ro: "Companie" },
     quickLinks: { en: "Navigation", ro: "Navigare" },
     followUs: { en: "Follow Us", ro: "Urmărește-ne" },
     contact: { en: "Contact Info", ro: "Info Contact" },
     newsletter: { en: "Stay Updated", ro: "Rămâi Informat" },
+    newsletterText: { 
+      en: "Join for exclusive seasonal offers and maintenance tips.", 
+      ro: "Abonează-te pentru oferte exclusive și sfaturi de întreținere." 
+    },
+    emailPlaceholder: { en: "Enter your email", ro: "Introdu adresa de email" },
     subscribe: { en: "Join", ro: "Alătură-te" },
-    rights: { en: "© 2025 SofaSteam. All rights reserved.", ro: "© 2025 SofaSteam. Toate drepturile rezervate." }
+    rights: { en: "© 2025 SofaSteam. All rights reserved.", ro: "© 2025 SofaSteam. Toate drepturile rezervate." },
+    privacy: { en: "Privacy Policy", ro: "Politica de Confidențialitate" },
+    terms: { en: "Terms of Service", ro: "Termeni și Condiții" },
+    backToTop: { en: "Back to Top", ro: "Înapoi Sus" }
   },
   auth: {
-    signIn: { en: "Client Access", ro: "Acces Client" },
+    signIn: { en: "Client Access", ro: "Accesul Clientului" },
     signUp: { en: "New Client", ro: "Client Nou" },
     signOut: { en: "Log Out", ro: "Deconectare" },
     welcome: { en: "Hello", ro: "Salut" },
@@ -98,6 +130,8 @@ export const CONTENT = {
     addSuccess: { en: "added to list!", ro: "adăugat la listă!" },
     loginRequired: { en: "Please log in to manage your bookings.", ro: "Conectează-te pentru a gestiona rezervările." },
     items: { en: "services", ro: "servicii" },
+    selected: { en: "selected", ro: "selectate" },
+    enterDetails: { en: "Enter details", ro: "Introdu detalii" },
     bookingForm: {
       title: { en: "Finalize Booking", ro: "Finalizare Rezervare" },
       name: { en: "Full Name", ro: "Nume Complet" },
