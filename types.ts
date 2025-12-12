@@ -12,6 +12,7 @@ export interface Product {
   price: number;
   image: string;
   category: string;
+  promotion_percentage?: number | null;
 }
 
 export interface UserProfile {

@@ -135,7 +135,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                   <tr>
                     <th className="px-6 py-4 text-left">Product</th>
                     <th className="px-6 py-4 text-left">Category</th>
-                    <th className="px-6 py-4 text-left">Price</th>
+                    <th className="px-6 py-4 text-left">Price / Promo</th>
                     <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -157,7 +157,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language, onLogout, use
                         <td className="px-6 py-4">
                           <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs font-medium text-gray-600 dark:text-gray-300 uppercase">{product.category}</span>
                         </td>
-                        <td className="px-6 py-4 font-mono font-medium">{product.price} RON</td>
+                        <td className="px-6 py-4 font-mono font-medium">
+                           {product.promotion_percentage ? (
+                             <div className="flex flex-col">
+                               <span className="text-gray-400 line-through text-xs">{product.price} RON</span>
+                               <span className="text-green-600 font-bold">{(product.price * (1 - product.promotion_percentage / 100)).toFixed(2)} RON</span>
+                               <span className="text-[10px] text-red-500 font-bold uppercase">-{product.promotion_percentage}% PROMO</span>
+                             </div>
+                           ) : (
+                             <span>{product.price} RON</span>
+                           )}
+                        </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex items-center justify-end gap-2">
                              <button onClick={() => setProductModal({ isOpen: true, product })} className="p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/20 rounded-lg transition-colors"><Icons.Settings className="w-4 h-4" /></button>

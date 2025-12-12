@@ -547,16 +547,37 @@ const App: React.FC = () => {
                <div className="flex justify-center py-20"><div className="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div></div>
             ) : (
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-                  {filteredProducts.map((product) => (
+                  {filteredProducts.map((product) => {
+                     const discountedPrice = product.promotion_percentage 
+                        ? (product.price * (1 - product.promotion_percentage / 100)).toFixed(2) 
+                        : null;
+                     
+                     return (
                      <div key={product.id} className="group bg-white dark:bg-gray-900 rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-white/5 hover:-translate-y-2 hover:border-brand-500/30 relative flex flex-col h-full">
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-900/0 group-hover:to-brand-900/5 transition-colors duration-500"></div>
                         <div className="relative h-64 sm:h-80 overflow-hidden shrink-0">
                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent z-10 opacity-60 group-hover:opacity-50 transition-opacity"></div>
                            <img src={product.image} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000" alt={product.name_en} />
                            
+                           {/* Promotion Badge */}
+                           {product.promotion_percentage && (
+                               <div className="absolute top-5 left-5 z-20 bg-red-600 text-white px-3 py-1.5 rounded-full shadow-lg font-bold text-xs uppercase tracking-wider animate-pulse-slow">
+                                   -{product.promotion_percentage}% OFF
+                               </div>
+                           )}
+                           
                            <div className="absolute top-5 right-5 z-20 bg-white text-gray-900 px-4 py-2.5 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 flex items-center gap-2 transform transition-transform duration-300 group-hover:scale-105">
                               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{CONTENT.services.starting[language]}</span>
-                              <span className="text-base sm:text-lg font-black text-brand-600">{product.price} <span className="text-xs font-bold text-gray-400">RON</span></span>
+                              <div className="flex flex-col items-end leading-none">
+                                  {discountedPrice ? (
+                                      <>
+                                        <span className="text-xs font-bold text-gray-400 line-through decoration-red-500 decoration-1">{product.price} RON</span>
+                                        <span className="text-lg sm:text-xl font-black text-red-600">{discountedPrice} <span className="text-xs font-bold text-gray-400">RON</span></span>
+                                      </>
+                                  ) : (
+                                      <span className="text-base sm:text-lg font-black text-brand-600">{product.price} <span className="text-xs font-bold text-gray-400">RON</span></span>
+                                  )}
+                              </div>
                            </div>
 
                            <div className="absolute bottom-6 left-6 z-20">
@@ -578,7 +599,7 @@ const App: React.FC = () => {
                            </button>
                         </div>
                      </div>
-                  ))}
+                  )})}
                </div>
             )}
          </div>

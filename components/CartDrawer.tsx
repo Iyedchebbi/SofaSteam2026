@@ -1,5 +1,4 @@
 
-
 import React, { useState } from 'react';
 import { CONTENT } from '../constants';
 import { Language, CartItem } from '../types';
@@ -27,7 +26,14 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
   });
 
   const t = CONTENT.cart;
-  const total = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  
+  // Calculate total respecting promotions
+  const total = cartItems.reduce((sum, item) => {
+    const price = item.product.promotion_percentage
+        ? item.product.price * (1 - item.product.promotion_percentage / 100)
+        : item.product.price;
+    return sum + (price * item.quantity);
+  }, 0);
 
   const updateQuantity = async (itemId: number, newQty: number) => {
     if (loading) return;
@@ -66,12 +72,18 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
         }).select().single();
          
         if (order && !orderError) {
-             const orderItems = cartItems.map(item => ({
-                 order_id: order.id,
-                 product_id: item.product_id,
-                 quantity: item.quantity,
-                 price_at_purchase: item.product.price
-             }));
+             const orderItems = cartItems.map(item => {
+                 const price = item.product.promotion_percentage
+                    ? item.product.price * (1 - item.product.promotion_percentage / 100)
+                    : item.product.price;
+                    
+                 return {
+                     order_id: order.id,
+                     product_id: item.product_id,
+                     quantity: item.quantity,
+                     price_at_purchase: parseFloat(price.toFixed(2))
+                 };
+             });
              await supabase.from('order_items').insert(orderItems);
              
              // Clear Cart
@@ -136,8 +148,19 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                     <p className="font-medium">{t.empty[language]}</p>
                   </div>
                 ) : (
-                  cartItems.map((item) => (
-                    <div key={item.id} className="flex gap-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                  cartItems.map((item) => {
+                    const hasPromo = !!item.product.promotion_percentage;
+                    const price = hasPromo 
+                        ? item.product.price * (1 - item.product.promotion_percentage! / 100) 
+                        : item.product.price;
+                    
+                    return (
+                    <div key={item.id} className="flex gap-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                      {hasPromo && (
+                          <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-bl-lg font-bold">
+                              -{item.product.promotion_percentage}%
+                          </div>
+                      )}
                       <div className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden shrink-0">
                         <img src={item.product.image} alt="Service" className="w-full h-full object-cover" />
                       </div>
@@ -146,7 +169,16 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                           <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-1">
                             {language === 'en' ? item.product.name_en : item.product.name_ro}
                           </h3>
-                          <p className="text-brand-600 font-bold text-sm mt-1">{item.product.price} RON <span className="text-gray-400 font-normal text-xs">/ unit</span></p>
+                          <div className="mt-1">
+                             {hasPromo ? (
+                                <div className="flex items-center gap-2">
+                                   <span className="text-gray-400 text-xs line-through">{item.product.price} RON</span>
+                                   <span className="text-red-500 font-bold text-sm">{price.toFixed(2)} RON</span>
+                                </div>
+                             ) : (
+                                <p className="text-brand-600 font-bold text-sm">{item.product.price} RON</p>
+                             )}
+                          </div>
                         </div>
                         
                         <div className="flex items-center justify-between mt-3">
@@ -165,7 +197,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cartItems, lan
                         </div>
                       </div>
                     </div>
-                  ))
+                  )})
                 )}
               </div>
 

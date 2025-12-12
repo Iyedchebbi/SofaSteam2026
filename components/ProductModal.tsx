@@ -20,7 +20,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
     description_en: '',
     description_ro: '',
     price: '',
-    category: 'general' as ProductCategory
+    category: 'general' as ProductCategory,
+    promotion_percentage: ''
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -35,13 +36,14 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
         description_en: product.description_en,
         description_ro: product.description_ro,
         price: product.price.toString(),
-        category: product.category as ProductCategory
+        category: product.category as ProductCategory,
+        promotion_percentage: product.promotion_percentage ? product.promotion_percentage.toString() : ''
       });
       setPreviewUrl(product.image);
     } else {
       setFormData({
         name_en: '', name_ro: '', description_en: '', description_ro: '',
-        price: '', category: 'general'
+        price: '', category: 'general', promotion_percentage: ''
       });
       setPreviewUrl('');
     }
@@ -54,6 +56,15 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
       setImageFile(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
+  };
+
+  const calculateDiscountedPrice = () => {
+    const price = parseFloat(formData.price);
+    const promo = parseFloat(formData.promotion_percentage);
+    if (!isNaN(price) && !isNaN(promo) && promo > 0) {
+      return (price * (1 - promo / 100)).toFixed(2);
+    }
+    return null;
   };
 
   if (!isOpen) return null;
@@ -93,7 +104,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
         description_ro: formData.description_ro,
         price: parseFloat(formData.price),
         image: imageUrl,
-        category: formData.category
+        category: formData.category,
+        promotion_percentage: formData.promotion_percentage ? parseFloat(formData.promotion_percentage) : null
       };
 
       if (product) {
@@ -118,6 +130,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
       setLoading(false);
     }
   };
+
+  const discountedPrice = calculateDiscountedPrice();
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-[fadeIn_0.2s_ease-out]">
@@ -181,6 +195,42 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
                     <option value="general">General / Other</option>
                 </select>
              </div>
+          </div>
+
+          {/* Promotion Section */}
+          <div className="bg-brand-50 dark:bg-brand-900/10 p-4 rounded-xl border border-brand-100 dark:border-brand-900/30">
+            <h3 className="text-sm font-bold text-brand-700 dark:text-brand-300 mb-3 flex items-center gap-2">
+              <Icons.Sparkles className="w-4 h-4" /> 
+              Promotion (Optional)
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+              <div>
+                <label className="block text-xs font-bold mb-1 uppercase text-gray-500 tracking-wider">Discount Percentage (%)</label>
+                <input 
+                  type="number" 
+                  min="0" 
+                  max="100" 
+                  value={formData.promotion_percentage} 
+                  onChange={e => setFormData({...formData, promotion_percentage: e.target.value})}
+                  placeholder="e.g., 20"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2.5 outline-none focus:ring-2 focus:ring-brand-500 dark:text-white transition-all text-base" 
+                />
+              </div>
+              <div className="flex flex-col justify-end">
+                  <div className="text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Final Client Price</div>
+                  <div className="text-xl font-bold text-brand-600 dark:text-brand-400 font-mono">
+                    {discountedPrice ? (
+                      <span className="flex items-center gap-2">
+                         <span className="line-through text-gray-400 text-sm">{parseFloat(formData.price || '0').toFixed(2)}</span>
+                         <span>{discountedPrice} RON</span>
+                         <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full ml-1">-{formData.promotion_percentage}%</span>
+                      </span>
+                    ) : (
+                      <span>{parseFloat(formData.price || '0').toFixed(2)} RON</span>
+                    )}
+                  </div>
+              </div>
+            </div>
           </div>
 
           <div>
